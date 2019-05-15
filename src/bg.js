@@ -38,7 +38,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab) {
     
                 if (loadConfig.openRiss) {
                     /* RISS Validation Check */
-                    if (!/^[A-z]+/.test(searchQuery)) {
+                    if (!/^[A-z]+$/.test(searchQuery)) {
                         chrome.tabs.create({
                             url: "http://www.riss.kr/search/Search.do?detailSearch=false&searchGubun=true&oldQuery=&query="+searchQuery
                         });
