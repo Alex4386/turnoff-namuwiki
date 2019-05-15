@@ -1,7 +1,7 @@
 # turnoff-namuwiki
 조별과제 때마다 "나무위키 꺼라."라고 말하시는게 피곤하신 여러분을 위해 만들어진 Chrome Extension, **나무위키를 꺼 드립니다.**
 
-## How to use?
+## What's this?
 나무위키에 접속할 때, 설정에 따라 DBPia 또는 Riss 같은 공신력있는 논문 웹페이지로 대신 리다이렉트 되는 확장입니다.  
 
 ## TODO
