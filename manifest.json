@@ -1,0 +1,14 @@
+{
+  "name": "Turn Off namuwiki",
+  "version": "0.0.1",
+  "description":"나무위키 꺼라",
+  "permissions": ["declarativeContent", "tabs", "storage"],
+  "background": {
+    "scripts": ["src/bg.js"],
+    "persistent": false
+  },
+  "page_action": {
+    "default_popup": "interface/popup/index.html"
+  },
+  "manifest_version": 2
+}
