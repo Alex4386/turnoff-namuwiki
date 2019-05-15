@@ -1,19 +1,12 @@
+/* 아 코드 뭐같아서 빨리 고쳐야 하는데.... */
+
 chrome.runtime.onInstalled.addListener(function() {
     chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
         chrome.declarativeContent.onPageChanged.addRules([{
             conditions: [
                 new chrome.declarativeContent.PageStateMatcher({
-                    //pageUrl: {hostEquals: 'namu.wiki'},
-                })/*,
-                new chrome.declarativeContent.PageStateMatcher({
-                    pageUrl: {hostEquals: 'www.riss.kr'},
-                }),
-                new chrome.declarativeContent.PageStateMatcher({
-                    pageUrl: {hostEquals: 'www.dbpia.co.kr'},
-                }),
-                new chrome.declarativeContent.PageStateMatcher({
-                    pageUrl: {hostEquals: 'chrome-extension://ajbdlofabfhengchghdamgegdegjjklh'},
-                })*/
+                    
+                })
             ],
             actions: [new chrome.declarativeContent.ShowPageAction()]
         }]);
