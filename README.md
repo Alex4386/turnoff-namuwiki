@@ -5,7 +5,7 @@
 * 꼭 조별과제 때 마다 출처: 나무위키 쓰시는 분
 * 논문 검색해야 하는 데, 나도 모르게 나무위키 들어가시는 분
 * 일반인이라 굳이 논문까지는 필요 없으신 분  
-![maskedNoRissRequired](https://user-images.githubusercontent.com/27724108/58344441-a9c28a00-7e90-11e9-8906-0db9deb5d9e7.gif)
+![maskNoRiss](https://user-images.githubusercontent.com/27724108/58348249-1d699480-7e9b-11e9-8c94-a351989ba076.gif)
 
 ## What's this?
 나무위키에 접속할 때, 설정에 따라 DBPia 또는 Riss 같은 공신력있는 논문 웹페이지로 대신 리다이렉트 되는 확장입니다.  
