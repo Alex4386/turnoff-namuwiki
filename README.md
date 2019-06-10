@@ -1,5 +1,8 @@
 # turnoff-namuwiki
-조별과제 때마다 "나무위키 꺼라."라고 말하시는게 피곤하신 여러분을 위해 만들어진 Chrome Extension, **나무위키를 꺼 드립니다.**
+조별과제 때마다 "나무위키 꺼라."라고 말하시는게 피곤하신 여러분을 위해 만들어진 Chrome Extension,  
+**나무위키를 꺼 드립니다.**  
+
+Firefox Version developed by SLoWMoTIoN: [turnoff-namuwiki-firefox](https://github.com/park012241/turnoff-namuwiki-firefox)  
 
 ## 이런 분들께 추천드립니다!
 * 꼭 조별과제 때 마다 출처: 나무위키 쓰시는 분
@@ -15,8 +18,9 @@
 * fix the bug that dbpia and riss tab spawn twice in a row
 
 ## How to Install
-아직 크롬 익스텐션 스토어에 못 올렸습니다. 아래 사이드로딩 방법을 이용해 주세요.  
+크롬 익스텐션 스토어에 올렸습니다! [Turnoff-NamuWiki](https://chrome.google.com/webstore/detail/turn-off-namuwiki/dgdifdnmamleoebgfbfeckefhhhplmdn/related?hl=en)  
   
+신기능을 누구보다 빠르게 테스트 해보고 싶으시다고요? 아래 방법을 사용하세요!  
 1. 이 레포지토리를 클론합니다.
 2. 크롬의 확장 프로그램 페이지(chrome://extensions)로 들어갑니다
 3. 우측 상단의 개발자모드를 활성화 합니다.
