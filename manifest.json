@@ -11,5 +11,8 @@
     "default_icon": "showcase/switch-128x128.png",
     "default_popup": "interface/popup/index.html"
   },
+  "icons": {
+    "128":"showcase/logo-128x128.png"
+  },
   "manifest_version": 2
 }
