@@ -43,3 +43,6 @@ function setHook() {
         )
     }
 }
+
+var manifestData = chrome.runtime.getManifest();
+document.getElementById('extension_version').innerHTML = "ver."+manifestData.version;

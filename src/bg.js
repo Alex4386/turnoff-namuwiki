@@ -1,4 +1,5 @@
 /* 아 코드 뭐같아서 빨리 고쳐야 하는데.... */
+const currentlyRedirecting = [];
 
 chrome.runtime.onInstalled.addListener(function() {
     chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
@@ -14,7 +15,7 @@ chrome.runtime.onInstalled.addListener(function() {
 });
 
 chrome.tabs.onUpdated.addListener(function(tabId, info, tab) {
-    const url = tab.url;
+    const url = info.url;
     chrome.storage.sync.get({
         namuwikiBlock: true,
         openRiss: true,
