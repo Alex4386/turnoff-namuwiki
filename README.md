@@ -15,7 +15,11 @@ Firefox Version developed by SLoWMoTIoN: [turnoff-namuwiki-firefox](https://gith
 
 ## TODO
 * add google scholar search
-* fix the bug that dbpia and riss tab spawn twice in a row
+~~* fix the bug that dbpia and riss tab spawn twice in a row~~ (FIXED?)
+
+## Screenshots
+![popup](showcase/interface.png)  
+![blocked](showcase/namuwiki-blocked.png)  
 
 ## How to Install
 크롬 익스텐션 스토어에 올렸습니다! [Turnoff-NamuWiki](https://chrome.google.com/webstore/detail/turn-off-namuwiki/dgdifdnmamleoebgfbfeckefhhhplmdn/related?hl=en)  
