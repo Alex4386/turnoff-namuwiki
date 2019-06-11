@@ -1,0 +1,7 @@
+# The Git ignore file::
+
+# macOS related:
+.DS_store
+
+# Visual Studio Code:
+.vscode/
