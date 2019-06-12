@@ -15,7 +15,7 @@ Firefox Version developed by SLoWMoTIoN: [turnoff-namuwiki-firefox](https://gith
 
 ## TODO
 * add google scholar search
-~~* fix the bug that dbpia and riss tab spawn twice in a row~~ (FIXED?)
+* ~~fix the bug that dbpia and riss tab spawn twice in a row~~ (FIXED?)
 
 ## Screenshots
 ![popup](showcase/interface.png)  
