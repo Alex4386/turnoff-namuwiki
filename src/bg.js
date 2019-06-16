@@ -65,15 +65,18 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab) {
                 console.log("NAMU WIKI DETECTED!!");
                 console.log("config", loadConfig);
                 console.log("tab", tab);
-                console.log("rule", rule)
+                console.log("rule", rule);
 
                 const parser = new RegExp(urlRegex+rule.baseURL+"("+escapeRegExp(rule.articleView)+"|"+escapeRegExp(rule.searchView)+")"+"(.+)$", "ig");
                 const parsed = parser.exec(url);
                 if (parsed !== null) {
                     if (info.url === undefined) {
-                        console.log("Prevent Triggered Twice");
-                        console.log("End of Session\n");
-                        return;
+                        console.log("info", info);
+                        if (info.status !== "complete") {
+                            console.log("Prevent Triggered Twice");
+                            console.log("End of Session\n");
+                            return;
+                        }
                     }
 
                     const isThisSearch = (parsed[2].toLowerCase() === rule.searchView);
