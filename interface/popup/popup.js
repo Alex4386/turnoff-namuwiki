@@ -1,7 +1,9 @@
 var config = {
     namuwikiBlock: true,
+    namuMirrorBlock: true,
     openRiss: true,
-    openDbpia: true
+    openDbpia: true,
+    proxyDbpia: "",
 }
 
 chrome.storage.sync.get(config, function(loadConfig) {
@@ -16,8 +18,10 @@ chrome.storage.sync.get(config, function(loadConfig) {
 
 const chkbox = [
     document.getElementById('block_namuwiki'),
+    document.getElementById('block_namumirror'),
     document.getElementById('riss_auto'),
-    document.getElementById('dbpia_auto')
+    document.getElementById('dbpia_auto'),
+    document.getElementById('dbpia_proxy'),
 ];
 
 function saveData(thisConfig) {
@@ -37,7 +41,11 @@ function setHook() {
         chk.addEventListener(
             "change",
             () => {
-                config[chk.dataset.val] = chk.checked;
+                if (chk.type === "checkbox") {
+                    config[chk.dataset.val] = chk.checked;
+                } else if (chk.type === "text" || chk.type === "url") {
+                    config[chk.dataset.val] = chk.value;
+                }
                 saveData(config);
             }
         )
