@@ -47,7 +47,7 @@ chrome.runtime.onInstalled.addListener(function() {
 });
 
 chrome.tabs.onUpdated.addListener(function(tabId, info, tab) {
-    const url = info.url;
+    const url = info.url || tab.url
     chrome.storage.sync.get({
         namuwikiBlock: true,
         namuMirrorBlock: true,
@@ -55,19 +55,27 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab) {
         openDbpia: true,
         proxyDbpia: "",
     }, function(loadConfig) {
-        const blockRules = new Array().concat(namuWikiBlockRule, mirrorLists);
+        let blockRules = namuWikiBlockRule;
+        if (loadConfig.namuMirrorBlock) {
+            blockRules = blockRules.concat(mirrorLists);
+        }
         for (const rule of blockRules) {
             const baseBlockRegex = new RegExp(urlRegex+rule.baseURL,"ig");
-            console.log(baseBlockRegex, url);
             if (baseBlockRegex.test(url)) {
                 console.log("NAMU WIKI DETECTED!!");
                 console.log("config", loadConfig);
                 console.log("tab", tab);
-                console.log(rule, rule)
+                console.log("rule", rule)
 
                 const parser = new RegExp(urlRegex+rule.baseURL+"("+escapeRegExp(rule.articleView)+"|"+escapeRegExp(rule.searchView)+")"+"(.+)$", "ig");
                 const parsed = parser.exec(url);
                 if (parsed !== null) {
+                    if (info.url === undefined) {
+                        console.log("Prevent Triggered Twice");
+                        console.log("End of Session\n");
+                        return;
+                    }
+
                     const isThisSearch = (parsed[2].toLowerCase() === rule.searchView);
                     const searchQuery = decodeURIComponent(parsed[3]);
 
@@ -104,6 +112,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab) {
                     }
 
                 }
+                console.log("End of Session\n");
 
             }
         }
