@@ -37,7 +37,11 @@ function saveData(thisConfig) {
 function setHook() {
     for (const chk of chkbox) {
         console.log(chk);
-        chk.checked = config[chk.dataset.val];
+        if (chk.type === "checkbox") {
+            chk.checked = config[chk.dataset.val];
+        } else if (chk.type === "text" || chk.type === "url") {
+            chk.value = config[chk.dataset.val];
+        }
         chk.addEventListener(
             "change",
             () => {

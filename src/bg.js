@@ -53,7 +53,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab) {
         namuMirrorBlock: true,
         openRiss: true,
         openDbpia: true,
-        proxyDbpia: true,
+        proxyDbpia: "",
     }, function(loadConfig) {
         const blockRules = new Array().concat(namuWikiBlockRule, mirrorLists);
         for (const rule of blockRules) {
@@ -82,9 +82,15 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab) {
                             }
                         }
                         if (loadConfig.openDbpia) {
-                            chrome.tabs.create({
-                                url: "http://www.dbpia.co.kr/search/topSearch?startCount=0&collection=ALL&startDate=&endDate=&filter=&prefix=&range=A&searchField=ALL&sort=RANK&reQuery=&realQuery=&exquery=&query="+searchQuery+"&collectionQuery=&srchOption=*"
-                            });
+                            if (loadConfig.proxyDbpia !== "") {
+                                chrome.tabs.create({
+                                    url: loadConfig.proxyDbpia+"/search/topSearch?startCount=0&collection=ALL&startDate=&endDate=&filter=&prefix=&range=A&searchField=ALL&sort=RANK&reQuery=&realQuery=&exquery=&query="+searchQuery+"&collectionQuery=&srchOption=*"
+                                });
+                            } else {
+                                chrome.tabs.create({
+                                    url: "http://www.dbpia.co.kr/search/topSearch?startCount=0&collection=ALL&startDate=&endDate=&filter=&prefix=&range=A&searchField=ALL&sort=RANK&reQuery=&realQuery=&exquery=&query="+searchQuery+"&collectionQuery=&srchOption=*"
+                                });
+                            }
                         }
                     }
                     
