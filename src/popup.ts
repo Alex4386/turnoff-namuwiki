@@ -16,6 +16,15 @@ var config:ConfigInterface = {
 
 const bgconsole = browser.extension.getBackgroundPage().console;
 
+function escapeHtml(unsafe: string) {
+    return unsafe
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+ }
+
 browser.storage.sync.get(null).then(
     (loadConfig) => {
         if (loadConfig !== null) {
@@ -23,7 +32,7 @@ browser.storage.sync.get(null).then(
             config = loadConfig as unknown as ConfigInterface;
         }
 
-        document.getElementById('status').innerHTML = "로드완료. "+JSON.stringify(config);
+        document.getElementById('status').innerHTML = "로드완료. "+escapeHtml(JSON.stringify(config));
         setHook();
         setTimeout(
             () => { document.getElementById('status').innerHTML = ""; },
@@ -31,7 +40,7 @@ browser.storage.sync.get(null).then(
         )
     }, (e) => {
         alert(e);
-        document.getElementById('status').innerHTML = "로드실패. "+JSON.stringify(config);
+        document.getElementById('status').innerHTML = "로드실패. "+escapeHtml(JSON.stringify(config));
         setTimeout(
             () => { document.getElementById('status').innerHTML = ""; },
             1500
@@ -50,13 +59,13 @@ const chkbox = [
 function saveData(thisConfig: ConfigInterface) {
     browser.storage.sync.set(thisConfig as any).then(
         () => {
-            document.getElementById('status').innerHTML = "저장완료. "+JSON.stringify(config);
+            document.getElementById('status').innerHTML = "저장완료. "+escapeHtml(JSON.stringify(config));
             setTimeout(
                 () => { document.getElementById('status').innerHTML = ""; },
                 750
             )
         }, () => {
-            document.getElementById('status').innerHTML = "저장실패. "+JSON.stringify(config);
+            document.getElementById('status').innerHTML = "저장실패. "+escapeHtml(JSON.stringify(config));
             setTimeout(
                 () => { document.getElementById('status').innerHTML = ""; },
                 1500
