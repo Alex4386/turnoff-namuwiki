@@ -64,11 +64,11 @@ function saveData(thisConfig: ConfigInterface) {
 function setHook() {
     for (const chk of chkbox) {
         console.log(chk);
-        const datasetVal = chk.dataset.val as string;
+        const datasetVal = chk.dataset.val as keyof ConfigInterface;
         if (chk.type === "checkbox") {
-            chk.checked = config[datasetVal];
+            chk.checked = config[datasetVal] as boolean;
         } else if (chk.type === "text" || chk.type === "url") {
-            chk.value = config[datasetVal];
+            chk.value = config[datasetVal] as string;
         }
         chk.addEventListener(
             "change",
