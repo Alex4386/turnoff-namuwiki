@@ -98,4 +98,4 @@ function setHook() {
 }
 
 var manifestData = browser.runtime.getManifest();
-document.getElementById('extension_version').innerHTML = "ver."+manifestData.version;
+document.getElementById('extension_version').innerHTML = escapeHtml("ver."+manifestData.version);
