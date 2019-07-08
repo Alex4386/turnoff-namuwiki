@@ -1,18 +1,24 @@
 /* 아 코드 뭐같아서 빨리 고쳐야 하는데.... */
 const urlRegex = "^http(s|):\\/\\/";
 
-const namuWikiBlockRule = [{
+interface PageBlockRule {
+    baseURL: string;
+    articleView: string;
+    searchView: string;
+}
+
+const namuWikiBlockRule: PageBlockRule[] = [{
     baseURL: "namu.wiki",
     articleView: "/w/",
     searchView: "/go/",
 }];
 
-const mirrorLists = [
+const mirrorLists: PageBlockRule[] = [
     // namuwiki mirror rulesets
     {
         baseURL: "namu.mirror.wiki",
         articleView: "/w/",
-        serarchView: "/go/"
+        searchView: "/go/"
     },
     {
         baseURL: "namu.moe",
@@ -32,29 +38,30 @@ const namuwikiInternalPageRule = /^나무위키:(.+)/;
 function escapeRegExp(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
-
+/*
 chrome.runtime.onInstalled.addListener(function() {
-    chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
-        chrome.declarativeContent.onPageChanged.addRules([{
+    browser.declarativeContent.onPageChanged.removeRules(undefined, function() {
+        browser.declarativeContent.onPageChanged.addRules([{
             conditions: [
-                new chrome.declarativeContent.PageStateMatcher({
+                new browser.declarativeContent.PageStateMatcher({
                     
                 })
             ],
-            actions: [new chrome.declarativeContent.ShowPageAction()]
+            actions: [new browser.declarativeContent.ShowPageAction()]
         }]);
     });
 });
+*/
 
-chrome.tabs.onUpdated.addListener(function(tabId, info, tab) {
+browser.tabs.onUpdated.addListener( (tabId, info, tab) => {
     const url = info.url || tab.url
-    chrome.storage.sync.get({
+    browser.storage.sync.get({
         namuwikiBlock: true,
         namuMirrorBlock: true,
         openRiss: true,
         openDbpia: true,
         proxyDbpia: "",
-    }, function(loadConfig) {
+    }).then( (loadConfig) => {
         let blockRules = namuWikiBlockRule;
         if (loadConfig.namuMirrorBlock) {
             blockRules = blockRules.concat(mirrorLists);
@@ -87,18 +94,18 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab) {
                         if (loadConfig.openRiss) {
                             /* RISS Validation Check */
                             if (!/^[A-z]+$/.test(searchQuery)) {
-                                chrome.tabs.create({
+                                browser.tabs.create({
                                     url: "http://www.riss.kr/search/Search.do?detailSearch=false&searchGubun=true&oldQuery=&query="+searchQuery
                                 });
                             }
                         }
                         if (loadConfig.openDbpia) {
                             if (loadConfig.proxyDbpia !== "") {
-                                chrome.tabs.create({
+                                browser.tabs.create({
                                     url: loadConfig.proxyDbpia+"/search/topSearch?startCount=0&collection=ALL&startDate=&endDate=&filter=&prefix=&range=A&searchField=ALL&sort=RANK&reQuery=&realQuery=&exquery=&query="+searchQuery+"&collectionQuery=&srchOption=*"
                                 });
                             } else {
-                                chrome.tabs.create({
+                                browser.tabs.create({
                                     url: "http://www.dbpia.co.kr/search/topSearch?startCount=0&collection=ALL&startDate=&endDate=&filter=&prefix=&range=A&searchField=ALL&sort=RANK&reQuery=&realQuery=&exquery=&query="+searchQuery+"&collectionQuery=&srchOption=*"
                                 });
                             }
@@ -106,11 +113,17 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab) {
                     }
                     
                     if (loadConfig.namuwikiBlock) {
-                        chrome.tabs.update(tabId, {
-                            url: chrome.extension.getURL("interface/banned/index.html")
+                        browser.tabs.update(tabId, {
+                            url: browser.extension.getURL("interface/banned/index.html")
                         });
-                        chrome.tabs.get(tabId, function(tab) {
-                            chrome.tabs.highlight({'tabs': tab.index}, function() {});
+                        browser.tabs.get(tabId).then( function(tab) {
+                            browser.tabs.highlight({'tabs': tab.index}).then(
+                                () => {
+
+                                }, () => {
+
+                                }
+                            );
                         });
                     }
 
@@ -119,5 +132,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab) {
 
             }
         }
+    }, function() {
+
     });
 })
