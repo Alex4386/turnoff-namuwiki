@@ -55,13 +55,7 @@ chrome.runtime.onInstalled.addListener(function() {
 
 browser.tabs.onUpdated.addListener( (tabId, info, tab) => {
     const url = info.url || tab.url
-    browser.storage.sync.get({
-        namuwikiBlock: true,
-        namuMirrorBlock: true,
-        openRiss: true,
-        openDbpia: true,
-        proxyDbpia: "",
-    }).then( (loadConfig) => {
+    browser.storage.sync.get(null).then( (loadConfig) => {
         let blockRules = namuWikiBlockRule;
         if (loadConfig.namuMirrorBlock) {
             blockRules = blockRules.concat(mirrorLists);

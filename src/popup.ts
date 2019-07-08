@@ -18,15 +18,19 @@ const bgconsole = browser.extension.getBackgroundPage().console;
 
 browser.storage.sync.get(null).then(
     (loadConfig) => {
-        bgconsole.log(config);
-        config = loadConfig as unknown as ConfigInterface;
+        if (loadConfig !== null) {
+            bgconsole.log(config);
+            config = loadConfig as unknown as ConfigInterface;
+        }
+
         document.getElementById('status').innerHTML = "로드완료. "+JSON.stringify(config);
         setHook();
         setTimeout(
             () => { document.getElementById('status').innerHTML = ""; },
             750
         )
-    }, () => {
+    }, (e) => {
+        alert(e);
         document.getElementById('status').innerHTML = "로드실패. "+JSON.stringify(config);
         setTimeout(
             () => { document.getElementById('status').innerHTML = ""; },
