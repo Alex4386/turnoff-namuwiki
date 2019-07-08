@@ -1,8 +1,11 @@
 # turnoff-namuwiki
-조별과제 때마다 "나무위키 꺼라."라고 말하시는게 피곤하신 여러분을 위해 만들어진 Chrome Extension,  
+조별과제 때마다 "나무위키 꺼라."라고 말하시는게 피곤하신 여러분을 위해 만들어진 **Browser** Extension,  
 **나무위키를 꺼 드립니다.**  
+  
+***이제 파이어폭스도 (실험적) 지원합니다***  
+![image](https://user-images.githubusercontent.com/27724108/60845307-d51df000-a216-11e9-9323-24f8f8e39196.png)
 
-Firefox Version developed by SLoWMoTIoN: [turnoff-namuwiki-firefox](https://github.com/park012241/turnoff-namuwiki-firefox)  
+***@SLoWMoTIoN 님 이거 타입스크립트로 마이그레이션 했는데 이거 오류 좀 잡아주세요.***  
 
 ## 이런 분들께 추천드립니다!
 * 꼭 조별과제 때 마다 출처: 나무위키 쓰시는 분
@@ -24,13 +27,25 @@ Firefox Version developed by SLoWMoTIoN: [turnoff-namuwiki-firefox](https://gith
 ## How to Install
 크롬 익스텐션 스토어에 올렸습니다! [Turnoff-NamuWiki](https://chrome.google.com/webstore/detail/turn-off-namuwiki/dgdifdnmamleoebgfbfeckefhhhplmdn/related?hl=en)  
   
+### Chrome
+
 신기능을 누구보다 빠르게 테스트 해보고 싶으시다고요? 아래 방법을 사용하세요!  
 1. 이 레포지토리를 클론합니다.
-2. 크롬의 확장 프로그램 페이지(chrome://extensions)로 들어갑니다
-3. 우측 상단의 개발자모드를 활성화 합니다.
-4. [압축해제된 확장프로그램을 로드합니다.] 를 클릭합니다.
-5. 압축해제된 확장프로그램 폴더를 선택합니다. (레포 전체, manifest.json 이 위치한 곳)
-6. 확장프로그램 섹션의 T 아이콘을 클릭해 익스텐션의 상세 설정을 할 수 있습니다.
+2. 레포지토리의 의존성을 설정하기 위해, `npm install` 또는 `yarn install` 명령을 실행합니다.
+3. 레포지토리의 터미널에서 `npm run build` 또는 `yarn build` 명령을 통해 TypeScript 코드를 빌드합니다.
+4. 크롬의 확장 프로그램 페이지(chrome://extensions)로 들어갑니다
+5. 우측 상단의 개발자모드를 활성화 합니다.
+6. [압축해제된 확장프로그램을 로드합니다.] 를 클릭합니다.
+7. 압축해제된 확장프로그램 폴더를 선택합니다. (레포 전체, manifest.json 이 위치한 곳)
+8. 확장프로그램 섹션의 스위치 아이콘을 클릭해 익스텐션의 상세 설정을 할 수 있습니다.
+
+### Firefox
+
+천천히 올릴께요!
+
+## For Firefox Add-on Team
+Source-Code of this extension is also available at GitHub, [GitHub](https://github.com/Alex4386/turnoff-namuwiki).  
+Code in dist/ is **transpiled**, so, Please check the source code written in typescript is available at src/.  
 
 ## License
 Distributed under MIT License  

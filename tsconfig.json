@@ -1,0 +1,20 @@
+
+{
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "es6"
+    ],
+    "target": "es6",
+    "module": "commonjs",
+    "outDir": "./lib",
+    "rootDir": "./src",
+    "strict": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "node_modules/web-ext-types"
+    ],
+    "esModuleInterop": true,
+    "strictNullChecks": false
+  }
+}

@@ -5,3 +5,9 @@
 
 # Visual Studio Code:
 .vscode/
+
+# node modules
+node_modules/
+
+# TypeScript Compile Results
+lib/
