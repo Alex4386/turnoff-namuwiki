@@ -43,6 +43,10 @@
 
 천천히 올릴께요!
 
+## For Firefox Add-on Team
+Source-Code of this extension is also available at GitHub, [GitHub](https://github.com/Alex4386/turnoff-namuwiki).  
+Code in dist/ is **transpiled**, so, Please check the source code written in typescript is available at src/.  
+
 ## License
 Distributed under MIT License  
 Copyright &copy; Alex4386
