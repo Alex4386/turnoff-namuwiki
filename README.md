@@ -27,6 +27,8 @@
 ## How to Install
 크롬 익스텐션 스토어에 올렸습니다! [Turnoff-NamuWiki](https://chrome.google.com/webstore/detail/turn-off-namuwiki/dgdifdnmamleoebgfbfeckefhhhplmdn/related?hl=en)  
   
+### Chrome
+
 신기능을 누구보다 빠르게 테스트 해보고 싶으시다고요? 아래 방법을 사용하세요!  
 1. 이 레포지토리를 클론합니다.
 2. 레포지토리의 의존성을 설정하기 위해, `npm install` 또는 `yarn install` 명령을 실행합니다.
@@ -36,6 +38,10 @@
 6. [압축해제된 확장프로그램을 로드합니다.] 를 클릭합니다.
 7. 압축해제된 확장프로그램 폴더를 선택합니다. (레포 전체, manifest.json 이 위치한 곳)
 8. 확장프로그램 섹션의 스위치 아이콘을 클릭해 익스텐션의 상세 설정을 할 수 있습니다.
+
+### Firefox
+
+천천히 올릴께요!
 
 ## License
 Distributed under MIT License  
