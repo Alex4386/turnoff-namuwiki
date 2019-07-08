@@ -25,9 +25,9 @@
 ![blocked](showcase/namuwiki-blocked.png)  
 
 ## How to Install
-크롬 익스텐션 스토어에 올렸습니다! [Turnoff-NamuWiki](https://chrome.google.com/webstore/detail/turn-off-namuwiki/dgdifdnmamleoebgfbfeckefhhhplmdn/related?hl=en)  
   
 ### Chrome
+크롬 익스텐션 스토어에 올렸습니다! [Turnoff-NamuWiki](https://chrome.google.com/webstore/detail/turn-off-namuwiki/dgdifdnmamleoebgfbfeckefhhhplmdn/related?hl=en)  
 
 신기능을 누구보다 빠르게 테스트 해보고 싶으시다고요? 아래 방법을 사용하세요!  
 1. 이 레포지토리를 클론합니다.
@@ -40,8 +40,17 @@
 8. 확장프로그램 섹션의 스위치 아이콘을 클릭해 익스텐션의 상세 설정을 할 수 있습니다.
 
 ### Firefox
+파이어폭스 애드온 검수 중입니다! [Turnoff-NamuWiki](https://addons.mozilla.org/en-US/firefox/addon/turnoff-namuwiki/)
 
-천천히 올릴께요!
+지금 바로 적용하고 싶은 경우, 아래 방법을 사용하세요!  
+1. 이 레포지토리를 클론합니다.
+2. 레포지토리의 의존성을 설정하기 위해, `npm install` 또는 `yarn install` 명령을 실행합니다.
+3. 레포지토리의 터미널에서 `npm run build` 또는 `yarn build` 명령을 통해 TypeScript 코드를 빌드합니다.
+4. 파이어폭스의 메뉴를 열고 확장기능 (Add-ons)을 선택합니다.
+5. 우측 상단의 톱니바퀴를 누르고 확장기능 디버그 (Debug Add-ons) 를 선택합니다.
+6. 확장기능 디버깅하기를 체크하고, 임시 확장기능 로드 버튼을 누릅니다.
+7. 압축해제된 확장프로그램 폴더로 들어가 manifest.json을 선택합니다.
+8. 확장프로그램 섹션의 스위치 아이콘을 클릭해 익스텐션의 상세 설정을 할 수 있습니다.
 
 ## For Firefox Add-on Team
 Source-Code of this extension is also available at GitHub, [GitHub](https://github.com/Alex4386/turnoff-namuwiki).  
