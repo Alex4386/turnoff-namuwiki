@@ -8,3 +8,6 @@
 
 # node modules
 node_modules/
+
+# TypeScript Compile Results
+lib/
