@@ -87,7 +87,7 @@ browser.tabs.onUpdated.addListener( (tabId, info, tab) => {
                     }
 
                     const isThisSearch = (parsed[2].toLowerCase() === rule.searchView);
-                    const searchQuery = decodeURIComponent(parsed[3]);
+                    const searchQuery = decodeURIComponent(parsed[3]).split("?")[0];
 
                     console.log("searchQuery:", searchQuery);
                     if (!namuwikiInternalPageRule.test(searchQuery)) {
