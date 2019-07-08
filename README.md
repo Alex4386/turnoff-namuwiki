@@ -1,11 +1,10 @@
 # turnoff-namuwiki
 조별과제 때마다 "나무위키 꺼라."라고 말하시는게 피곤하신 여러분을 위해 만들어진 **Browser** Extension,  
+**나무위키를 꺼 드립니다.**  
   
 ***이제 파이어폭스도 지원합니다***  
 
-**나무위키를 꺼 드립니다.**  
-
-Firefox Version developed by SLoWMoTIoN: [turnoff-namuwiki-firefox](https://github.com/park012241/turnoff-namuwiki-firefox)  
+@SLoWMoTIoN 님 이거 타입스크립트로 마이그레이션 했는데 이거 오류 좀 잡아주세요.  
 
 ## 이런 분들께 추천드립니다!
 * 꼭 조별과제 때 마다 출처: 나무위키 쓰시는 분
