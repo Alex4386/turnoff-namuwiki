@@ -5,7 +5,7 @@
       "dom",
       "es6"
     ],
-    "target": "es6",
+    "target": "es5",
     "module": "commonjs",
     "outDir": "./lib",
     "rootDir": "./src",
