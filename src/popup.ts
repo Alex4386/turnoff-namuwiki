@@ -9,7 +9,7 @@ interface ConfigInterface {
 let config: ConfigInterface = {
     namuwikiBlock: true,
     namuMirrorBlock: true,
-    "openRiss": true,
+    openRiss: true,
     openDbpia: true,
     proxyDbpia: "",
 };
@@ -95,11 +95,9 @@ function setHook() {
             "change",
             async () => {
                 if (chk.type === "checkbox") {
-                    // @ts-ignore
-                    config[datasetVal] = chk.checked;
+                    (config[datasetVal] as boolean) = chk.checked;
                 } else if (chk.type === "text" || chk.type === "url") {
-                    // @ts-ignore
-                    config[datasetVal] = chk.value;
+                    (config[datasetVal] as string) = chk.value;
                 }
                 await saveData(config);
             }
