@@ -40,7 +40,7 @@
 8. 확장프로그램 섹션의 스위치 아이콘을 클릭해 익스텐션의 상세 설정을 할 수 있습니다.
 
 ### Firefox
-파이어폭스 애드온 검수 중입니다! [Turnoff-NamuWiki](https://addons.mozilla.org/en-US/firefox/addon/turnoff-namuwiki/)
+파이어폭스 애드온 스토어에 올렸습니다! [Turnoff-NamuWiki](https://addons.mozilla.org/en-US/firefox/addon/turnoff-namuwiki/)
 
 지금 바로 적용하고 싶은 경우, 아래 방법을 사용하세요!  
 1. 이 레포지토리를 클론합니다.
@@ -54,7 +54,7 @@
 
 ## For Firefox Add-on Team
 Source-Code of this extension is also available at GitHub, [GitHub](https://github.com/Alex4386/turnoff-namuwiki).  
-Code in dist/ is **transpiled**, so, Please check the source code written in typescript is available at src/.  
+Code in lib/ is **transpiled**, so, Please check the source code written in typescript located at src/.  
 
 ## License
 Distributed under MIT License  
