@@ -180,4 +180,11 @@ fabric.properties
 # .nfs files are created when an open file is removed but is still being accessed
 .nfs*
 
+# TypeScript Compile Results
 lib/
+
+# Visual Studio Code
+.vscode/
+
+# yarn error logs
+yarn-error.log
