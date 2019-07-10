@@ -1,4 +1,3 @@
-/* 아 코드 뭐같아서 빨리 고쳐야 하는데.... */
 const urlRegex = "^http(s?):\\/\\/";
 
 interface PageBlockRule {
@@ -31,21 +30,6 @@ const mirrorLists: PageBlockRule[] = [
         searchView: /search/,
     }
 ];
-
-/*
-chrome.runtime.onInstalled.addListener(function() {
-    browser.declarativeContent.onPageChanged.removeRules(undefined, function() {
-        browser.declarativeContent.onPageChanged.addRules([{
-            conditions: [
-                new browser.declarativeContent.PageStateMatcher({
-                    
-                })
-            ],
-            actions: [new browser.declarativeContent.ShowPageAction()]
-        }]);
-    });
-});
-*/
 
 browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
     const url = info.url || tab.url;
