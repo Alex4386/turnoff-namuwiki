@@ -2,14 +2,14 @@ const urlRegex = "^http(s?):\\/\\/";
 
 interface PageBlockRule {
     baseURL: string;
-    articleView: RegExp;
-    searchView: RegExp;
+    articleView: RegExp | string;
+    searchView: RegExp | string;
 }
 
 const namuWikiBlockRule: PageBlockRule[] = [{
     baseURL: "namu.wiki",
-    articleView: /w/,
-    searchView: /go/,
+    articleView: "/w/",
+    searchView: "/go/",
 }];
 
 const mirrorLists: PageBlockRule[] = [
@@ -62,8 +62,8 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                 const searchQuery = decodeURIComponent(parsed[3]).split("?")[0];
 
                 console.log("searchQuery:", searchQuery);
-                if (searchQuery) {
-                    if (config.openRiss) {
+                if (!/^나무위키:.+/.test(searchQuery)) {
+                    if (config.openRiss && !/^[a-z ]+$/.test(searchQuery)) {
                         await browser.tabs.create({
                             url: `http://www.riss.kr/search/Search.do?detailSearch=false&searchGubun=true&oldQuery=&query=${searchQuery}`,
                         });
