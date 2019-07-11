@@ -1,10 +1,9 @@
-/* 아 코드 뭐같아서 빨리 고쳐야 하는데.... */
-const urlRegex = "^http(s|):\\/\\/";
+const urlRegex = "^http(s?):\\/\\/";
 
 interface PageBlockRule {
     baseURL: string;
-    articleView: string;
-    searchView: string;
+    articleView: RegExp | string;
+    searchView: RegExp | string;
 }
 
 const namuWikiBlockRule: PageBlockRule[] = [{
@@ -17,42 +16,20 @@ const mirrorLists: PageBlockRule[] = [
     // namuwiki mirror rulesets
     {
         baseURL: "namu.mirror.wiki",
-        articleView: "/w/",
-        searchView: "/go/"
+        articleView: /w/,
+        searchView: /go/,
     },
     {
         baseURL: "namu.moe",
-        articleView: "/w/",
-        searchView: "/go/",
+        articleView: /w/,
+        searchView: /go/,
     },
     {
         baseURL: "mir.pe",
-        articleView: "/wiki/",
-        searchView: "/search/"
+        articleView: /wiki/,
+        searchView: /search/,
     }
 ];
-
-const namuwikiInternalPageRule = /^나무위키:(.+)/;
-
-// Stack Overflow: https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
-function escapeRegExp(string: string): string {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
-}
-
-/*
-chrome.runtime.onInstalled.addListener(function() {
-    browser.declarativeContent.onPageChanged.removeRules(undefined, function() {
-        browser.declarativeContent.onPageChanged.addRules([{
-            conditions: [
-                new browser.declarativeContent.PageStateMatcher({
-                    
-                })
-            ],
-            actions: [new browser.declarativeContent.ShowPageAction()]
-        }]);
-    });
-});
-*/
 
 browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
     const url = info.url || tab.url;
@@ -69,7 +46,7 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
             console.log("tab", tab);
             console.log("rule", rule);
 
-            const parser = new RegExp(urlRegex + rule.baseURL + "(" + escapeRegExp(rule.articleView) + "|" + escapeRegExp(rule.searchView) + ")" + "(.+)$", "ig");
+            const parser = new RegExp(urlRegex + rule.baseURL + "(" + rule.articleView + "|" + rule.searchView + ")" + "(.+)$", "ig");
             const parsed = parser.exec(url);
             if (parsed !== null) {
                 if (info.url === undefined) {
@@ -85,25 +62,16 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                 const searchQuery = decodeURIComponent(parsed[3]).split("?")[0];
 
                 console.log("searchQuery:", searchQuery);
-                if (!namuwikiInternalPageRule.test(searchQuery)) {
-                    if (config.openRiss) {
-                        /* RISS Validation Check */
-                        if (!/^[a-z]+$/i.test(searchQuery)) {
-                            await browser.tabs.create({
-                                url: `http://www.riss.kr/search/Search.do?detailSearch=false&searchGubun=true&oldQuery=&query=${searchQuery}`,
-                            });
-                        }
+                if (!/^나무위키:.+/.test(searchQuery)) {
+                    if (config.openRiss && !/^[a-z ]+$/.test(searchQuery)) {
+                        await browser.tabs.create({
+                            url: `http://www.riss.kr/search/Search.do?detailSearch=false&searchGubun=true&oldQuery=&query=${searchQuery}`,
+                        });
                     }
                     if (config.openDbpia) {
-                        if (config.proxyDbpia !== "") {
-                            await browser.tabs.create({
-                                url: `${config.proxyDbpia}/search/topSearch?startCount=0&collection=ALL&startDate=&endDate=&filter=&prefix=&range=A&searchField=ALL&sort=RANK&reQuery=&realQuery=&exquery=&query=${searchQuery}&collectionQuery=&srchOption=*`
-                            });
-                        } else {
-                            await browser.tabs.create({
-                                url: `http://www.dbpia.co.kr/search/topSearch?startCount=0&collection=ALL&startDate=&endDate=&filter=&prefix=&range=A&searchField=ALL&sort=RANK&reQuery=&realQuery=&exquery=&query=${searchQuery}&collectionQuery=&srchOption=*`
-                            });
-                        }
+                        await browser.tabs.create({
+                            url: `${config.proxyDbpia || 'http://www.dbpia.co.kr'}/search/topSearch?startCount=0&collection=ALL&startDate=&endDate=&filter=&prefix=&range=A&searchField=ALL&sort=RANK&reQuery=&realQuery=&exquery=&query=${searchQuery}&collectionQuery=&srchOption=*`
+                        });
                     }
                 }
 
@@ -111,7 +79,6 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                     await browser.tabs.update(tabId, {
                         url: browser.extension.getURL("interface/banned/index.html")
                     });
-                    await browser.tabs.get(tabId);
                 }
             }
             console.log("End of Session\n");
