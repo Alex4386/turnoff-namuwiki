@@ -17,7 +17,7 @@ echo ==================================================
 echo Package Builder
 echo ==================================================
 echo
-paus
+pause 3
 
 echo Current Working Directory is...
 pwd
