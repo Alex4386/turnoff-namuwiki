@@ -27,11 +27,13 @@ function escapeHtml(unsafe: string) {
 
 (async () => {
     try {
-        const loadConfig = await browser.storage.sync.get(null);
-        if (loadConfig !== null) {
+        let loadConfig = await browser.storage.sync.get(null);
+        if (Object.keys(loadConfig).length === 0 && loadConfig.constructor === Object) {
             bgconsole.log(config);
-            config = loadConfig as unknown as ConfigInterface;
+            (loadConfig as Object) = config;
         }
+
+        config = loadConfig as unknown as ConfigInterface;
 
         document.getElementById('status').innerHTML = "로드완료. " + escapeHtml(JSON.stringify(config));
         setHook();
