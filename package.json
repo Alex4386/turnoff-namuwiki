@@ -14,6 +14,6 @@
     "web-ext-types": "^3.2.0"
   },
   "scripts": {
-    "build": "tsc && ./launch.sh"
+    "build": "tsc && ./build.sh"
   }
 }
