@@ -16,7 +16,7 @@
 
 ## TODO
 * add google scholar search
-* ~~fix the bug that dbpia and riss tab spawn twice in a row~~ (FIXED?)
+* add arXiv (Issue #12)
 
 ## Screenshots
 ![popup](showcase/interface.png)  
@@ -49,6 +49,16 @@
 6. 확장기능 디버깅하기를 체크하고, 임시 확장기능 로드 버튼을 누릅니다.
 7. 압축해제된 확장프로그램 폴더로 들어가 manifest.json을 선택합니다.
 8. 확장프로그램 섹션의 스위치 아이콘을 클릭해 익스텐션의 상세 설정을 할 수 있습니다.
+
+## How to Package
+
+현재 자동 패키징은 macOS, Linux System 에서만 가능합니다.  
+의존성으로 시스템 패키지 `zip` 이 설치되어있는 지 확인해 주세요.  
+
+1. 이 레포지토리를 클론합니다.
+2. 레포지토리의 의존성을 설정하기 위해, `npm install` 또는 `yarn install` 명령을 실행합니다.
+3. 레포지토리의 터미널에서 `npm run build-package` 또는 `yarn build-package` 명령을 통해 TypeScript 코드를 빌드, 그리고 압축합니다. (자동으로 진행됨)
+4. 레포지토리 안에 있는 turnoff-namuwiki.zip 파일을 확인합니다.
 
 ## For Firefox Add-on Team
 Source-Code of this extension is also available at GitHub, [GitHub](https://github.com/Alex4386/turnoff-namuwiki).  
