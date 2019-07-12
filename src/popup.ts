@@ -53,8 +53,7 @@ function setHook() {
         if (chk.type === "checkbox") {
             chk.checked = config[datasetVal] as boolean;
         } else if (chk.type === "text" || chk.type === "url") {
-            chk.value = config[datasetVal] as string;
-            chk.value = chk.value === 'undefined' ? '' : chk.value;
+            chk.value = ((typeof (config[datasetVal]) === "undefined") ? '' : config[datasetVal]) as string;
         }
         chk.addEventListener(
             "change",
