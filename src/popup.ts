@@ -6,13 +6,7 @@ interface ConfigInterface {
     proxyDbpia: string;
 }
 
-let config: ConfigInterface = {
-    namuwikiBlock: true,
-    namuMirrorBlock: true,
-    openRiss: true,
-    openDbpia: true,
-    proxyDbpia: undefined,
-};
+let config: ConfigInterface;
 
 const bgconsole = browser.extension.getBackgroundPage().console;
 
@@ -27,12 +21,12 @@ function escapeHtml(unsafe: string) {
 
 (async () => {
     try {
-        config = await browser.storage.sync.get() as unknown as ConfigInterface || config;
-        bgconsole.log(`로드완료. ${JSON.stringify(config)}`);
+        config = await browser.storage.sync.get() as unknown as ConfigInterface;
+        bgconsole.log(`로드 완료. ${JSON.stringify(config)}`);
         setHook();
     } catch (e) {
         alert(e);
-        bgconsole.error(`로드완료. ${JSON.stringify(config)}`);
+        bgconsole.error(`로드 실패. ${JSON.stringify(config)}`);
     }
 })();
 
