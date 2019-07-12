@@ -6,13 +6,7 @@ interface ConfigInterface {
     proxyDbpia: string;
 }
 
-let config: ConfigInterface = {
-    namuwikiBlock: true,
-    namuMirrorBlock: true,
-    openRiss: true,
-    openDbpia: true,
-    proxyDbpia: "",
-};
+let config: ConfigInterface;
 
 const bgconsole = browser.extension.getBackgroundPage().console;
 
@@ -27,31 +21,12 @@ function escapeHtml(unsafe: string) {
 
 (async () => {
     try {
-        let loadConfig = await browser.storage.sync.get(null);
-        if (Object.keys(loadConfig).length === 0 && loadConfig.constructor === Object) {
-            bgconsole.log(config);
-            (loadConfig as Object) = config;
-        }
-
-        config = loadConfig as unknown as ConfigInterface;
-
-        document.getElementById('status').innerHTML = "로드완료. " + escapeHtml(JSON.stringify(config));
+        config = await browser.storage.sync.get() as unknown as ConfigInterface;
+        bgconsole.log(`로드 완료. ${JSON.stringify(config)}`);
         setHook();
-        setTimeout(
-            () => {
-                document.getElementById('status').innerHTML = "";
-            },
-            750
-        )
     } catch (e) {
         alert(e);
-        document.getElementById('status').innerHTML = "로드실패. " + escapeHtml(JSON.stringify(config));
-        setTimeout(
-            () => {
-                document.getElementById('status').innerHTML = "";
-            },
-            1500
-        );
+        bgconsole.error(`로드 실패. ${JSON.stringify(config)}`);
     }
 })();
 
@@ -66,32 +41,19 @@ const chkbox = [
 async function saveData(thisConfig: ConfigInterface) {
     try {
         await browser.storage.sync.set(thisConfig as any);
-        document.getElementById('status').innerHTML = "저장완료. " + escapeHtml(JSON.stringify(config));
-        setTimeout(
-            () => {
-                document.getElementById('status').innerHTML = "";
-            },
-            750
-        )
+        bgconsole.log(`저장완료. ${JSON.stringify(config)}`);
     } catch (e) {
-        document.getElementById('status').innerHTML = "저장실패. " + escapeHtml(JSON.stringify(config));
-        setTimeout(
-            () => {
-                document.getElementById('status').innerHTML = "";
-            },
-            1500
-        )
+        bgconsole.error(`저장 실패. ${JSON.stringify(config)}`);
     }
 }
 
 function setHook() {
     for (const chk of chkbox) {
-        console.log(chk);
         const datasetVal = chk.dataset.val as keyof ConfigInterface;
         if (chk.type === "checkbox") {
             chk.checked = config[datasetVal] as boolean;
         } else if (chk.type === "text" || chk.type === "url") {
-            chk.value = config[datasetVal] as string;
+            chk.value = ((typeof (config[datasetVal]) === "undefined") ? '' : config[datasetVal]) as string;
         }
         chk.addEventListener(
             "change",

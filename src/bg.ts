@@ -1,5 +1,13 @@
 const urlRegex = "^http(s?):\\/\\/";
 
+interface ConfigInterface {
+    namuwikiBlock: boolean;
+    namuMirrorBlock: boolean;
+    openRiss: boolean;
+    openDbpia: boolean;
+    proxyDbpia: string;
+}
+
 interface PageBlockRule {
     baseURL: string;
     articleView: RegExp | string;
@@ -33,7 +41,19 @@ const mirrorLists: PageBlockRule[] = [
 
 browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
     const url = info.url || tab.url;
-    const config = await browser.storage.sync.get(null);
+    let config: ConfigInterface;
+    do {
+        config = await browser.storage.sync.get(null) as unknown as ConfigInterface;
+        if (Object.keys(config).length === 0) {
+            await browser.storage.sync.set({
+                namuwikiBlock: true,
+                namuMirrorBlock: true,
+                openRiss: true,
+                openDbpia: true,
+                proxyDbpia: undefined,
+            });
+        }
+    } while (Object.keys(config).length === 0);
     let blockRules = namuWikiBlockRule;
     if (config.namuMirrorBlock) {
         blockRules = blockRules.concat(mirrorLists);
