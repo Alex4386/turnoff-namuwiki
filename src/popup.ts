@@ -3,6 +3,8 @@ interface ConfigInterface {
     namuMirrorBlock: boolean;
     openRiss: boolean;
     openDbpia: boolean;
+    openArxiv: boolean;
+    openGoogleScholar: boolean;
     proxyDbpia: string;
 }
 
@@ -35,6 +37,8 @@ const chkbox = [
     document.getElementById('block_namumirror'),
     document.getElementById('riss_auto'),
     document.getElementById('dbpia_auto'),
+    document.getElementById('arxiv_auto'),
+    document.getElementById('googlescholar_auto'),
     document.getElementById('dbpia_proxy'),
 ] as HTMLInputElement[];
 

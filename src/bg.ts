@@ -50,6 +50,8 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                 namuMirrorBlock: true,
                 openRiss: true,
                 openDbpia: true,
+                openArxiv: true,
+                openGoogleScholar: true,
                 proxyDbpia: undefined,
             });
         }
@@ -80,6 +82,7 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
 
                 // const isThisSearch = (parsed[2].toLowerCase() === rule.searchView);
                 const searchQuery = decodeURIComponent(parsed[3]).split("?")[0];
+                const langCode = navigator.language.split("-")[0];
 
                 console.log("searchQuery:", searchQuery);
                 if (!/^나무위키:.+/.test(searchQuery)) {
@@ -92,6 +95,16 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                         await browser.tabs.create({
                             url: `${config.proxyDbpia || 'http://www.dbpia.co.kr'}/search/topSearch?startCount=0&collection=ALL&startDate=&endDate=&filter=&prefix=&range=A&searchField=ALL&sort=RANK&reQuery=&realQuery=&exquery=&query=${searchQuery}&collectionQuery=&srchOption=*`
                         });
+                    }
+                    if (config.openArxiv) {
+                        await browser.tabs.create({
+                            url: `https://arxiv.org/search/?query=${searchQuery}&searchtype=all&source=header`
+                        })
+                    }
+                    if (config.openGoogleScholar) {
+                        await browser.tabs.create({
+                            url: `https://scholar.google.co.kr/scholar?hl=${langCode}&as_sdt=0%2C5&q=${searchQuery}&btnG=`
+                        })
                     }
                 }
 
