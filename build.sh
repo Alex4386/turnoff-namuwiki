@@ -25,9 +25,11 @@ echo
 
 echo Removing existing TurnOff-NamuWiki Archive.
 rm turnoff-namuwiki.zip
+rm turnoff-namuwiki@alex4386.us.xpi
 echo Done.
 echo
 
 echo Building TurnOff-NamuWiki Archive....
 zip -r turnoff-namuwiki.zip * --exclude=*.git* --exclude=*node_modules* --exclude=*showcase/chrome/* --exclude=*showcase/firefox/* --exclude=*.DS_store --exclude=*.sh
+cp turnoff-namuwiki.zip turnoff-namuwiki@alex4386.us.xpi
 echo
