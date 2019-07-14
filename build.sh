@@ -29,5 +29,5 @@ echo Done.
 echo
 
 echo Building TurnOff-NamuWiki Archive....
-zip -r turnoff-namuwiki.zip * --exclude=*.git* --exclude=*node_modules* --exclude=*showcase/chrome/* --exclude=*showcase/firefox/*
+zip -r turnoff-namuwiki.zip * --exclude=*.git* --exclude=*node_modules* --exclude=*showcase/chrome/* --exclude=*showcase/firefox/* --exclude=*.DS_store --exclude=*.sh
 echo
