@@ -61,6 +61,9 @@ Code in lib/ is **transpiled**, so, Please check the source code written in type
 ## TODO
 * Create an Issue for more Feature Requests!
 
+## Support
+공식 디스코드 서버가 존재합니다! [https://discord.gg/Aak86y](https://discord.gg/Aak86y)
+
 ## License
 Distributed under MIT License  
 Copyright &copy; Alex4386
