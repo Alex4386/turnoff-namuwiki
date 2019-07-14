@@ -6,7 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>꺼무위키 시스템</title>
     <style>
+        @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR|Nunito&display=swap');
         body {
+            font-family: "Nunito", "Noto Sans KR", sans-serif;
             width: 350px;
             margin: 0;
             padding: 0;
@@ -16,6 +18,18 @@
             padding: 1em;
             background: #000;
             color: #FFF;
+        }
+        header h1 {
+            font-weight: 900;
+        }
+        header.namuwiki {
+            background: #47a69b;
+        }
+        header:not(.namuwiki) {
+            background: #b85964;
+        }
+        header.redirect {
+            background: #596bb8;
         }
         header h1 {
             text-align: center;

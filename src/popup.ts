@@ -11,6 +11,7 @@ interface ConfigInterface {
 let config: ConfigInterface;
 
 const bgconsole = browser.extension.getBackgroundPage().console;
+const header = document.getElementsByTagName("header")[0];
 
 function escapeHtml(unsafe: string) {
     return unsafe
@@ -20,17 +21,6 @@ function escapeHtml(unsafe: string) {
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
 }
-
-(async () => {
-    try {
-        config = await browser.storage.sync.get() as unknown as ConfigInterface;
-        bgconsole.log(`로드 완료. ${JSON.stringify(config)}`);
-        setHook();
-    } catch (e) {
-        alert(e);
-        bgconsole.error(`로드 실패. ${JSON.stringify(config)}`);
-    }
-})();
 
 const chkbox = [
     document.getElementById('block_namuwiki'),
@@ -45,7 +35,7 @@ const chkbox = [
 async function saveData(thisConfig: ConfigInterface) {
     try {
         await browser.storage.sync.set(thisConfig as any);
-        bgconsole.log(`저장완료. ${JSON.stringify(config)}`);
+        bgconsole.log(`저장 완료. ${JSON.stringify(config)}`);
     } catch (e) {
         bgconsole.error(`저장 실패. ${JSON.stringify(config)}`);
     }
@@ -68,10 +58,36 @@ function setHook() {
                     (config[datasetVal] as string) = chk.value;
                 }
                 await saveData(config);
+                updateHeader(config);
             }
         )
     }
 }
 
+function updateHeader(config: ConfigInterface) {
+    if (config.namuwikiBlock) {
+        header.classList.remove("namuwiki");
+    } else {
+        header.classList.add("namuwiki");
+    }
+    if (config.openArxiv || config.openDbpia || config.openGoogleScholar || config.openRiss) {
+        header.classList.add("redirect");
+    } else {
+        header.classList.remove("redirect");
+    }
+}
+
 const manifestData = browser.runtime.getManifest();
 document.getElementById('extension_version').innerHTML = escapeHtml("ver." + manifestData.version);
+
+(async () => {
+    try {
+        config = await browser.storage.sync.get() as unknown as ConfigInterface;
+        bgconsole.log(`로드 완료. ${JSON.stringify(config)}`);
+        setHook();
+        updateHeader(config);
+    } catch (e) {
+        alert(e);
+        bgconsole.error(`로드 실패. ${JSON.stringify(config)}`);
+    }
+})();
