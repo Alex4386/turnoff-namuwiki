@@ -1,44 +1,3 @@
-const urlRegex = "^http(s?):\\/\\/";
-
-interface ConfigInterface {
-    namuwikiBlock: boolean;
-    namuMirrorBlock: boolean;
-    openRiss: boolean;
-    openDbpia: boolean;
-    proxyDbpia: string;
-}
-
-interface PageBlockRule {
-    baseURL: string;
-    articleView: RegExp | string;
-    searchView: RegExp | string;
-}
-
-const namuWikiBlockRule: PageBlockRule[] = [{
-    baseURL: "namu.wiki",
-    articleView: "/w/",
-    searchView: "/go/",
-}];
-
-const mirrorLists: PageBlockRule[] = [
-    // namuwiki mirror rulesets
-    {
-        baseURL: "namu.mirror.wiki",
-        articleView: /w/,
-        searchView: /go/,
-    },
-    {
-        baseURL: "namu.moe",
-        articleView: /w/,
-        searchView: /go/,
-    },
-    {
-        baseURL: "mir.pe",
-        articleView: /wiki/,
-        searchView: /search/,
-    }
-];
-
 browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
     const url = info.url || tab.url;
     let config: ConfigInterface;
@@ -52,11 +11,33 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                 openDbpia: true,
                 openArxiv: true,
                 openGoogleScholar: true,
+                filterSearch: true,
                 proxyDbpia: undefined,
             });
         }
     } while (Object.keys(config).length === 0);
+
     let blockRules = namuWikiBlockRule;
+    
+    if (config.filterSearch) {
+        let result = triggerFilter(url);
+        console.log(result);
+        if (result !== null) {
+            browser.tabs.executeScript(
+                tab.id,
+                {
+                    file: result
+                }
+            ).then(
+                () => {
+                    console.log("YEP");
+                }, (e) => {
+                    console.log("Oops. The Big Famous Constant E:", e);
+                }
+            )
+        }
+    }
+    
     if (config.namuMirrorBlock) {
         blockRules = blockRules.concat(mirrorLists);
     }
@@ -118,3 +99,50 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
         }
     }
 });
+
+/* = RULES = */
+
+const namuWikiBlockRule: PageBlockRule[] = [{
+    baseURL: "namu.wiki",
+    articleView: "/w/",
+    searchView: "/go/",
+}];
+
+const mirrorLists: PageBlockRule[] = [
+    // namuwiki mirror rulesets
+    {
+        baseURL: "namu.mirror.wiki",
+        articleView: /w/,
+        searchView: /go/,
+    },
+    {
+        baseURL: "namu.moe",
+        articleView: /w/,
+        searchView: /go/,
+    },
+    {
+        baseURL: "mir.pe",
+        articleView: /wiki/,
+        searchView: /search/,
+    }
+];
+
+const urlRegex = "^http(s?):\\/\\/";
+
+/* = SearchEngine = */
+const searchEngineRules:SearchEngineFilterRules[] = [
+    {
+        name: "Google",
+        regex: /^http(s|):\/\/(www.|cse.|)google.com\/search\?/ig,
+        scriptLocation: "/lib/filter/google.js"
+    }
+]
+
+function triggerFilter(url: string) {
+    for (const searchEngine of searchEngineRules) {
+        if (searchEngine.regex.test(url)) {
+            return searchEngine.scriptLocation;
+        }
+    }
+    return null;
+}

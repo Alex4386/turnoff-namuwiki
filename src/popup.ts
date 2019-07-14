@@ -1,13 +1,3 @@
-interface ConfigInterface {
-    namuwikiBlock: boolean;
-    namuMirrorBlock: boolean;
-    openRiss: boolean;
-    openDbpia: boolean;
-    openArxiv: boolean;
-    openGoogleScholar: boolean;
-    proxyDbpia: string;
-}
-
 let config: ConfigInterface;
 
 const bgconsole = browser.extension.getBackgroundPage().console;
@@ -30,6 +20,7 @@ const chkbox = [
     document.getElementById('arxiv_auto'),
     document.getElementById('googlescholar_auto'),
     document.getElementById('dbpia_proxy'),
+    document.getElementById('filter_search'),
 ] as HTMLInputElement[];
 
 async function saveData(thisConfig: ConfigInterface) {
