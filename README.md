@@ -58,6 +58,9 @@
 Source-Code of this extension is also available at GitHub, [GitHub](https://github.com/Alex4386/turnoff-namuwiki).  
 Code in lib/ is **transpiled**, so, Please check the source code written in typescript located at src/.  
 
+## TODO
+* Create an Issue for more Feature Requests!
+
 ## License
 Distributed under MIT License  
 Copyright &copy; Alex4386
