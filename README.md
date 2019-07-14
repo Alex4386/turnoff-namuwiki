@@ -16,13 +16,6 @@
 ## What's this?
 나무위키에 접속할 때, 설정에 따라 DBPia 또는 Riss 같은 공신력있는 논문 웹페이지로 대신 리다이렉트 되는 확장입니다.  
 
-## TODO
-* Create an Issue for more Feature Requests!
-
-## Screenshots
-![popup](showcase/interface.png)  
-![blocked](showcase/namuwiki-blocked.png)  
-
 ## How to Install
   
 ### Chrome
