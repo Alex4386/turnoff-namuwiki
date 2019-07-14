@@ -1,5 +1,4 @@
 ![splash](showcase/chrome/marquee-tile.png)  
-~~저기 있는 위치추적이 뭔지 궁금하다고요? 그건 제 Proprietary Project라서 안됩니다.~~
 
 # turnoff-namuwiki
 조별과제 때마다 "나무위키 꺼라."라고 말하시는게 피곤하신 여러분을 위해 만들어진 **Browser** Extension,  
