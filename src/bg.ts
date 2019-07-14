@@ -9,8 +9,8 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                 namuMirrorBlock: true,
                 openRiss: true,
                 openDbpia: true,
-                openArxiv: true,
-                openGoogleScholar: true,
+                openArxiv: false,
+                openGoogleScholar: false,
                 filterSearch: true,
                 proxyDbpia: undefined,
             });
