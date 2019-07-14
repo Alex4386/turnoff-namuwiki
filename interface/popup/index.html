@@ -9,10 +9,11 @@
         @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR|Nunito&display=swap');
         body {
             font-family: "Nunito", "Noto Sans KR", sans-serif;
-            width: 350px;
+            width: 370px;
             margin: 0;
             padding: 0;
             background: #FFF;
+            font-size: 13px;
         }
         header {
             padding: 1em;
@@ -63,7 +64,7 @@
 <body>
     <header>
         <h1>TurnOff-NamuWiki Console</h1>
-        <p class="version" id="extension_version">ver.0.0.2-alpha</p>
+        <p class="version" id="extension_version">JavaScript Error!!</p>
     </header>
     <main>
         <input type="checkbox" id="block_namuwiki" data-val="namuwikiBlock"> 나무위키 차단/차단해제<br>
@@ -72,7 +73,8 @@
         <input type="checkbox" id="dbpia_auto" data-val="openDbpia"> 나무위키 접속시 DBPia 자동 접속<br>
         <input type="checkbox" id="arxiv_auto" data-val="openArxiv"> 나무위키 접속시 arXiv 자동 접속<br>
         <input type="checkbox" id="googlescholar_auto" data-val="openGoogleScholar"> 나무위키 접속시 Google Scholar 자동 접속<br>
-        <input type="url" id="dbpia_proxy" data-val="proxyDbpia" placeholder="학교 DBPia 프록시 주소">
+        <input type="url" id="dbpia_proxy" data-val="proxyDbpia" placeholder="학교 DBPia 프록시 주소"><br><br>
+        <input type="checkbox" id="filter_search" data-val="filterSearch"> Google 검색결과에서 나무위키 지우기
     </main>
     <span id="status"></span>
 
