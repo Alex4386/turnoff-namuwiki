@@ -137,6 +137,11 @@ const searchEngineRules:SearchEngineFilterRules[] = [
         name: "Google",
         regex: /^http(s|):\/\/(www.|cse.|)google.com\/search\?/ig,
         scriptLocation: "/lib/filter/google.js"
+    },
+    {
+        name: "DuckDuckGo",
+        regex: /^http(s|):\/\/(www.|search.|)duckduckgo.com\/\?q/ig,
+        scriptLocation: "/lib/filter/duckduckgo.js"
     }
 ]
 
