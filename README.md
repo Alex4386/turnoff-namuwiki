@@ -10,11 +10,15 @@ Official Discord Community: [https://discord.gg/Aak86y](https://discord.gg/Aak86
   * [이런 분들꼐 추천드립니다!](#이런-분들께-추천드립니다)  
   * [이게 무엇인가요?](#이게-무엇인가요)
   * [설치 방법](#설치-방법)
+    * [Google Chrome (or Chromium)](#google-chrome-or-chromium)
+    * [Mozilla Firefox](#mozilla-firefox)
   * [패키징 방법](#패키징-방법)
 * [English](#English)
   * [This extension/add-on is for...](#This-extension-add-on-is-for)
   * [What's this?](#whats-this)
   * [How to Install](#how-to-install)
+    * [Google Chrome (or Chromium)](#google-chrome-or-chromium-1)
+    * [Mozilla Firefox](#mozilla-firefox-1)
   * [How to Package](#how-to-package)
 
 ## 한국어
