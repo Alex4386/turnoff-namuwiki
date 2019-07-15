@@ -99,7 +99,7 @@ Do you want to test some latest feature? follow this directions!
 8. You can use the Turnoff-NamuWiki icon for configuration.
 
 #### Mozilla Firefox
-파이어폭스 애드온 스토어에 올렸습니다! [Turnoff-NamuWiki](https://addons.mozilla.org/en-US/firefox/addon/turnoff-namuwiki/)
+It's now available at Firefox Add-ons! [Turnoff-NamuWiki](https://addons.mozilla.org/en-US/firefox/addon/turnoff-namuwiki/)
 
 Do you want to test some latest feature? follow this directions!  
 1. Clone this repository.
