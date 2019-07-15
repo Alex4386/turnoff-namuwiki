@@ -16,13 +16,24 @@
 
     const killList: HTMLDivElement[] = [];
 
-    const searchResults = document.getElementsByClassName('g') as unknown as HTMLDivElement[];
+    let searchResults = document.getElementsByClassName('g') as unknown as HTMLDivElement[];;
+    
+    if (searchResults.length == 0) {
+        searchResults = [] as unknown as HTMLDivElement[];
+        for (const a of document.getElementsByClassName("srg") as unknown as HTMLDivElement[]) {
+            for (const b of a.getElementsByTagName("div") as unknown as HTMLDivElement[]) {
+                searchResults.push(b);
+            }
+        }
+    } else {
+
+    }
+    
     for (const searchResult of searchResults as unknown as HTMLDivElement[]) {
         const searchResultAnchors = searchResult.getElementsByTagName('a');
         for (const searchResultAnchor of searchResultAnchors as unknown as HTMLAnchorElement[]) {
             const banned = checkURLBanned(searchResultAnchor.href);
             if (banned) {
-                console.log(searchResultAnchor.href);
                 killList.push(searchResult);
             }
         }
