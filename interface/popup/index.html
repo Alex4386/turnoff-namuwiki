@@ -131,6 +131,7 @@
         }
     </style>
     <link rel="stylesheet" href="switch.css">
+    <link rel="stylesheet" href="checkbox.css">
 </head>
 <body>
     <header>
@@ -160,10 +161,22 @@
         <hr />
         <div class="redirect">
             <h2>자동접속: </h2>
-            <input type="checkbox" id="riss_auto" data-val="openRiss"> RISS, 
-            <input type="checkbox" id="dbpia_auto" data-val="openDbpia"> DBpia,
-            <input type="checkbox" id="arxiv_auto" data-val="openArxiv"> arXiv,
-            <input type="checkbox" id="googlescholar_auto" data-val="openGoogleScholar"> Google 학술검색
+            <label class="container" for="riss_auto">RISS
+                <input type="checkbox" id="riss_auto" data-val="openRiss">
+                <span class="checkmark"></span>
+            </label>,
+            <label class="container" for="dbpia_auto">DBPia
+                <input type="checkbox" id="dbpia_auto" data-val="openDbpia">
+                <span class="checkmark"></span>
+            </label>,
+            <label class="container" for="arxiv_auto">arXiv
+                <input type="checkbox" id="arxiv_auto" data-val="openArxiv">
+                <span class="checkmark"></span>
+            </label>,
+            <label class="container" for="googlescholar_auto">Google 학술검색
+                <input type="checkbox" id="googlescholar_auto" data-val="openGoogleScholar">
+                <span class="checkmark"></span>
+            </label>
         </div>
         <hr />
         <div class="search-filter">
