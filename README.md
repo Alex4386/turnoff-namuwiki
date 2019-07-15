@@ -1,4 +1,4 @@
-![splash](showcase/chrome/marquee-tile.png)  
+![splash](showcase/marketplace/marquee-tile.png)  
 
 # turnoff-namuwiki
 조별과제 때마다 "나무위키 꺼라."라고 말하시는게 피곤하신 여러분을 위해 만들어진 **Browser** Extension,  

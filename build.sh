@@ -30,6 +30,6 @@ echo Done.
 echo
 
 echo Building TurnOff-NamuWiki Archive....
-zip -r turnoff-namuwiki.zip * --exclude=*.git* --exclude=*node_modules* --exclude=*showcase/chrome/* --exclude=*showcase/firefox/* --exclude=*.DS_store --exclude=*.sh
+zip -r turnoff-namuwiki.zip * --exclude=*.git* --exclude=*node_modules* --exclude=*showcase/marketplace/* --exclude=*.DS_store --exclude=*.sh
 cp turnoff-namuwiki.zip turnoff-namuwiki@alex4386.us.xpi
 echo
