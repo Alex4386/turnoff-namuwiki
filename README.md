@@ -14,7 +14,7 @@ Official Discord Community: [https://discord.gg/Aak86y](https://discord.gg/Aak86
     * [Mozilla Firefox](#mozilla-firefox)
   * [패키징 방법](#패키징-방법)
 * [English](#English)
-  * [This extension/add-on is for...](#This-extension-add-on-is-for)
+  * [This extension/add-on is for...](#This-extensionadd-on-is-for)
   * [What's this?](#whats-this)
   * [How to Install](#how-to-install)
     * [Google Chrome (or Chromium)](#google-chrome-or-chromium-1)
