@@ -78,14 +78,16 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                         });
                     }
                     if (config.openArxiv) {
-                        await browser.tabs.create({
-                            url: `https://arxiv.org/search/?query=${searchQuery}&searchtype=all&source=header`
-                        })
+                        if (/^[A-z]+$/.test(searchQuery)) {
+                            await browser.tabs.create({
+                                url: `https://arxiv.org/search/?query=${searchQuery}&searchtype=all&source=header`
+                            });
+                        }
                     }
                     if (config.openGoogleScholar) {
                         await browser.tabs.create({
                             url: `https://scholar.google.co.kr/scholar?hl=${langCode}&as_sdt=0%2C5&q=${searchQuery}&btnG=`
-                        })
+                        });
                     }
                 }
 
