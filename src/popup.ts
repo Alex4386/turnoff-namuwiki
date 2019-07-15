@@ -56,15 +56,26 @@ function setHook() {
 }
 
 function updateHeader(config: ConfigInterface) {
+    const body = document.body;
+
     if (config.namuwikiBlock) {
-        header.classList.remove("namuwiki");
+        body.classList.remove("namuwiki");
+        body.classList.add("blocked");
     } else {
-        header.classList.add("namuwiki");
+        body.classList.add("namuwiki");
+        body.classList.remove("blocked");
     }
-    if (config.openArxiv || config.openDbpia || config.openGoogleScholar || config.openRiss) {
-        header.classList.add("redirect");
+
+    if (config.namuMirrorBlock) {
+        body.classList.add("mirror-blocked");
     } else {
-        header.classList.remove("redirect");
+        body.classList.remove("mirror-blocked");
+    }
+
+    if (config.openArxiv || config.openDbpia || config.openGoogleScholar || config.openRiss) {
+        body.classList.add("redirect");
+    } else {
+        body.classList.remove("redirect");
     }
 }
 
