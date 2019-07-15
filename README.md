@@ -43,7 +43,7 @@ Official Discord Community: [https://discord.gg/Aak86y](https://discord.gg/Aak86
 4. 크롬의 확장 프로그램 페이지(chrome://extensions)로 들어갑니다
 5. 우측 상단의 개발자모드를 활성화 합니다.
 6. [압축해제된 확장프로그램을 로드합니다.] 를 클릭합니다.
-7. 압축해제된 확장프로그램 폴더를 선택합니다. (레포 전체, manifest.json 이 위치한 곳)
+7. 앞에서 클론한 폴더를 선택합니다. (레포 전체, manifest.json 이 위치한 곳)
 8. 확장프로그램 섹션의 아이콘을 클릭해 익스텐션의 상세 설정을 할 수 있습니다.
 
 #### Mozilla Firefox
@@ -56,7 +56,7 @@ Official Discord Community: [https://discord.gg/Aak86y](https://discord.gg/Aak86
 4. 파이어폭스의 메뉴를 열고 확장기능 (Add-ons)을 선택합니다.
 5. 우측 상단의 톱니바퀴를 누르고 확장기능 디버그 (Debug Add-ons) 를 선택합니다.
 6. 확장기능 디버깅하기를 체크하고, 임시 확장기능 로드 버튼을 누릅니다.
-7. 압축해제된 확장프로그램 폴더로 들어가 manifest.json을 선택합니다.
+7. 앞에서 클론한 폴더로 들어가 manifest.json을 선택합니다.
 8. 확장프로그램 섹션의 아이콘을 클릭해 익스텐션의 상세 설정을 할 수 있습니다.
 
 ### 패키징 방법
@@ -67,7 +67,7 @@ Official Discord Community: [https://discord.gg/Aak86y](https://discord.gg/Aak86
 1. 이 레포지토리를 클론합니다.
 2. 레포지토리의 의존성을 설정하기 위해, `npm install` 또는 `yarn install` 명령을 실행합니다.
 3. 레포지토리의 터미널에서 `npm run build-package` 또는 `yarn build-package` 명령을 통해 TypeScript 코드를 빌드, 그리고 압축합니다. (자동으로 진행됨)
-4. 레포지토리 안에 있는 turnoff-namuwiki.zip, turnoff-namuwiki@alex4386.us.xpi 파일을 확인합니다.
+4. 레포지토리 안에 있는 `turnoff-namuwiki.zip`, `turnoff-namuwiki@alex4386.us.xpi` 파일을 확인합니다.
 
 ## English
 
@@ -116,7 +116,7 @@ Please instanll dependency `zip` before you follow the instruction.
 1. Clone this repository
 2. In order to install its dependencies, Run `npm install` or `yarn install` command.
 3. To build a package, Use command `npm run build-package` or `yarn build-package` to compile TypeScript code and make a zip and xpi file.
-4. Check the file turnoff-namuwiki.zip, turnoff-namuwiki@alex4386.us.xpi in the repository.
+4. Check the file `turnoff-namuwiki.zip`, `turnoff-namuwiki@alex4386.us.xpi` in the repository.
 
 ## TODO
 * Create an Issue for more Feature Requests!
