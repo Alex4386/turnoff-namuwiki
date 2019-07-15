@@ -18,7 +18,7 @@
   },
   "icons": {
     "256":"showcase/logo-256x256.png",
-    "192":"showcase/logo-256x256.png",
+    "192":"showcase/logo-192x192.png",
     "128":"showcase/logo-128x128.png"
   },
   "browser_specific_settings": {
