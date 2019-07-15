@@ -20,6 +20,9 @@ Official Discord Community: [https://discord.gg/Aak86y](https://discord.gg/Aak86
     * [Google Chrome (or Chromium)](#google-chrome-or-chromium-1)
     * [Mozilla Firefox](#mozilla-firefox-1)
   * [How to Package](#how-to-package)
+* [TODO](#TODO)
+* [For Firefox Add-on Team](#for-firefox-add-on-team)
+* [License](#License)
 
 ## 한국어
 ### 이런 분들께 추천드립니다!
