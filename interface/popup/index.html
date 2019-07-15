@@ -125,6 +125,10 @@
         input[type="url"] {
             width: 100%;
         }
+
+        .to-right {
+            float: right;
+        }
     </style>
     <link rel="stylesheet" href="switch.css">
 </head>
@@ -163,11 +167,12 @@
         </div>
         <hr />
         <div class="search-filter">
-            <h2>검색 엔진 필터링:</h2>
-            <label class="switch" for="filter_search">
+            
+            <label class="switch to-right" for="filter_search">
                 <input type="checkbox" id="filter_search" data-val="filterSearch">
                 <span class="slider round"></span>
             </label>
+            <h2>검색 엔진 필터링:</h2>
         </div>
         <hr />
         <div class="settings">
