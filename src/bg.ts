@@ -18,7 +18,7 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
     } while (Object.keys(config).length === 0);
 
     let blockRules = namuWikiBlockRule;
-    
+
     if (config.filterSearch) {
         let result = triggerFilter(url);
         console.log(result);
@@ -37,7 +37,7 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
             )
         }
     }
-    
+
     if (config.namuMirrorBlock) {
         blockRules = blockRules.concat(mirrorLists);
     }
@@ -62,11 +62,11 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                 }
 
                 // const isThisSearch = (parsed[2].toLowerCase() === rule.searchView);
-                const searchQuery = decodeURIComponent(parsed[3]).split("?")[0];
-                const langCode = navigator.language.split("-")[0];
+                const searchQuery = /([^#?]+)[#?]/.exec(decodeURIComponent(parsed[3]))[1];
+                const langCode = /(\w{2})-/.exec(navigator.language)[1];
 
-                console.log("searchQuery:", searchQuery);
-                if (!/^나무위키:.+/.test(searchQuery)) {
+                if (searchQuery !== null && !/^나무위키:.+/.test(searchQuery)) {
+                    console.log("searchQuery:", searchQuery);
                     if (config.openRiss && !/^[a-z ]+$/.test(searchQuery)) {
                         await browser.tabs.create({
                             url: `http://www.riss.kr/search/Search.do?detailSearch=false&searchGubun=true&oldQuery=&query=${searchQuery}`,
@@ -78,13 +78,13 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                         });
                     }
                     if (config.openArxiv) {
-                        if (/^[A-z]+$/.test(searchQuery)) {
+                        if (/^[a-z]+$/i.test(searchQuery)) {
                             await browser.tabs.create({
                                 url: `https://arxiv.org/search/?query=${searchQuery}&searchtype=all&source=header`
                             });
                         }
                     }
-                    if (config.openGoogleScholar) {
+                    if (config.openGoogleScholar && langCode !== null) {
                         await browser.tabs.create({
                             url: `https://scholar.google.co.kr/scholar?hl=${langCode}&as_sdt=0%2C5&q=${searchQuery}&btnG=`
                         });
@@ -132,7 +132,7 @@ const mirrorLists: PageBlockRule[] = [
 const urlRegex = "^http(s?):\\/\\/";
 
 /* = SearchEngine = */
-const searchEngineRules:SearchEngineFilterRules[] = [
+const searchEngineRules: SearchEngineFilterRules[] = [
     {
         name: "Google",
         regex: /^http(s|):\/\/(www.|cse.|)google.com\/search\?/ig,
@@ -143,7 +143,7 @@ const searchEngineRules:SearchEngineFilterRules[] = [
         regex: /^http(s|):\/\/(www.|search.|)duckduckgo.com\/\?q/ig,
         scriptLocation: "/lib/filter/duckduckgo.js"
     }
-]
+];
 
 function triggerFilter(url: string) {
     for (const searchEngine of searchEngineRules) {
