@@ -130,4 +130,4 @@ Code in lib/ is **transpiled**, so, Please check the source code written in type
 
 ## License
 Distributed under MIT License  
-Copyright &copy; Alex4386
+Copyright &copy; Alex4386 and TurnOff-NamuWiki Contributors
