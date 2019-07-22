@@ -22,19 +22,15 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
     if (config.filterSearch) {
         let result = triggerFilter(url);
         console.log(result);
-        if (result !== null) {
-            browser.tabs.executeScript(
-                tab.id,
-                {
-                    file: result
-                }
-            ).then(
-                () => {
-                    console.log("YEP");
-                }, (e) => {
-                    console.log("Oops. The Big Famous Constant E:", e);
-                }
-            )
+        if (result) {
+            try {
+                await browser.tabs.executeScript(tab.id, {
+                    file: result,
+                });
+                console.log('Search Filter Loaded');
+            } catch (e) {
+                console.error('Oops. The Big Famous Constant E: ', e);
+            }
         }
     }
 
@@ -42,21 +38,20 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
         blockRules = blockRules.concat(mirrorLists);
     }
     for (const rule of blockRules) {
-        const baseBlockRegex = new RegExp(urlRegex + rule.baseURL, "ig");
+        const baseBlockRegex = new RegExp(urlRegex + rule.baseURL, 'ig');
         if (baseBlockRegex.test(url)) {
-            console.log("NAMU WIKI DETECTED!!");
-            console.log("config", config);
-            console.log("tab", tab);
-            console.log("rule", rule);
+            console.log('NAMU WIKI DETECTED!!');
+            console.log('config', config);
+            console.log('tab', tab);
+            console.log('rule', rule);
 
-            const parser = new RegExp(urlRegex + rule.baseURL + "(" + rule.articleView + "|" + rule.searchView + ")" + "(.+)$", "ig");
+            const parser = new RegExp(urlRegex + rule.baseURL + '(' + rule.articleView + '|' + rule.searchView + ')' + '(.+)$', 'ig');
             const parsed = parser.exec(url);
-            if (parsed !== null) {
-                if (info.url === undefined) {
-                    console.log("info", info);
-                    if (info.status !== "complete") {
-                        console.log("Prevent Triggered Twice");
-                        console.log("End of Session\n");
+            if (parsed) {
+                if (!info.url) {
+                    console.log('info', info);
+                    if (info.status !== 'complete') {
+                        console.log('Prevent Triggered Twice');
                         return;
                     }
                 }
@@ -65,8 +60,8 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                 const searchQuery = /([^#?]+)[#?]/.exec(decodeURIComponent(parsed[3]))[1];
                 const langCode = /(\w{2})-/.exec(navigator.language)[1];
 
-                if (searchQuery !== null && !/^나무위키:.+/.test(searchQuery)) {
-                    console.log("searchQuery:", searchQuery);
+                if (searchQuery && !/^나무위키:.+/.test(searchQuery)) {
+                    console.log('searchQuery:', searchQuery);
                     if (config.openRiss && !/^[a-z ]+$/.test(searchQuery)) {
                         await browser.tabs.create({
                             url: `http://www.riss.kr/search/Search.do?detailSearch=false&searchGubun=true&oldQuery=&query=${searchQuery}`,
@@ -74,30 +69,30 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                     }
                     if (config.openDbpia) {
                         await browser.tabs.create({
-                            url: `${config.proxyDbpia || 'http://www.dbpia.co.kr'}/search/topSearch?startCount=0&collection=ALL&startDate=&endDate=&filter=&prefix=&range=A&searchField=ALL&sort=RANK&reQuery=&realQuery=&exquery=&query=${searchQuery}&collectionQuery=&srchOption=*`
+                            url: `${config.proxyDbpia || 'http://www.dbpia.co.kr'}/search/topSearch?startCount=0&collection=ALL&startDate=&endDate=&filter=&prefix=&range=A&searchField=ALL&sort=RANK&reQuery=&realQuery=&exquery=&query=${searchQuery}&collectionQuery=&srchOption=*`,
                         });
                     }
                     if (config.openArxiv) {
                         if (/^[a-z]+$/i.test(searchQuery)) {
                             await browser.tabs.create({
-                                url: `https://arxiv.org/search/?query=${searchQuery}&searchtype=all&source=header`
+                                url: `https://arxiv.org/search/?query=${searchQuery}&searchtype=all&source=header`,
                             });
                         }
                     }
-                    if (config.openGoogleScholar && langCode !== null) {
+                    if (config.openGoogleScholar && langCode) {
                         await browser.tabs.create({
-                            url: `https://scholar.google.co.kr/scholar?hl=${langCode}&as_sdt=0%2C5&q=${searchQuery}&btnG=`
+                            url: `https://scholar.google.co.kr/scholar?hl=${langCode}&as_sdt=0%2C5&q=${searchQuery}&btnG=`,
                         });
                     }
                 }
 
                 if (config.namuwikiBlock) {
                     await browser.tabs.update(tabId, {
-                        url: browser.extension.getURL("interface/banned/index.html")
+                        url: browser.extension.getURL('interface/banned/index.html'),
                     });
                 }
             }
-            console.log("End of Session\n");
+            console.log('End of Session\n');
         }
     }
 });
@@ -105,44 +100,44 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
 /* = RULES = */
 
 const namuWikiBlockRule: PageBlockRule[] = [{
-    baseURL: "namu.wiki",
-    articleView: "/w/",
-    searchView: "/go/",
+    baseURL: 'namu.wiki',
+    articleView: '/w/',
+    searchView: '/go/',
 }];
 
 const mirrorLists: PageBlockRule[] = [
     // namuwiki mirror rulesets
     {
-        baseURL: "namu.mirror.wiki",
+        baseURL: 'namu.mirror.wiki',
         articleView: /w/,
         searchView: /go/,
     },
     {
-        baseURL: "namu.moe",
+        baseURL: 'namu.moe',
         articleView: /w/,
         searchView: /go/,
     },
     {
-        baseURL: "mir.pe",
+        baseURL: 'mir.pe',
         articleView: /wiki/,
         searchView: /search/,
-    }
+    },
 ];
 
-const urlRegex = "^http(s?):\\/\\/";
+const urlRegex = '^http(s?):\\/\\/';
 
 /* = SearchEngine = */
 const searchEngineRules: SearchEngineFilterRules[] = [
     {
-        name: "Google",
+        name: 'Google',
         regex: /^http(s|):\/\/(www.|cse.|)google.com\/search\?/ig,
-        scriptLocation: "/lib/filter/google.js"
+        scriptLocation: '/lib/filter/google.js',
     },
     {
-        name: "DuckDuckGo",
+        name: 'DuckDuckGo',
         regex: /^http(s|):\/\/(www.|search.|)duckduckgo.com\/\?q/ig,
-        scriptLocation: "/lib/filter/duckduckgo.js"
-    }
+        scriptLocation: '/lib/filter/duckduckgo.js',
+    },
 ];
 
 function triggerFilter(url: string) {
