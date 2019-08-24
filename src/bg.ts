@@ -60,6 +60,8 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
 
             const parser = createDocumentRegexWithRule(rule);
             const parsed = parser.exec(url);
+            console.log("parsed", parsed);
+            console.log("parsed-decodeURIComponent-searchQuery", decodeURIComponent(parsed[3]));
             if (parsed) {
                 if (!info.url) {
                     console.log('info', info);
@@ -70,7 +72,11 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                 }
 
                 // const isThisSearch = (parsed[2].toLowerCase() === rule.searchView);
-                const searchQuery = /([^#?]+)[#?]/.exec(decodeURIComponent(parsed[3]))[1];
+
+                // The Code is no longer functioning correctly: Abandon this.
+                // const searchQuery = /((?!#\?)+)[#?]/.exec(decodeURIComponent(parsed[3]))[1];
+
+                const searchQuery = /[^?#]*/.exec(decodeURIComponent(parsed[3]))[0];
                 const langCode = /(\w{2})-/.exec(navigator.language)[1];
 
                 if (searchQuery && !/^나무위키:.+/.test(searchQuery)) {
