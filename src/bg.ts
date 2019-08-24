@@ -1,25 +1,39 @@
+/* = Load Config Logic = */
+async function loadConfig(): Promise<ConfigInterface> {
+    return new Promise<ConfigInterface> (
+        async (resolve, reject) => {
+            let config: ConfigInterface;
+            do {
+                config = await browser.storage.sync.get(null) as unknown as ConfigInterface;
+                if (Object.keys(config).length === 0) {
+                    await browser.storage.sync.set({
+                        namuwikiBlock: true,
+                        namuMirrorBlock: true,
+                        openRiss: true,
+                        openDbpia: true,
+                        openArxiv: false,
+                        openGoogleScholar: false,
+                        adBlockNamuWiki: true,
+                        filterSearch: true,
+                        proxyDbpia: undefined,
+                    });
+                }
+            } while (Object.keys(config).length === 0);
+            resolve(config);
+        }
+    );
+}
+
+let adBlockNamuWiki = true;
+
 /* = NamuWiki Block Logic = */
 browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
     const url = info.url || tab.url;
-    let config: ConfigInterface;
-    do {
-        config = await browser.storage.sync.get(null) as unknown as ConfigInterface;
-        if (Object.keys(config).length === 0) {
-            await browser.storage.sync.set({
-                namuwikiBlock: true,
-                namuMirrorBlock: true,
-                openRiss: true,
-                openDbpia: true,
-                openArxiv: false,
-                openGoogleScholar: false,
-                adBlockNamuWiki: true,
-                filterSearch: true,
-                proxyDbpia: undefined,
-            });
-        }
-    } while (Object.keys(config).length === 0);
+    let config: ConfigInterface = await loadConfig();
 
     let blockRules = getRules(config.namuMirrorBlock);
+
+    adBlockNamuWiki = config.adBlockNamuWiki;
 
     if (config.filterSearch) {
         let result = triggerFilter(url);
@@ -189,20 +203,39 @@ function triggerFilter(url: string) {
 
 browser.webRequest.onBeforeRequest.addListener(
     (details) => {
-        // I don't care the mirrors, they are copyright infringers, too.
-        const rules = getRules(true);
-        for (const rule of rules) {
-            if (createPageRegexWithRule(rule).test(details.originUrl)) {
-                return {
-                    cancel: true
-                };
+        if (adBlockNamuWiki) {
+            // I don't care the mirrors, they are copyright infringers, too.
+            const rules = getRules(true);
+
+            // Bug in polyfill :(
+            let whereareyoufrom = (details as any).initiator || details.originUrl;
+
+            if (details.tabId > 0) {
+                browser.tabs.get(details.tabId).then((tab) => {
+                    whereareyoufrom = tab.url;
+                }).catch(() => {
+                    console.error("failed!");
+                })
             }
+
+            for (const rule of rules) {
+                if (createPageRegexWithRule(rule).test(whereareyoufrom)) {
+                    console.log("canceled!", "bwahbwahbwah!");
+                    return {
+                        cancel: true
+                    };
+                }
+            }
+            console.log("from:", whereareyoufrom, details.url);
         }
+        
         return {cancel: false};
     },
     {
         urls: [
-            "*://*.googlesyndication.com" 
+            "https://*.googlesyndication.com/*",
+            "https://*.doubleclick.net/*",
+            "https://adservice.google.com/*"
         ]
     },
     [ "blocking" ]

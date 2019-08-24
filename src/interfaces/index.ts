@@ -5,6 +5,7 @@ interface ConfigInterface {
     openDbpia: boolean;
     openArxiv: boolean;
     openGoogleScholar: boolean;
+    adBlockNamuWiki: boolean;
     proxyDbpia: string;
     filterSearch: boolean;
 }
