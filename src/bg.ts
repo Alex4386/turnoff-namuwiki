@@ -1,3 +1,4 @@
+/* = NamuWiki Block Logic = */
 browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
     const url = info.url || tab.url;
     let config: ConfigInterface;
@@ -11,13 +12,14 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                 openDbpia: true,
                 openArxiv: false,
                 openGoogleScholar: false,
+                adBlockNamuWiki: true,
                 filterSearch: true,
                 proxyDbpia: undefined,
             });
         }
     } while (Object.keys(config).length === 0);
 
-    let blockRules = namuWikiBlockRule;
+    let blockRules = getRules(config.namuMirrorBlock);
 
     if (config.filterSearch) {
         let result = triggerFilter(url);
@@ -34,18 +36,15 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
         }
     }
 
-    if (config.namuMirrorBlock) {
-        blockRules = blockRules.concat(mirrorLists);
-    }
     for (const rule of blockRules) {
-        const baseBlockRegex = new RegExp(urlRegex + rule.baseURL, 'ig');
+        const baseBlockRegex = createPageRegexWithRule(rule);
         if (baseBlockRegex.test(url)) {
             console.log('NAMU WIKI DETECTED!!');
             console.log('config', config);
             console.log('tab', tab);
             console.log('rule', rule);
 
-            const parser = new RegExp(urlRegex + rule.baseURL + '(' + rule.articleView + '|' + rule.searchView + ')' + '(.+)$', 'ig');
+            const parser = createDocumentRegexWithRule(rule);
             const parsed = parser.exec(url);
             if (parsed) {
                 if (!info.url) {
@@ -98,7 +97,6 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
 });
 
 /* = RULES = */
-
 const namuWikiBlockRule: PageBlockRule[] = [{
     baseURL: 'namu.wiki',
     articleView: '/w/',
@@ -126,6 +124,22 @@ const mirrorLists: PageBlockRule[] = [
 
 const urlRegex = '^http(s?):\\/\\/';
 
+function getRules(withMirror: boolean):PageBlockRule[] {
+    let blockRules = namuWikiBlockRule;
+    if (withMirror) {
+        blockRules = blockRules.concat(mirrorLists);
+    }
+    return blockRules;
+}
+
+function createPageRegexWithRule(rule: PageBlockRule): RegExp {
+    return new RegExp(urlRegex + rule.baseURL, "ig");
+}
+
+function createDocumentRegexWithRule(rule: PageBlockRule): RegExp {
+    return new RegExp(urlRegex + rule.baseURL + '(' + rule.articleView + '|' + rule.searchView + ')' + '(.+)$', 'ig')
+}
+
 /* = SearchEngine = */
 const searchEngineRules: SearchEngineFilterRules[] = [
     {
@@ -148,3 +162,48 @@ function triggerFilter(url: string) {
     }
     return null;
 }
+
+/* = Adblock = */
+
+/**
+ * Why AdBlock NamuWiki?
+ * 
+ * Contents of namuwiki is distributed under Creative Commons-BY-NC-SA License.
+ * which DOESN'T allow webpage to create their ad-revenue or sell the content
+ * with their content, BUT, Current owner of namuwiki is literally *selling*
+ * content by violating namuwiki's license before acquisition (even they are
+ * still using CC-BY-NC-SA License).
+ * 
+ * That's totally giving content creators a fuck. But many people are not using 
+ * ad-block to support the creators, and actually, Namuwiki is still in the 
+ * Acceptable-Ads lists.
+ * 
+ * which is un-acceptable for me entirely because they are earning their
+ * ad-revenue by copyright infringement.
+ * 
+ * From Version 0.6.0, I am boycotting namuwiki's ad-revenue system by
+ * blocking them entirely.
+ * 
+ * FUCK YOU, umanle corporation.
+ */
+
+browser.webRequest.onBeforeRequest.addListener(
+    (details) => {
+        // I don't care the mirrors, they are copyright infringers, too.
+        const rules = getRules(true);
+        for (const rule of rules) {
+            if (createPageRegexWithRule(rule).test(details.originUrl)) {
+                return {
+                    cancel: true
+                };
+            }
+        }
+        return {cancel: false};
+    },
+    {
+        urls: [
+            "*://*.googlesyndication.com" 
+        ]
+    },
+    [ "blocking" ]
+)
