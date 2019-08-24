@@ -235,7 +235,10 @@ browser.webRequest.onBeforeRequest.addListener(
         urls: [
             "https://*.googlesyndication.com/*",
             "https://*.doubleclick.net/*",
-            "https://adservice.google.com/*"
+            "https://adservice.google.com/*",
+            "https://namu.live/static/ad/*",
+            "https://searchad-phinf.pstatic.net/*",
+            "https://ssl.pstatic.net/adimg3.search/*"
         ]
     },
     [ "blocking" ]
