@@ -82,6 +82,31 @@ function updateHeader(config: ConfigInterface) {
 
 const manifestData = browser.runtime.getManifest();
 document.getElementById('extension_version').innerHTML = escapeHtml("ver." + manifestData.version);
+document.getElementById('extension_version').addEventListener("click", (e) => {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", browser.extension.getURL('production_ver.txt'));
+    xhttp.addEventListener("loadend", () => {
+        if (xhttp.status == 200) {
+            document.getElementById('extension_version').innerHTML = escapeHtml("Prod. "+xhttp.responseText);
+
+            setTimeout(
+                () => {
+                    document.getElementById('extension_version').innerHTML = escapeHtml("ver." + manifestData.version);
+                }, 2000
+            )
+
+        } else {
+            document.getElementById('extension_version').innerHTML = escapeHtml("Dev ver.");
+
+            setTimeout(
+                () => {
+                    document.getElementById('extension_version').innerHTML = escapeHtml("ver." + manifestData.version);
+                }, 2000
+            )
+        }
+    });
+    xhttp.send(null);
+});
 
 (async () => {
     try {

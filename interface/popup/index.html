@@ -7,6 +7,9 @@
     <title>꺼무위키 시스템</title>
     <style>
         @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR|Nunito&display=swap');
+        html {
+            margin: 0; padding: 0;
+        }
         body {
             font-family: "Nunito", "Noto Sans KR", sans-serif;
             width: 370px;
@@ -14,6 +17,7 @@
             padding: 0;
             background: #EEE;
             font-size: 13px;
+            overflow-x: hidden;
         }
         header {
             width: 100vw;
@@ -98,7 +102,7 @@
 
         hr {
             border-top: solid 1px #3F3F3F;
-            margin: 1.4em 0;
+            margin: 1em 0;
         }
 
         footer {
@@ -111,9 +115,13 @@
             text-decoration: none;
             color: #0074e9;
         }
-
+        
         main div h2 {
             margin: .3em 0;
+        } 
+        
+        main div h3 {
+            margin: 0;
         }
 
         h2.inline {
@@ -187,19 +195,27 @@
         <hr />
         <div class="search-filter">
             
-            <label class="switch to-right" for="filter_search">
+            <label class="switch-small to-right" for="filter_search">
                 <input type="checkbox" id="filter_search" data-val="filterSearch">
-                <span class="slider round"></span>
+                <span class="slider-small round"></span>
             </label>
-            <h2>검색 엔진 필터링:</h2>
+            <h3>검색 엔진 필터링:</h3>
         </div><br>
         <div class="adblock-namuwiki">
             
-            <label class="switch to-right" for="adblock_namuwiki">
+            <label class="switch-small to-right" for="adblock_namuwiki">
                 <input type="checkbox" id="adblock_namuwiki" data-val="adBlockNamuWiki">
-                <span class="slider round"></span>
+                <span class="slider-small round"></span>
             </label>
-            <h2>나무위키 광고차단:</h2>
+            <h3>나무위키 광고차단:</h3>
+        </div><br>
+        <div class="search-filter">
+            
+            <label class="switch-small to-right" for="namulive_block">
+                <input type="checkbox" id="namulive_block" data-val="namuLiveBlock">
+                <span class="slider-small round"></span>
+            </label>
+            <h3>나무라이브 차단:</h3>
         </div>
         <hr />
         <div class="settings">
