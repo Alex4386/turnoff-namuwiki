@@ -29,7 +29,13 @@ rm turnoff-namuwiki@alex4386.us.xpi
 echo Done.
 echo
 
+echo Adding Production Build Information
+git rev-parse --short HEAD > production_ver.txt
+
 echo Building TurnOff-NamuWiki Archive....
 zip -r turnoff-namuwiki.zip * --exclude=*.git* --exclude=*node_modules* --exclude=*showcase/marketplace/* --exclude=*.DS_store --exclude=*.sh
 cp turnoff-namuwiki.zip turnoff-namuwiki@alex4386.us.xpi
+
+echo Removing Production Build Information
+rm production_ver.txt
 echo
