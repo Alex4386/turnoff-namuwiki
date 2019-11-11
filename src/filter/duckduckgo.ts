@@ -1,9 +1,13 @@
+
 (async () => {
-    console.log("duckduckgo");
 
     /* = This Section must be copy-pasted from bg.ts when it is updated = */
     const urlRegex = "^http(s?):\\/\\/";
     const blockRules = [ "namu.wiki", "namu.mirror.wiki", "namu.moe", "mir.pe" ];
+
+    const searchResultClasses = [ 'result' ];
+
+    let searchResults: HTMLDivElement[] = [];
 
     function checkURLBanned(url: string) {
         for (const rule of blockRules) {
@@ -17,14 +21,21 @@
 
     const killList: HTMLDivElement[] = [];
 
-    const searchResults = document.getElementById('links').getElementsByTagName('div') as unknown as HTMLDivElement[];
-    for (const searchResult of searchResults as unknown as HTMLDivElement[]) {
-        const searchResultAnchors = searchResult.getElementsByTagName('a');
-        for (const searchResultAnchor of searchResultAnchors as unknown as HTMLAnchorElement[]) {
-            const banned = checkURLBanned(searchResultAnchor.href);
-            if (banned) {
-                console.log(searchResultAnchor.href);
-                killList.push(searchResult);
+    console.log("NAMUWIKI SEARCH KILL ACTIVE!");
+
+    for (const currentClass of searchResultClasses) {
+        console.log("Searching for class:", currentClass);
+        searchResults = document.getElementsByClassName(currentClass) as unknown as HTMLDivElement[];
+        console.log("Current searchResults: ", searchResults);
+
+        for (const searchResult of searchResults as unknown as HTMLDivElement[]) {
+            const searchResultAnchors = searchResult.getElementsByTagName('a');
+
+            for (const searchResultAnchor of searchResultAnchors as unknown as HTMLAnchorElement[]) {
+                const banned = checkURLBanned(searchResultAnchor.href);
+                if (banned) {
+                    killList.push(searchResult);
+                }
             }
         }
     }

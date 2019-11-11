@@ -8,6 +8,7 @@ async function loadConfig(): Promise<ConfigInterface> {
                 if (Object.keys(config).length === 0) {
                     await browser.storage.sync.set({
                         namuwikiBlock: true,
+                        namuLiveBlock: true,
                         namuMirrorBlock: true,
                         openRiss: true,
                         openDbpia: true,
@@ -142,6 +143,14 @@ const mirrorLists: PageBlockRule[] = [
     },
 ];
 
+const namuLiveBlockRule: PageBlockRule[] = [
+    {
+        baseURL: 'namu.live',
+        articleView: /[A-z0-9]+/,
+        searchView: /[A-z0-9]+/
+    }
+]
+
 const urlRegex = '^http(s?):\\/\\/';
 
 function getRules(withMirror: boolean):PageBlockRule[] {
@@ -171,6 +180,16 @@ const searchEngineRules: SearchEngineFilterRules[] = [
         name: 'DuckDuckGo',
         regex: /^http(s|):\/\/(www.|search.|)duckduckgo.com\/\?q/ig,
         scriptLocation: '/lib/filter/duckduckgo.js',
+    },
+    {
+        name: 'Naver',
+        regex: /^http(s|):\/\/(www.|search.|)naver.com\//ig,
+        scriptLocation: '/lib/filter/naver.js',
+    },
+    {
+        name: 'Daum',
+        regex: /^http(s|):\/\/(www.|search.|)daum.net\/search\?/ig,
+        scriptLocation: '/lib/filter/daum.js',
     },
 ];
 
@@ -244,8 +263,34 @@ browser.webRequest.onBeforeRequest.addListener(
             "https://adservice.google.com/*",
             "https://namu.live/static/ad/*",
             "https://searchad-phinf.pstatic.net/*",
-            "https://ssl.pstatic.net/adimg3.search/*"
+            "https://ssl.pstatic.net/adimg3.search/*",
+            "https://www.google.com/adsense/search/*",
+            "https://www.google.com/afs/ads*"
         ]
     },
     [ "blocking" ]
 )
+
+/**
+ * This is namulive detection: will affect at 0.7.0
+ * 
+ * requested by Firefox user 15228336:
+ * 나무라이브도 꺼주셨으면 좋을 것 같아요.
+ */
+browser.webRequest.onBeforeRequest.addListener(
+    (details) => {
+        if (config.namuLiveBlock) {
+            console.log("canceled!", "bwah bwah bwah!");
+            return {
+                cancel: true
+            };
+        }
+    },
+    {
+        urls: [
+            "https://search.namu.wiki/api/ranking",
+            "https://namu.live/*"
+        ]
+    }
+);
+
