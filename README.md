@@ -85,7 +85,7 @@ It redirects you to journal webpages (ex. DBpia, RISS, arXiv, Google Scholar) by
 
 ### How to Install
 
-#### Google Chrome (or Chromium)
+#### Google Chrome (or Chromium) and Microsoft Edge Developer Edition 
 It is now available at Chrome Web Store! [Turnoff-NamuWiki](https://chrome.google.com/webstore/detail/turn-off-namuwiki/dgdifdnmamleoebgfbfeckefhhhplmdn/related?hl=en)  
 
 Do you want to test some latest feature? follow this directions!  
