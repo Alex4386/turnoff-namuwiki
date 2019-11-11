@@ -8,6 +8,7 @@ interface ConfigInterface {
     adBlockNamuWiki: boolean;
     proxyDbpia: string;
     filterSearch: boolean;
+    namuLiveBlock: boolean;
 }
 
 interface PageBlockRule {
