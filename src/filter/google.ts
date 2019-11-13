@@ -22,6 +22,7 @@
     const killList: HTMLDivElement[] = [];
 
     console.log("NAMUWIKI SEARCH KILL ACTIVE!");
+    console.time("namuKill");
 
     for (const currentClass of searchResultClasses) {
         console.log()
@@ -35,7 +36,7 @@
             for (const searchResultAnchor of searchResultAnchors as unknown as HTMLAnchorElement[]) {
                 const banned = checkURLBanned(searchResultAnchor.href);
                 if (banned) {
-                    console.log(searchResult);
+                    //console.log(searchResult);
                     killList.push(searchResult);
                 }
             }
@@ -44,10 +45,12 @@
 
     for (const kill of killList) {
         try {
-            kill.remove();
+            //kill.remove();
+            kill.style.display = "none";
         } catch {
 
         }
     }
+    console.timeEnd("namuKill");
 })();
 

@@ -22,6 +22,7 @@
     const killList: HTMLLIElement[] = [];
 
     console.log("NAMUWIKI SEARCH KILL ACTIVE!");
+    console.time("namuKill");
 
     for (const currentClass of searchResultClasses) {
         console.log("Searching for class:", currentClass);
@@ -47,5 +48,6 @@
 
         }
     }
+    console.timeEnd("namuKill");
 })();
 
