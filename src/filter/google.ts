@@ -45,8 +45,8 @@
 
     for (const kill of killList) {
         try {
-            //kill.remove();
-            kill.style.display = "none";
+            kill.remove();
+            //kill.style.display = "none";
         } catch {
 
         }
