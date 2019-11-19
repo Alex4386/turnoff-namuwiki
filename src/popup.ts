@@ -20,8 +20,10 @@ const chkbox = [
     document.getElementById('arxiv_auto'),
     document.getElementById('googlescholar_auto'),
     document.getElementById('adblock_namuwiki'),
-    document.getElementById('dbpia_proxy'),
     document.getElementById('filter_search'),
+    document.getElementById('namulive_block'),
+    document.getElementById('dbpia_proxy'),
+    
 ] as HTMLInputElement[];
 
 async function saveData(thisConfig: ConfigInterface) {
