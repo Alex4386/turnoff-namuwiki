@@ -1,6 +1,6 @@
 {
   "name": "turnoff-namuwiki",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Turns off your namuwiki",
   "main": "src/",
   "repository": "https://github.com/Alex4386/turnoff-namuwiki.git",
