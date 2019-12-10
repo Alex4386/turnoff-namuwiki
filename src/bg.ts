@@ -78,7 +78,7 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                 // const searchQuery = /((?!#\?)+)[#?]/.exec(decodeURIComponent(parsed[3]))[1];
 
                 const searchQuery = /[^?#]*/.exec(decodeURIComponent(parsed[3]))[0];
-                const langCode = /(\w{2})-/.exec(navigator.language)[1];
+                const langCode = /^((\w){2})/.exec(navigator.language)[1];
 
                 if (searchQuery && !/^나무위키:.+/.test(searchQuery)) {
                     console.log('searchQuery:', searchQuery);
