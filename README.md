@@ -125,8 +125,8 @@ Please instanll dependency `zip` before you follow the instruction.
 * Create an Issue for more Feature Requests!
 
 ## For Firefox Add-on Team
-Source-Code of this extension is also available at GitHub, [GitHub](https://github.com/Alex4386/turnoff-namuwiki).  
-Code in lib/ is **transpiled**, so, Please check the source code written in typescript located at src/.  
+
+Please refer to [firefox_addon_team_README.md](firefox_addon_team_README.md) for more details on how to build the reproducable build on your system.  
 
 ## License
 Distributed under MIT License  
