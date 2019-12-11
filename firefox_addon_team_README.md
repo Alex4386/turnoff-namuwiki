@@ -2,7 +2,7 @@
 
 Hello, Thanks for auditing my software on your awesome firefox ecosystem.  
   
-This is the steps for creating reproducable build on your system:  
+These are the steps for creating reproducable build on your system:  
   
 ## Table of Content
 * [macOS and Linux](#macOS-and-Linux)
