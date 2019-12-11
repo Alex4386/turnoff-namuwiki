@@ -10,7 +10,7 @@ This is the steps for creating reproducable build on your system:
 
 ## macOS and Linux
 Building on macOS®, Linux™ or any POSIX compliant system is easy!  
-Automatic-building is supported on this machines!  
+Automatic-building is supported on these machines!  
   
 Step 1. git clone https://github.com/Alex4386/turnoff-namuwiki.git  
 Step 2. Install nodeJS, npm, yarn on your machine.  
