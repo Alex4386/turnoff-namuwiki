@@ -12,6 +12,7 @@ Official Discord Community: [https://discord.gg/Aak86y](https://discord.gg/Aak86
   * [설치 방법](#설치-방법)
     * [Google Chrome (or Chromium)](#google-chrome-or-chromium)
     * [Mozilla Firefox](#mozilla-firefox)
+  * [기여자를 위한 개발 문서](#기여자를-위한-개발-문서)
   * [패키징 방법](#패키징-방법)
 * [English](#English)
   * [This extension/add-on is for...](#This-extensionadd-on-is-for)
@@ -61,6 +62,9 @@ Official Discord Community: [https://discord.gg/Aak86y](https://discord.gg/Aak86
 6. 확장기능 디버깅하기를 체크하고, 임시 확장기능 로드 버튼을 누릅니다.
 7. 앞에서 클론한 폴더로 들어가 manifest.json을 선택합니다.
 8. 확장프로그램 섹션의 아이콘을 클릭해 익스텐션의 상세 설정을 할 수 있습니다.
+
+## 기여자를 위한 개발 문서
+[CONTRIBUTORS.md](CONTRIBUTORS.md) 문서를 참고해 주세요!
 
 ### 패키징 방법
 
