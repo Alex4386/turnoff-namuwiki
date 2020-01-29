@@ -126,6 +126,7 @@ Please instanll dependency `zip` before you follow the instruction.
 4. Check the file `turnoff-namuwiki.zip`, `turnoff-namuwiki@alex4386.us.xpi` in the repository.
 
 ## TODO
+* IntelliBan Engine (powered by Firebase)
 * Create an Issue for more Feature Requests!
 
 ## For Firefox Add-on Team
