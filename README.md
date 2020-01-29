@@ -63,7 +63,7 @@ Official Discord Community: [https://discord.gg/Aak86y](https://discord.gg/Aak86
 7. 앞에서 클론한 폴더로 들어가 manifest.json을 선택합니다.
 8. 확장프로그램 섹션의 아이콘을 클릭해 익스텐션의 상세 설정을 할 수 있습니다.
 
-## 기여자를 위한 개발 문서
+### 기여자를 위한 개발 문서
 [CONTRIBUTORS.md](CONTRIBUTORS.md) 문서를 참고해 주세요!
 
 ### 패키징 방법
