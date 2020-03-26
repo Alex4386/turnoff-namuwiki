@@ -26,6 +26,7 @@ echo
 echo Removing existing TurnOff-NamuWiki Archive.
 rm turnoff-namuwiki.zip
 rm turnoff-namuwiki@alex4386.us.xpi
+rm turnoff-namuwiki.dev.zip
 echo Done.
 echo
 
@@ -33,10 +34,10 @@ echo Adding Production Build Information
 git rev-parse --short HEAD > production_ver.txt
 
 echo Building TurnOff-NamuWiki Archive....
-zip -r turnoff-namuwiki.zip * --exclude=*.git* --exclude=*node_modules* --exclude=*showcase/marketplace/* --exclude=*.DS_store --exclude=*.sh --exclude=*intelliBan/*
+zip -r turnoff-namuwiki.zip * --exclude=*.git* --exclude=*node_modules* --exclude=*showcase/marketplace/* --exclude=*.DS_store --exclude=*.sh --exclude=*intelliBan/* --exclude=*showcase/marketplace* --exclude=*showcase/logo.psd
 
 echo Building Archive for Firefox Add-on Team...
-zip -r turnoff-namuwiki.dev.zip * --exclude=*showcase/marketplace/* --exclude=*.DS_store --exclude=*intelliBan/*
+zip -r turnoff-namuwiki.dev.zip * --exclude=*showcase/marketplace/* --exclude=*.DS_store --exclude=*intelliBan/*  --exclude=*showcase/marketplace* --exclude=*showcase/logo.psd
 cp turnoff-namuwiki.zip turnoff-namuwiki@alex4386.us.xpi
 
 echo Removing Production Build Information
