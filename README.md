@@ -81,7 +81,7 @@ Official Discord Community: [https://discord.gg/Aak86y](https://discord.gg/Aak86
 ### This extension/add-on is for...
 * Who writes `Citation: NamuWiki` on group projects
 * who goes to namuwiki when you need to search some journals
-* Who needs no journal at all because you are just a normal person
+* Who needs no journal at all because you are just a normal person  
 ![maskNoRiss](https://user-images.githubusercontent.com/27724108/58348249-1d699480-7e9b-11e9-8c94-a351989ba076.gif)
 
 ### What's this?
