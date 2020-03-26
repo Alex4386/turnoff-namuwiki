@@ -12,12 +12,12 @@
         }
         body {
             font-family: "Nunito", "Noto Sans KR", sans-serif;
-            width: 370px;
             margin: 0;
             padding: 0;
             background: #EEE;
-            font-size: 13px;
+            font-size: 1em;
             overflow-x: hidden;
+            word-break: keep-all
         }
         header {
             width: 100vw;
@@ -25,18 +25,11 @@
             border-bottom: solid 1px #E7E7E7;
             background: #FFF;
             color: #FFF;
+            background: #596bb8;
         }
-        body.namuwiki header {
-            background: #47a69b;
-        }
-        body.blocked header{
-            background: #b85964;
-        }
-        body.blocked.mirror-blocked header {
-            background: #a52231;
-        }
-        body.redirect header{
-            background: #596bb8 !important;
+        .wrap {
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         header .wrap {
@@ -130,16 +123,51 @@
             margin: 0;
         }
 
-        input[type="url"] {
-            width: 100%;
+        .to-left {
+            float: right;
         }
 
         .to-right {
             float: right;
         }
+        .align-right {
+            text-align: right;
+        }
 
         div.redirect .content {
             text-align: center;
+        }
+        .card {
+            background: #FFF;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 5px rgba(0,0,0,.1);
+            margin: 2em 1em;
+        }
+        .card .explain {
+            float: right;
+            text-align: right;
+            width: 40%;
+            max-width: 18em;
+            padding-right: 15px;
+        }
+
+        .card .content {
+            margin: 1em 1em;
+            width: calc(100% - 30px);
+        }
+
+        input {
+            background: #FFF;
+            border: 1px black solid;
+            font-size: 1em;
+            border-radius: 15px;
+            padding: 15px;
+            outline: none;
+        }
+        
+        input#dbpia_proxy {
+            width: calc(100% - 30px);
         }
     </style>
     <link rel="stylesheet" href="../common/switch.css">
@@ -149,67 +177,60 @@
     <header>
         <div class="wrap">
             <span class="version" id="extension_version">JavaScript Error!!</span>
-            <h1>TurnOff-NamuWiki Console</h1>
+            <h1>TurnOff-NamuWiki Settings</h1>
         </div>
     </header>
     <main>
-        <div class="control-panel">
-            <div class="namuwiki-block">
-                <label class="switch" for="block_namuwiki">
-                    <input type="checkbox" id="block_namuwiki" data-val="namuwikiBlock">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-            <div class="namuwiki-mirror-block">
-                <div class="mirror-indicator">
-                    <span>MIRROR</span>
+        <div class="wrap">
+            <h1>설정</h1>
+            <p>이 곳에서 상세한 설정을 진행 할 수 있습니다.</p>
+            <div class="card">
+                <div class="explain">
+                    <h2>자동접속 설정</h2>
+                    <p>나무위키 접속시 해당 접속쿼리로 검색 할 논문 페이지를 선택해 주시기 바랍니다.</p>
                 </div>
-                <label class="switch" for="block_namumirror">
-                    <input type="checkbox" id="block_namumirror" data-val="namuMirrorBlock">
-                    <span class="slider round"></span>
-                </label>
+                <div class="content">
+                    <p><label class="container" for="riss_auto">RISS
+                        <input type="checkbox" id="riss_auto" data-val="openRiss">
+                        <span class="checkmark"></span>
+                    </label></p>
+                    <p><label class="container" for="dbpia_auto">DBPia
+                        <input type="checkbox" id="dbpia_auto" data-val="openDbpia">
+                        <span class="checkmark"></span>
+                    </label></p>
+                    <p><label class="container" for="arxiv_auto">arXiv
+                        <input type="checkbox" id="arxiv_auto" data-val="openArxiv">
+                        <span class="checkmark"></span>
+                    </label></p>
+                    <label class="container" for="googlescholar_auto">Google 학술검색
+                        <input type="checkbox" id="googlescholar_auto" data-val="openGoogleScholar">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="explain">
+                    <h2>상세 설정</h2>
+                    <p>TurnOff-NamuWiki의 상세 설정 정보입니다.</p>
+                </div>
+                <div class="content">
+                    <input type="url" id="dbpia_proxy" data-val="proxyDbpia" placeholder="학교 DBPia 프록시 주소">
+                </div>
             </div>
         </div>
-        <hr />
-        <div class="search-filter">
-            
-            <label class="switch-small to-right" for="filter_search">
-                <input type="checkbox" id="filter_search" data-val="filterSearch">
-                <span class="slider-small round"></span>
-            </label>
-            <h3>검색 엔진 필터링:</h3>
-        </div><br>
-        <div class="adblock-namuwiki">
-            
-            <label class="switch-small to-right" for="adblock_namuwiki">
-                <input type="checkbox" id="adblock_namuwiki" data-val="adBlockNamuWiki">
-                <span class="slider-small round"></span>
-            </label>
-            <h3>나무위키 광고차단:</h3>
-        </div><br>
-        <div class="search-filter">
-            
-            <label class="switch-small to-right" for="namulive_block">
-                <input type="checkbox" id="namulive_block" data-val="namuLiveBlock">
-                <span class="slider-small round"></span>
-            </label>
-            <h3>나무라이브 차단:</h3>
-        </div>
-        <hr />
-        <div class="settings">
-            <h2>설정: </h2>
-            <a id="detail-settings" href="/interface/settings/index.html" target="_blank">상세 설정</a>
-        </div>
-            
+        
     </main>
     <span id="status"></span>
 
     <footer>
-        Copyright &copy; Alex4386 and TurnOff-NamuWiki Contributors.<br>
-        The Source Code of this extension is available at <a href="https://github.com/Alex4386/turnoff-namuwiki" target="_blank">GitHub</a>.
+        <div class="wrap">
+            Copyright &copy; Alex4386 and TurnOff-NamuWiki Contributors.<br>
+            The Source Code of this extension is available at <a href="https://github.com/Alex4386/turnoff-namuwiki" target="_blank">GitHub</a>.    
+        </div>
     </footer>
 </body>
 <script src="/polyfill/browser-polyfill.min.js"></script>
 <script src="/lib/settings_util.js"></script>
-<script src="/lib/popup.js"></script>
+<script src="/lib/settings.js"></script>
 </html>
