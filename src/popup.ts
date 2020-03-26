@@ -7,6 +7,7 @@ const popup_settings = [
     document.getElementById('adblock_namuwiki'),
     document.getElementById('filter_search'),
     document.getElementById('namulive_block'),
+    document.getElementById('intelliBan_enable'),
 ] as HTMLInputElement[];
 
 function popup_updateHeader(config: ConfigInterface) {
@@ -43,6 +44,7 @@ showVersion();
         bgconsole.log(`로드 완료. ${JSON.stringify(config)}`);
         setHook(popup_settings, (config) => {
             popup_updateHeader(config);
+            updateIntelliBan(config);
         });
         popup_updateHeader(config);
     } catch (e) {

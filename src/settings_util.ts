@@ -14,29 +14,26 @@ function showVersion() {
   const manifestData = browser.runtime.getManifest();
   document.getElementById('extension_version').innerHTML = escapeHtml("ver." + manifestData.version);
   document.getElementById('extension_version').addEventListener("click", (e) => {
-      var xhttp = new XMLHttpRequest();
-      xhttp.open("GET", browser.extension.getURL('production_ver.txt'));
-      xhttp.addEventListener("loadend", () => {
-          if (xhttp.status == 200) {
-              document.getElementById('extension_version').innerHTML = escapeHtml("Prod. "+xhttp.responseText);
-  
-              setTimeout(
-                  () => {
-                      document.getElementById('extension_version').innerHTML = escapeHtml("ver." + manifestData.version);
-                  }, 2000
-              )
-  
-          } else {
-              document.getElementById('extension_version').innerHTML = escapeHtml("Dev ver.");
-  
-              setTimeout(
-                  () => {
-                      document.getElementById('extension_version').innerHTML = escapeHtml("ver." + manifestData.version);
-                  }, 2000
-              )
-          }
+    fetch(browser.extension.getURL('production_ver.txt')).then(
+      (data) => {
+        if (data.status === 200) {
+          document.getElementById('extension_version').innerHTML = escapeHtml("Prod. "+data.body);
+
+          setTimeout(
+            () => {
+                document.getElementById('extension_version').innerHTML = escapeHtml("ver." + manifestData.version);
+            }, 2000
+          )
+        } else {
+          document.getElementById('extension_version').innerHTML = escapeHtml("Dev ver.");
+
+          setTimeout(
+            () => {
+                document.getElementById('extension_version').innerHTML = escapeHtml("ver." + manifestData.version);
+            }, 2000
+          )
+        }
       });
-      xhttp.send(null);
   });
 }
 
@@ -62,6 +59,25 @@ function setHook(chkbox: HTMLInputElement[], callback?: (config: ConfigInterface
             }
         )
     }
+}
+
+async function updateIntelliBan(config: ConfigInterface, url?: string) {
+    if (typeof url === "undefined") {
+        if (typeof config.intelliBanUrl === "undefined") {
+            config.intelliBanUrl = "/intelliBan/rules.json";
+            url = config.intelliBanUrl;
+        } else {
+            url = config.intelliBanUrl
+        }
+    }
+
+    const data = await fetch(config.intelliBanUrl);
+    if (data.status === 200) {
+      const json = await data.json();
+      config.intelliBanRules = json;
+    }
+
+    saveData(config);
 }
 
 async function saveData(thisConfig: ConfigInterface) {

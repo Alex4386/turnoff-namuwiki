@@ -9,6 +9,12 @@ interface ConfigInterface {
     proxyDbpia: string;
     filterSearch: boolean;
     namuLiveBlock: boolean;
+    intelliBanEnabled: boolean;
+    intelliBanUrl: string;
+    intelliBanRules: {
+        regex: string,
+        flag: string
+    }[];
 }
 
 interface PageBlockRule {
