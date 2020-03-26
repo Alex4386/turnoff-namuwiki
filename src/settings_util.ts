@@ -63,18 +63,27 @@ function setHook(chkbox: HTMLInputElement[], callback?: (config: ConfigInterface
 
 async function updateIntelliBan(config: ConfigInterface, url?: string) {
     if (typeof url === "undefined") {
-        if (typeof config.intelliBanUrl === "undefined") {
-            config.intelliBanUrl = "/intelliBan/rules.json";
-            url = config.intelliBanUrl;
-        } else {
-            url = config.intelliBanUrl
-        }
+      if (typeof config.intelliBanUrl === "undefined") {
+          config.intelliBanUrl = "https://raw.githubusercontent.com/Alex4386/turnoff-namuwiki/master/intelliBan/rules.json";
+          url = config.intelliBanUrl;
+      } else {
+          url = config.intelliBanUrl
+      }
+    } else {
+      if (url === "") {
+        config.intelliBanUrl = "https://raw.githubusercontent.com/Alex4386/turnoff-namuwiki/master/intelliBan/rules.json";
+        url = config.intelliBanUrl;
+      }
     }
-
+    
     const data = await fetch(config.intelliBanUrl);
     if (data.status === 200) {
       const json = await data.json();
       config.intelliBanRules = json;
+    }
+
+    if (config.intelliBanRules === undefined) {
+      config.intelliBanRules = [];
     }
 
     saveData(config);

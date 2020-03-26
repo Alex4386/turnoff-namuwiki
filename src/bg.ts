@@ -17,6 +17,8 @@ async function loadConfig(): Promise<ConfigInterface> {
                         adBlockNamuWiki: true,
                         filterSearch: true,
                         proxyDbpia: undefined,
+                        intelliBanUrl: "https://raw.githubusercontent.com/Alex4386/turnoff-namuwiki/master/intelliBan/rules.json",
+                        intelliBanRules: [],
                     });
                 }
             } while (Object.keys(config).length === 0);
