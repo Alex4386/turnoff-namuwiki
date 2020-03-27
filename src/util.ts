@@ -1,3 +1,12 @@
+function escapeHtml(unsafe: string) {
+  return unsafe
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+}
+
 function parseUrl(url: string) {
   const searchQueries = url.split('?',2)[1];
   const result: {name: string, value?: string}[] = [];

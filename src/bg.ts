@@ -119,7 +119,7 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
 
                 if (config.namuwikiBlock) {
                     await browser.tabs.update(tabId, {
-                        url: browser.extension.getURL(`interface/banned/index.html?blocked_url=${url}`),
+                        url: browser.extension.getURL(`interface/banned/index.html?banned_url=${url}`),
                     });
                 }
             }

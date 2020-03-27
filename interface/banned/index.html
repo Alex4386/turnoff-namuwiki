@@ -30,6 +30,9 @@
             color: #66f;
             text-decoration: none;
         }
+        #wanna_access {
+            font-size: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -37,10 +40,11 @@
         <h1>TurnOff-NamuWiki</h1>
     </header>
     <main>
-        <p>나무위키 접속시도가 감지되어 <span class="important">강제 종료</span>합니다.</p>
-        <p>접속을 원하는 경우 나무위키 차단을 끈 후 <br><a id="access" href="#">여기</a>를 클릭해 주세요.</p>
+        <p id="message"></p>
+        <p id="wanna_access"></p>
     </main>
 </body>
+<script src="/polyfill/browser-polyfill.min.js"></script>
 <script src="/lib/util.js"></script>
-<script src="/lib/blocked.js"></script>
+<script src="/lib/banned.js"></script>
 </html>

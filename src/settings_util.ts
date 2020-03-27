@@ -1,15 +1,6 @@
 let config: ConfigInterface;
 const bgconsole = browser.extension.getBackgroundPage().console;
 
-function escapeHtml(unsafe: string) {
-  return unsafe
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-}
-
 function showVersion() {
   const manifestData = browser.runtime.getManifest();
   document.getElementById('extension_version').innerHTML = escapeHtml("ver." + manifestData.version);

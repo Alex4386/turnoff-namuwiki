@@ -221,11 +221,29 @@
 
             <div class="card">
                 <div class="explain">
-                    <h2>상세 설정</h2>
-                    <p>TurnOff-NamuWiki의 상세 설정 정보입니다.</p>
+                    <h2>프록시 설정</h2>
+                    <p>TurnOff-NamuWiki의 논문 리다이렉트 프록시 설정입니다.</p>
                 </div>
                 <div class="content">
+                    <br><br><br><br><br><br>
+                    <label for="dbpia_proxy">학교에서 제공하는 DBPia 프록시 주소</label><br><br>
                     <input type="url" id="dbpia_proxy" data-val="proxyDbpia" placeholder="학교 DBPia 프록시 주소">
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="explain">
+                    <h2>차단 페이지</h2>
+                    <p>TurnOff-NamuWiki에서 나무위키를 차단했을때 사용자에게 표시되는 메세지 입니다.</p>
+                </div>
+                <div class="content">
+                    <label class="container" for="banned_page_retry">재시도 링크 추가
+                        <input type="checkbox" id="banned_page_retry" data-val="bannedPageRetry">
+                        <span class="checkmark"></span>
+                    </label>
+                    <br><br><br><br>
+                    <label for="banned_page_message">차단 메세지</label><br><br>
+                    <input type="url" id="banned_page_message" data-val="bannedPageMessage" placeholder="나무위키 접속 시도가 감지되어 강제 종료합니다">
                 </div>
             </div>
         </div>
@@ -241,6 +259,7 @@
     </footer>
 </body>
 <script src="/polyfill/browser-polyfill.min.js"></script>
+<script src="/lib/util.js"></script>
 <script src="/lib/settings_util.js"></script>
 <script src="/lib/settings.js"></script>
 </html>

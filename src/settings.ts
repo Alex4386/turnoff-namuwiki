@@ -6,6 +6,8 @@ const full_settings = [
   document.getElementById('googlescholar_auto'),
   document.getElementById('dbpia_proxy'),
   document.getElementById('intelliBan_url'),
+  document.getElementById('banned_page_message'),
+  document.getElementById('banned_page_retry'),
 ] as HTMLInputElement[];
 
 

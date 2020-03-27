@@ -15,6 +15,8 @@ interface ConfigInterface {
         regex: string,
         flag: string
     }[];
+    bannedPageMessage: string;
+    bannedPageRetry: boolean;
 }
 
 interface PageBlockRule {
