@@ -16,14 +16,17 @@ function showVersion() {
   document.getElementById('extension_version').addEventListener("click", (e) => {
     fetch(browser.extension.getURL('production_ver.txt')).then(
       (data) => {
+        
         if (data.status === 200) {
-          document.getElementById('extension_version').innerHTML = escapeHtml("Prod. "+data.body);
+          data.text().then((text) => {
+            document.getElementById('extension_version').innerHTML = escapeHtml("Prod. "+text);
 
-          setTimeout(
-            () => {
-                document.getElementById('extension_version').innerHTML = escapeHtml("ver." + manifestData.version);
-            }, 2000
-          )
+            setTimeout(
+              () => {
+                  document.getElementById('extension_version').innerHTML = escapeHtml("ver." + manifestData.version);
+              }, 2000
+            )
+          });
         } else {
           document.getElementById('extension_version').innerHTML = escapeHtml("Dev ver.");
 
@@ -33,6 +36,14 @@ function showVersion() {
             }, 2000
           )
         }
+      }).catch(() => {
+        document.getElementById('extension_version').innerHTML = escapeHtml("Dev ver.");
+
+        setTimeout(
+          () => {
+              document.getElementById('extension_version').innerHTML = escapeHtml("ver." + manifestData.version);
+          }, 2000
+        )
       });
   });
 }
