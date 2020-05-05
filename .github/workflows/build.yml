@@ -28,22 +28,8 @@ jobs:
       run: npm install -g yarn
     - name: Install Dependencies
       run: yarn
-    - name: Run build
-      run: yarn build
-    - name: Zip Release
-      uses: TheDoctor0/zip-release@v0.3.0
-      with:
-        # Filename for archive
-        filename: turnoff-namuwiki.zip
-        # List of excluded files/directories
-        exclusions: 
-          - node_modules
-          - .git
-          - showcase/marketplace
-          - .DS_store
-          - build.sh
-          - intelliBan
-          - showcase/logo.psd
+    - name: Build Package
+      run: yarn build-package
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2
       with:
