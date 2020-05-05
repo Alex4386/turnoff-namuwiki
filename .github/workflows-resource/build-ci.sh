@@ -34,6 +34,6 @@ git rev-parse --short HEAD > ci_build_ver.txt
 echo Building TurnOff-NamuWiki Archive....
 zip -r turnoff-namuwiki.zip * --exclude=*.git* --exclude=*node_modules* --exclude=*showcase/marketplace/* --exclude=*.DS_store --exclude=*.sh --exclude=*intelliBan/* --exclude=*showcase/marketplace* --exclude=*showcase/logo.psd
 
-echo Removing Production Build Information
+echo Removing CI Build Information
 rm ci_build_ver.txt
 echo

@@ -3,38 +3,39 @@ const bgconsole = browser.extension.getBackgroundPage().console;
 
 function showVersion() {
   const manifestData = browser.runtime.getManifest();
-  document.getElementById('extension_version').innerHTML = escapeHtml("ver." + manifestData.version);
+  const versionText = escapeHtml("ver." + manifestData.version);
+
+  const showOriginalVersionText = () => {
+    document.getElementById('extension_version').innerHTML = versionText;
+  }
+
+  document.getElementById('extension_version').innerHTML = versionText;
   document.getElementById('extension_version').addEventListener("click", (e) => {
     fetch(browser.extension.getURL('production_ver.txt')).then(
       (data) => {
-        
         if (data.status === 200) {
           data.text().then((text) => {
             document.getElementById('extension_version').innerHTML = escapeHtml("Prod. "+text);
 
-            setTimeout(
-              () => {
-                  document.getElementById('extension_version').innerHTML = escapeHtml("ver." + manifestData.version);
-              }, 2000
-            )
+            setTimeout(showOriginalVersionText, 2000);
           });
-        } else {
-          document.getElementById('extension_version').innerHTML = escapeHtml("Dev ver.");
-
-          setTimeout(
-            () => {
-                document.getElementById('extension_version').innerHTML = escapeHtml("ver." + manifestData.version);
-            }, 2000
-          )
         }
       }).catch(() => {
-        document.getElementById('extension_version').innerHTML = escapeHtml("Dev ver.");
+        fetch(browser.extension.getURL('ci_build_ver.txt')).then(
+          (data) => {
+            if (data.status === 200) {
+              data.text().then((text) => {
+                document.getElementById('extension_version').innerHTML = escapeHtml("CI. "+text);
+    
+                setTimeout(showOriginalVersionText, 2000);
+              });
+            }
+          }
+        ).catch(() => {
+          document.getElementById('extension_version').innerHTML = escapeHtml("Dev ver.");
 
-        setTimeout(
-          () => {
-              document.getElementById('extension_version').innerHTML = escapeHtml("ver." + manifestData.version);
-          }, 2000
-        )
+          setTimeout(showOriginalVersionText, 2000);
+        })
       });
   });
 }
