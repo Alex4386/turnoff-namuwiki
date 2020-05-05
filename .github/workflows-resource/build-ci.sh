@@ -1,5 +1,7 @@
 #!/bin/bash
 
+versionhash=`git rev-parse --short HEAD`
+
 echo ==================================================
 echo ' _____                  ___   __  __ '
 echo '|_   _|   _ _ __ _ __  / _ \ / _|/ _|'
@@ -14,7 +16,7 @@ echo '| |\  | (_| | | | | | | |_| |\ V  V / | |   <| |'
 echo '|_| \_|\__,_|_| |_| |_|\__,_| \_/\_/  |_|_|\_\_|'
                                                 
 echo ==================================================
-echo Package Builder
+echo "Package Builder for CI - CI.${versionhash}"
 echo ==================================================
 echo
 sleep 3
