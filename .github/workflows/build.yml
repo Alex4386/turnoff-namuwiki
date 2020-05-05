@@ -28,8 +28,12 @@ jobs:
       run: npm install -g yarn
     - name: Install Dependencies
       run: yarn
-    - name: Build Package
-      run: yarn build-package
+    - name: Build the sourcecode
+      run: yarn build
+    - name: Build the artifact
+      run: |
+        chmod +x ./.github/workflow-resource/build-ci.sh
+        ./.github/workflow-resource/build-ci.sh
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2
       with:
