@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x]
+        node-version: [12.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -32,8 +32,8 @@ jobs:
       run: yarn build
     - name: Build the artifact
       run: |
-        chmod +x ./.github/workflow-resource/build-ci.sh
-        ./.github/workflow-resource/build-ci.sh
+        chmod +x ./.github/workflows-resource/build-ci.sh
+        ./.github/workflows-resource/build-ci.sh
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2
       with:
