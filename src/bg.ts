@@ -115,6 +115,19 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                             url: `https://scholar.google.co.kr/scholar?hl=${langCode}&as_sdt=0%2C5&q=${searchQuery}&btnG=`,
                         });
                     }
+
+                    const escapedSearchQuery = searchQuery.replace(/ /g, "_");
+                    if (config.openWikipedia && langCode) {
+                        await browser.tabs.create({
+                            url: `https://${langCode}.wikipedia.org/wiki/${escapedSearchQuery}`,
+                        });
+                    }
+
+                    if (config.openLibrewiki && langCode) {
+                        await browser.tabs.create({
+                            url: `https://librewiki.net/wiki/${escapedSearchQuery}`,
+                        });
+                    }
                 }
 
                 if (config.namuwikiBlock) {
