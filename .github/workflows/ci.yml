@@ -10,12 +10,13 @@ on:
     branches: [ master ]
 
 jobs:
-  ci:
+  build-test:
+    name: Test Building
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x]
+        node-version: [10.x, 12.x, 14.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -29,13 +30,14 @@ jobs:
       run: yarn
     - name: Run build
       run: yarn build
-      
+
   build:
+    name: Build
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [14.x]
 
     steps:
     - uses: actions/checkout@v2
