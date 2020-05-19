@@ -26,7 +26,7 @@ function showVersion() {
             if (data.status === 200) {
               data.text().then((text) => {
                 document.getElementById('extension_version').innerHTML = escapeHtml("CI. "+text);
-    
+
                 setTimeout(showOriginalVersionText, 2000);
               });
             }
@@ -47,7 +47,7 @@ function setHook(chkbox: HTMLInputElement[], callback?: (config: ConfigInterface
         if (chk.type === "checkbox") {
             chk.checked = config[datasetVal] as boolean;
         } else if (chk.type === "text" || chk.type === "url") {
-            chk.value = ((typeof (config[datasetVal]) === "undefined") ? '' : config[datasetVal]) as string;
+            chk.value = config[datasetVal].toString() || '';
         }
         chk.addEventListener(
             "change",
@@ -66,7 +66,7 @@ function setHook(chkbox: HTMLInputElement[], callback?: (config: ConfigInterface
 
 async function updateIntelliBan(config: ConfigInterface, url?: string) {
     if (typeof url === "undefined") {
-      if (typeof config.intelliBanUrl === "undefined") {
+      if (!config.intelliBanUrl) {
           config.intelliBanUrl = "https://raw.githubusercontent.com/Alex4386/turnoff-namuwiki/master/intelliBan/rules.json";
           url = config.intelliBanUrl;
       } else {
@@ -78,23 +78,22 @@ async function updateIntelliBan(config: ConfigInterface, url?: string) {
         url = config.intelliBanUrl;
       }
     }
-    
+
     const data = await fetch(config.intelliBanUrl);
     if (data.status === 200) {
-      const json = await data.json();
-      config.intelliBanRules = json;
+      config.intelliBanRules = await data.json();
     }
 
     if (config.intelliBanRules === undefined) {
       config.intelliBanRules = [];
     }
 
-    saveData(config);
+    await saveData(config);
 }
 
 async function saveData(thisConfig: ConfigInterface) {
     try {
-        await browser.storage.sync.set(thisConfig as any);
+        await browser.storage.sync.set(thisConfig);
         bgconsole.log(`저장 완료. ${JSON.stringify(config)}`);
     } catch (e) {
         bgconsole.error(`저장 실패. ${JSON.stringify(config)}`);
