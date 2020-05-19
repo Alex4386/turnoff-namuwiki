@@ -10,7 +10,8 @@ on:
     branches: [ master ]
 
 jobs:
-  ci:
+  build-test:
+    name: Test Building
     runs-on: ubuntu-latest
 
     strategy:
@@ -29,8 +30,9 @@ jobs:
       run: yarn
     - name: Run build
       run: yarn build
-      
+
   build:
+    name: Build
     runs-on: ubuntu-latest
 
     strategy:
