@@ -1,4 +1,6 @@
-interface ConfigInterface {
+import StorageObject = browser.storage.StorageObject;
+
+interface ConfigInterface extends StorageObject{
     namuwikiBlock: boolean;
     namuMirrorBlock: boolean;
     openRiss: boolean;

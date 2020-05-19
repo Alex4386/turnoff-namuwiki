@@ -8,7 +8,7 @@ const popup_settings = [
     document.getElementById('filter_search'),
     document.getElementById('namulive_block'),
     document.getElementById('intelliBan_enable'),
-] as HTMLInputElement[];
+];
 
 function popup_updateHeader(config: ConfigInterface) {
     const body = document.body;
@@ -42,7 +42,7 @@ showVersion();
     try {
         config = await browser.storage.sync.get() as unknown as ConfigInterface;
         bgconsole.log(`로드 완료. ${JSON.stringify(config)}`);
-        setHook(popup_settings, (config) => {
+        setHook(popup_settings as HTMLInputElement[], (config) => {
             popup_updateHeader(config);
             updateIntelliBan(config);
         });

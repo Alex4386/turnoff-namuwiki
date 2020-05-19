@@ -4,7 +4,7 @@ async function loadConfig(): Promise<ConfigInterface> {
         async (resolve, reject) => {
             let config: ConfigInterface;
             do {
-                config = await browser.storage.sync.get(null) as unknown as ConfigInterface;
+                config = await browser.storage.sync.get<ConfigInterface>(null);
                 if (Object.keys(config).length === 0) {
                     await browser.storage.sync.set({
                         namuwikiBlock: true,
@@ -210,30 +210,29 @@ function triggerFilter(url: string) {
             return searchEngine.scriptLocation;
         }
     }
-    return null;
 }
 
 /* = Adblock = */
 
 /**
  * Why AdBlock NamuWiki?
- * 
+ *
  * Contents of namuwiki is distributed under Creative Commons-BY-NC-SA License.
  * which DOESN'T allow webpage to create their ad-revenue or sell the content
  * with their content, BUT, Current owner of namuwiki is literally *selling*
  * content by violating namuwiki's license before acquisition (even they are
  * still using CC-BY-NC-SA License).
- * 
- * That's totally giving content creators a fuck. But many people are not using 
- * ad-block to support the creators, and actually, Namuwiki is still in the 
+ *
+ * That's totally giving content creators a fuck. But many people are not using
+ * ad-block to support the creators, and actually, Namuwiki is still in the
  * Acceptable-Ads lists.
- * 
+ *
  * which is un-acceptable for me entirely because they are earning their
  * ad-revenue by copyright infringement.
- * 
+ *
  * From Version 0.6.0, I am boycotting namuwiki's ad-revenue system by
  * blocking them entirely.
- * 
+ *
  * FUCK YOU, umanle corporation.
  */
 
@@ -264,7 +263,7 @@ browser.webRequest.onBeforeRequest.addListener(
             }
             console.log("from:", whereareyoufrom, details.url);
         }
-        
+
         return {cancel: false};
     },
     {
@@ -284,7 +283,7 @@ browser.webRequest.onBeforeRequest.addListener(
 
 /**
  * This is namulive detection: will affect at 0.7.0
- * 
+ *
  * requested by Firefox user 15228336:
  * 나무라이브도 꺼주셨으면 좋을 것 같아요.
  */
