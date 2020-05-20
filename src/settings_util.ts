@@ -44,23 +44,26 @@ function showVersion() {
 function setHook(chkbox: HTMLInputElement[], callback?: (config: ConfigInterface) => any) {
     for (const chk of chkbox) {
         const datasetVal = chk.dataset.val as keyof ConfigInterface;
-        if (chk.type === "checkbox") {
-            chk.checked = config[datasetVal] as boolean;
-        } else if (chk.type === "text" || chk.type === "url") {
-            chk.value = config[datasetVal].toString() || '';
+        if (typeof config[datasetVal] !== "undefined") {
+          if (chk.type === "checkbox") {
+              chk.checked = config[datasetVal] as boolean;
+          } else if (chk.type === "text" || chk.type === "url") {
+              chk.value = config[datasetVal].toString() || '';
+          }
+          chk.addEventListener(
+              "change",
+              async () => {
+                  if (chk.type === "checkbox") {
+                      (config[datasetVal] as boolean) = chk.checked;
+                  } else if (chk.type === "text" || chk.type === "url") {
+                      (config[datasetVal] as string) = chk.value;
+                  }
+                  await saveData(config);
+                  if (typeof callback !== "undefined") callback(config as ConfigInterface);
+              }
+          )
         }
-        chk.addEventListener(
-            "change",
-            async () => {
-                if (chk.type === "checkbox") {
-                    (config[datasetVal] as boolean) = chk.checked;
-                } else if (chk.type === "text" || chk.type === "url") {
-                    (config[datasetVal] as string) = chk.value;
-                }
-                await saveData(config);
-                if (typeof callback !== "undefined") callback(config as ConfigInterface);
-            }
-        )
+        
     }
 }
 
