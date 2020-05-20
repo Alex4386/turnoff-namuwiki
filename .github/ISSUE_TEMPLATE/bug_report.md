@@ -7,8 +7,21 @@ assignees: Alex4386
 
 ---
 
+=== 이 아래 내용은 삭제 바랍니다.
+
+잠깐!  
+이슈를 올리기 전, [CONTRIBUTORS.md](https://github.com/Alex4386/turnoff-namuwiki/blob/master/CONTRIBUTORS.md) 를 확인 해 주세요!
+
+감사합니다!
+
+이 리포트는 예상하지 않게 작동하는 경우에 사용하는 리포트 입니다.
+그 외의 경우에는 
+
+=== 이 위의 내용을 삭제 하고 이슈를 올려주세요.
+
 ## 환경 (Tell me the environments when the bug occurs)
 * [ ] Google Chrome (or Chromium)  
+* [ ] NAVER Whale Browser (or Legacy Chromium)
 * [ ] Mozilla Firefox
 * [ ] Mozilla Firefox for Android
 
