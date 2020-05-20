@@ -1,8 +1,7 @@
 ![splash](showcase/marketplace/marquee-tile.png)  
 
 # turnoff-namuwiki
-조별과제 때마다 "나무위키 꺼라."라고 말하시는게 피곤하신 여러분을 위해 만들어진 **Browser** Extension,  
-**나무위키를 꺼 드립니다.**   
+**자료조사, 조별과제의 지뢰, 나무위키를 꺼드립니다.**  
   
 ![turnoff-namuwiki CI](https://github.com/Alex4386/turnoff-namuwiki/workflows/turnoff-namuwiki%20CI/badge.svg)  
   
@@ -33,6 +32,7 @@ Official Discord Community: [https://discord.gg/GcXFubz](https://discord.gg/GcXF
 * 꼭 조별과제 때 마다 출처: 나무위키 쓰시는 분
 * 논문 검색해야 하는 데, 나도 모르게 나무위키 들어가시는 분
 * 일반인이라 굳이 논문까지는 필요 없으신 분  
+* 이제 조사해야 하는 데, 네이버와 구글에서 이제 나무위키 나오기 시작해서 빡치시는 분  
 ![maskNoRiss](https://user-images.githubusercontent.com/27724108/58348249-1d699480-7e9b-11e9-8c94-a351989ba076.gif)
 
 ### 이게 무엇인가요?
@@ -85,6 +85,7 @@ Official Discord Community: [https://discord.gg/GcXFubz](https://discord.gg/GcXF
 * Who writes `Citation: NamuWiki` on group projects
 * who goes to namuwiki when you need to search some journals
 * Who needs no journal at all because you are just a normal person  
+* Who needs to do research but the search results are filled with uncredible namuwiki docs.  
 ![maskNoRiss](https://user-images.githubusercontent.com/27724108/58348249-1d699480-7e9b-11e9-8c94-a351989ba076.gif)
 
 ### What's this?
