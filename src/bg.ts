@@ -122,12 +122,6 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                             url: `https://${langCode}.wikipedia.org/wiki/${escapedSearchQuery}`,
                         });
                     }
-
-                    if (config.openLibrewiki && langCode) {
-                        await browser.tabs.create({
-                            url: `https://librewiki.net/wiki/${escapedSearchQuery}`,
-                        });
-                    }
                 }
 
                 if (config.namuwikiBlock) {

@@ -44,6 +44,7 @@ function showVersion() {
 function setHook(chkbox: HTMLInputElement[], callback?: (config: ConfigInterface) => any) {
     for (const chk of chkbox) {
         const datasetVal = chk.dataset.val as keyof ConfigInterface;
+        console.debug(datasetVal);
         if (typeof config[datasetVal] !== "undefined") {
           if (chk.type === "checkbox") {
               chk.checked = config[datasetVal] as boolean;

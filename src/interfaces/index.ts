@@ -8,7 +8,6 @@ interface ConfigInterface extends StorageObject{
     openArxiv: boolean;
     openGoogleScholar: boolean;
     openWikipedia: boolean;
-    openLibrewiki: boolean;
     adBlockNamuWiki: boolean;
     proxyDbpia: string;
     filterSearch: boolean;

@@ -5,7 +5,6 @@ const full_settings = [
   document.getElementById('arxiv_auto'),
   document.getElementById('googlescholar_auto'),
   document.getElementById('wikipedia_auto'),
-  document.getElementById('librewiki_auto'),
   document.getElementById('dbpia_proxy'),
   document.getElementById('intelliBan_url'),
   document.getElementById('banned_page_message'),
