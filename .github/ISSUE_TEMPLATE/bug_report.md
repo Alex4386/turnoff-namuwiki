@@ -21,7 +21,7 @@ assignees: Alex4386
 
 ## 환경 (Tell me the environments when the bug occurs)
 * [ ] Google Chrome (or Chromium)  
-* [ ] NAVER Whale Browser (or Legacy Chromium)
+* [ ] NAVER Whale Browser, Microsoft Edge (or Legacy Chromium)
 * [ ] Mozilla Firefox
 * [ ] Mozilla Firefox for Android
 
