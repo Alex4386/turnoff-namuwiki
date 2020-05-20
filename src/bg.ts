@@ -91,7 +91,7 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                     }
                 }
 
-                if (searchQuery && !/^나무위키:.+/.test(searchQuery)) {
+                if (searchQuery && !/^(나무위키|파일):.+/.test(searchQuery)) {
                     console.log('searchQuery:', searchQuery);
                     if (config.openRiss && !/^[a-z ]+$/.test(searchQuery)) {
                         await browser.tabs.create({
