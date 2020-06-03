@@ -54,6 +54,7 @@ function setHook(chkbox: HTMLInputElement[], callback?: (config: ConfigInterface
           chk.addEventListener(
               "change",
               async () => {
+                  console.log("hook triggered at ", chk);
                   if (chk.type === "checkbox") {
                       (config[datasetVal] as boolean) = chk.checked;
                   } else if (chk.type === "text" || chk.type === "url") {
@@ -63,6 +64,20 @@ function setHook(chkbox: HTMLInputElement[], callback?: (config: ConfigInterface
                   if (typeof callback !== "undefined") callback(config as ConfigInterface);
               }
           )
+        } else {
+          chk.addEventListener(
+            "change",
+            async () => {
+                console.log("hook triggered at ", chk);
+                if (chk.type === "checkbox") {
+                    (config[datasetVal] as boolean) = chk.checked;
+                } else if (chk.type === "text" || chk.type === "url") {
+                    (config[datasetVal] as string) = chk.value;
+                }
+                await saveData(config);
+                if (typeof callback !== "undefined") callback(config as ConfigInterface);
+            }
+          );
         }
         
     }
