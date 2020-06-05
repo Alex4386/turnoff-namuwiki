@@ -91,7 +91,9 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                 const searchParsed = uriAnchorParser.exec(decodeURIComponent(parsed[3]));                
                 const searchQuery = searchParsed[0];
                 const searchURIExtra = searchParsed[0];
-                const langCode = /^((\w){2})/.exec(navigator.language)[1];
+                
+                //const langCode = /^((\w){2})/.exec(navigator.language)[1];
+                const langCode = /(가-힣)+/.test(searchQuery) ? "ko" : /^[A-z0-9 ]$/.test(searchQuery) ? "en" : /^((\w){2})/.exec(navigator.language)[1];
 
                 uriAnchorParser.lastIndex = 0;
 
@@ -119,33 +121,35 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
 
                 if (searchQuery && !/^(나무위키|파일|분류|틀):.+/.test(searchQuery)) {
                     console.log('searchQuery:', searchQuery);
-                    if (config.openRiss && !/^[a-z ]+$/.test(searchQuery)) {
+                    const redirectQuery = searchQuery.split('/')[0];
+
+                    if (config.openRiss) {
                         await browser.tabs.create({
-                            url: `http://www.riss.kr/search/Search.do?detailSearch=false&searchGubun=true&oldQuery=&query=${searchQuery}`,
+                            url: `http://www.riss.kr/search/Search.do?detailSearch=false&searchGubun=true&oldQuery=&query=${redirectQuery}`,
                         });
                     }
                     if (config.openDbpia) {
                         await browser.tabs.create({
-                            url: `${config.proxyDbpia || 'http://www.dbpia.co.kr'}/search/topSearch?startCount=0&collection=ALL&startDate=&endDate=&filter=&prefix=&range=A&searchField=ALL&sort=RANK&reQuery=&realQuery=&exquery=&query=${searchQuery}&collectionQuery=&srchOption=*`,
+                            url: `${config.proxyDbpia || 'http://www.dbpia.co.kr'}/search/topSearch?startCount=0&collection=ALL&startDate=&endDate=&filter=&prefix=&range=A&searchField=ALL&sort=RANK&reQuery=&realQuery=&exquery=&query=${redirectQuery}&collectionQuery=&srchOption=*`,
                         });
                     }
                     if (config.openArxiv) {
-                        if (/^[a-z]+$/i.test(searchQuery)) {
+                        if (langCode === "en") {
                             await browser.tabs.create({
-                                url: `https://arxiv.org/search/?query=${searchQuery}&searchtype=all&source=header`,
+                                url: `https://arxiv.org/search/?query=${redirectQuery}&searchtype=all&source=header`,
                             });
                         }
                     }
                     if (config.openGoogleScholar && langCode) {
                         await browser.tabs.create({
-                            url: `https://scholar.google.co.kr/scholar?hl=${langCode}&as_sdt=0%2C5&q=${searchQuery}&btnG=`,
+                            url: `https://scholar.google.co.kr/scholar?hl=${langCode}&as_sdt=0%2C5&q=${redirectQuery}&btnG=`,
                         });
                     }
 
-                    const escapedSearchQuery = searchQuery.replace(/ /g, "_");
+                    const escapedRedirectQuery = redirectQuery.replace(/ /g, "_");
                     if (config.openWikipedia && langCode) {
                         await browser.tabs.create({
-                            url: `https://${langCode}.wikipedia.org/wiki/${escapedSearchQuery}`,
+                            url: `https://ko.wikipedia.org/wiki/${escapedRedirectQuery}`,
                         });
                     }
                 }
