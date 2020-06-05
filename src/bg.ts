@@ -27,11 +27,17 @@ async function loadConfig(): Promise<ConfigInterface> {
     );
 }
 
+/* = Tab Context Save = */
+const previousTabUrls: string[] = [];
+
+
+/* = Adblock Namuwiki = */
 let adBlockNamuWiki = true;
 
 /* = NamuWiki Block Logic = */
 browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
     const url = info.url || tab.url;
+    const previousTabUrl = previousTabUrls[tabId];
     let config: ConfigInterface = await loadConfig();
 
     let blockRules = getRules(config.namuMirrorBlock);
@@ -63,6 +69,8 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
 
             const parser = createDocumentRegexWithRule(rule);
             const parsed = parser.exec(url);
+            parser.lastIndex = 0;
+
             console.log("parsed", parsed);
             console.log("parsed-decodeURIComponent-searchQuery", decodeURIComponent(parsed[3]));
             if (parsed) {
@@ -79,8 +87,26 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                 // The Code is no longer functioning correctly: Abandon this.
                 // const searchQuery = /((?!#\?)+)[#?]/.exec(decodeURIComponent(parsed[3]))[1];
 
-                const searchQuery = /[^?#]*/.exec(decodeURIComponent(parsed[3]))[0];
+                const uriAnchorParser = /[^?#]*/
+                const searchParsed = uriAnchorParser.exec(decodeURIComponent(parsed[3]));                
+                const searchQuery = searchParsed[0];
+                const searchURIExtra = searchParsed[0];
                 const langCode = /^((\w){2})/.exec(navigator.language)[1];
+
+                uriAnchorParser.lastIndex = 0;
+
+                if (previousTabUrl) {
+                    const prevSearchURIParsed = parser.exec(previousTabUrl);
+                    if (prevSearchURIParsed) {
+                        const prevSearchParsed = uriAnchorParser.exec(decodeURIComponent(prevSearchURIParsed[3]));
+                        const prevSearchQuery = prevSearchParsed[0];
+                        const prevSearchURIExtra = prevSearchParsed[1];
+                        if (searchQuery === prevSearchQuery) {
+                            console.log("Moved to same page", searchQuery);
+                            return;
+                        }
+                    }
+                }
 
                 // check for intelliBan
                 if (config.intelliBanEnabled) {
@@ -91,7 +117,7 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                     }
                 }
 
-                if (searchQuery && !/^(나무위키|파일):.+/.test(searchQuery)) {
+                if (searchQuery && !/^(나무위키|파일|분류|틀):.+/.test(searchQuery)) {
                     console.log('searchQuery:', searchQuery);
                     if (config.openRiss && !/^[a-z ]+$/.test(searchQuery)) {
                         await browser.tabs.create({
@@ -133,6 +159,8 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
             console.log('End of Session\n');
         }
     }
+
+    previousTabUrls[tabId] = url;
 });
 
 /* = RULES = */
