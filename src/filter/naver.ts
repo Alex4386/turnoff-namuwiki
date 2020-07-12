@@ -3,7 +3,7 @@
 
     /* = This Section must be copy-pasted from bg.ts when it is updated = */
     const urlRegex = "^http(s?):\\/\\/";
-    const blockRules = [ "namu.wiki", "namu.mirror.wiki", "namu.moe", "mir.pe" ];
+    const blockRules = [ "namu.wiki", "namu.mirror.wiki", "namu.moe", "mir.pe", "namu.news" ];
 
     const searchResultClasses = [ 'sh_web_top' ];
 
