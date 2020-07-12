@@ -168,11 +168,18 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
 });
 
 /* = RULES = */
-const namuWikiBlockRule: PageBlockRule[] = [{
-    baseURL: 'namu.wiki',
-    articleView: '/w/',
-    searchView: '/go/',
-}];
+const namuWikiBlockRule: PageBlockRule[] = [
+    {
+        baseURL: 'namu.wiki',
+        articleView: '/w/',
+        searchView: '/go/',
+    },
+    {
+        baseURL: 'namu.news',
+        articleView: '/article/',
+        searchView: '#gsc.tab=0&gsc.q=',
+    },
+];
 
 const mirrorLists: PageBlockRule[] = [
     // namuwiki mirror rulesets
