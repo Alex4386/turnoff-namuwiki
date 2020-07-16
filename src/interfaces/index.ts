@@ -24,8 +24,8 @@ interface ConfigInterface extends StorageObject{
 
 interface PageBlockRule {
     baseURL: string;
-    articleView: RegExp | string;
-    searchView: RegExp | string;
+    articleView?: RegExp | string;
+    searchView?: RegExp | string;
 }
 
 interface SearchEngineFilterRules {

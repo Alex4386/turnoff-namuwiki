@@ -1,11 +1,13 @@
+let configCache: ConfigInterface;
+
 /* = Load Config Logic = */
 async function loadConfig(): Promise<ConfigInterface> {
     return new Promise<ConfigInterface> (
         async (resolve, reject) => {
-            let config: ConfigInterface;
+            let thisConfig: ConfigInterface;
             do {
-                config = await browser.storage.sync.get<ConfigInterface>(null);
-                if (Object.keys(config).length === 0) {
+                thisConfig = await browser.storage.sync.get<ConfigInterface>(null);
+                if (Object.keys(thisConfig).length === 0) {
                     await browser.storage.sync.set({
                         namuwikiBlock: true,
                         namuLiveBlock: true,
@@ -21,8 +23,9 @@ async function loadConfig(): Promise<ConfigInterface> {
                         intelliBanRules: [],
                     });
                 }
-            } while (Object.keys(config).length === 0);
-            resolve(config);
+                configCache = thisConfig;
+            } while (Object.keys(thisConfig).length === 0);
+            resolve(thisConfig);
         }
     );
 }
@@ -40,7 +43,8 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
     const previousTabUrl = previousTabUrls[tabId];
     let config: ConfigInterface = await loadConfig();
 
-    let blockRules = getRules(config.namuMirrorBlock);
+    let blockRules = getRules(config.namuMirrorBlock, config.namuLiveBlock);
+    let namuRules = getRules(true, false);
 
     adBlockNamuWiki = config.adBlockNamuWiki;
 
@@ -67,12 +71,20 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
             console.log('tab', tab);
             console.log('rule', rule);
 
+            let parsed;
+
             const parser = createDocumentRegexWithRule(rule);
-            const parsed = parser.exec(url);
+            parsed = parser.exec(url);
+
             parser.lastIndex = 0;
 
-            console.log("parsed", parsed);
-            console.log("parsed-decodeURIComponent-searchQuery", decodeURIComponent(parsed[3]));
+            if (!rule.articleView && !rule.searchView) {
+                parsed = true;
+            } else {
+                console.log("parsed", parsed);
+                console.log("parsed-decodeURIComponent-searchQuery", decodeURIComponent(parsed[3]));
+            }
+
             if (parsed) {
                 if (!info.url) {
                     console.log('info', info);
@@ -87,76 +99,92 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                 // The Code is no longer functioning correctly: Abandon this.
                 // const searchQuery = /((?!#\?)+)[#?]/.exec(decodeURIComponent(parsed[3]))[1];
 
-                const uriAnchorParser = /[^?#]*/
-                const searchParsed = uriAnchorParser.exec(decodeURIComponent(parsed[3]));                
-                const searchQuery = searchParsed[0];
-                const searchURIExtra = searchParsed[0];
-                
-                //const langCode = /^((\w){2})/.exec(navigator.language)[1];
-                const langCode = /(가-힣)+/.test(searchQuery) ? "ko" : /^[A-z0-9 ]$/.test(searchQuery) ? "en" : /^((\w){2})/.exec(navigator.language)[1];
-
-                uriAnchorParser.lastIndex = 0;
-
-                if (previousTabUrl) {
-                    const prevSearchURIParsed = parser.exec(previousTabUrl);
-                    if (prevSearchURIParsed) {
-                        const prevSearchParsed = uriAnchorParser.exec(decodeURIComponent(prevSearchURIParsed[3]));
-                        const prevSearchQuery = prevSearchParsed[0];
-                        const prevSearchURIExtra = prevSearchParsed[1];
-                        if (searchQuery === prevSearchQuery) {
-                            console.log("Moved to same page", searchQuery);
-                            return;
+                if (namuRules.indexOf(rule) !== -1 && parsed !== true) {
+                    const uriAnchorParser = /[^?#]*/
+                    const searchParsed = uriAnchorParser.exec(decodeURIComponent(parsed[3]));                
+                    const searchQuery = searchParsed[0];
+                    const searchURIExtra = searchParsed[0];
+                    
+                    //const langCode = /^((\w){2})/.exec(navigator.language)[1];
+                    const langCode = /(가-힣)+/.test(searchQuery) ? "ko" : /^[A-z0-9 ]$/.test(searchQuery) ? "en" : /^((\w){2})/.exec(navigator.language)[1];
+    
+                    uriAnchorParser.lastIndex = 0;
+    
+                    if (previousTabUrl) {
+                        const prevSearchURIParsed = parser.exec(previousTabUrl);
+                        if (prevSearchURIParsed) {
+                            const prevSearchParsed = uriAnchorParser.exec(decodeURIComponent(prevSearchURIParsed[3]));
+                            const prevSearchQuery = prevSearchParsed[0];
+                            const prevSearchURIExtra = prevSearchParsed[1];
+                            if (searchQuery === prevSearchQuery) {
+                                console.log("Moved to same page", searchQuery);
+                                return;
+                            }
                         }
                     }
-                }
-
-                // check for intelliBan
-                if (config.intelliBanEnabled) {
-                    for (const rule of config.intelliBanRules) {
-                        if (new RegExp(rule.regex, rule.flag).test(searchQuery)) {
-                            return;
+    
+                    // check for intelliBan
+                    if (config.intelliBanEnabled) {
+                        for (const rule of config.intelliBanRules) {
+                            if (new RegExp(rule.regex, rule.flag).test(searchQuery)) {
+                                return;
+                            }
                         }
                     }
-                }
-
-                if (searchQuery && !/^(나무위키|파일|분류|틀):.+/.test(searchQuery)) {
-                    console.log('searchQuery:', searchQuery);
-                    const redirectQuery = searchQuery.split('/')[0];
-
-                    if (config.openRiss) {
-                        await browser.tabs.create({
-                            url: `http://www.riss.kr/search/Search.do?detailSearch=false&searchGubun=true&oldQuery=&query=${redirectQuery}`,
-                        });
-                    }
-                    if (config.openDbpia) {
-                        await browser.tabs.create({
-                            url: `${config.proxyDbpia || 'http://www.dbpia.co.kr'}/search/topSearch?startCount=0&collection=ALL&startDate=&endDate=&filter=&prefix=&range=A&searchField=ALL&sort=RANK&reQuery=&realQuery=&exquery=&query=${redirectQuery}&collectionQuery=&srchOption=*`,
-                        });
-                    }
-                    if (config.openArxiv) {
-                        if (langCode === "en") {
+    
+                    if (searchQuery && !/^(나무위키|파일|분류|틀):.+/.test(searchQuery)) {
+                        console.log('searchQuery:', searchQuery);
+                        const redirectQuery = searchQuery.split('/')[0];
+    
+                        if (config.openRiss) {
                             await browser.tabs.create({
-                                url: `https://arxiv.org/search/?query=${redirectQuery}&searchtype=all&source=header`,
+                                url: `http://www.riss.kr/search/Search.do?detailSearch=false&searchGubun=true&oldQuery=&query=${redirectQuery}`,
+                            });
+                        }
+                        if (config.openDbpia) {
+                            await browser.tabs.create({
+                                url: `${config.proxyDbpia || 'http://www.dbpia.co.kr'}/search/topSearch?startCount=0&collection=ALL&startDate=&endDate=&filter=&prefix=&range=A&searchField=ALL&sort=RANK&reQuery=&realQuery=&exquery=&query=${redirectQuery}&collectionQuery=&srchOption=*`,
+                            });
+                        }
+                        if (config.openArxiv) {
+                            if (langCode === "en") {
+                                await browser.tabs.create({
+                                    url: `https://arxiv.org/search/?query=${redirectQuery}&searchtype=all&source=header`,
+                                });
+                            }
+                        }
+                        if (config.openGoogleScholar && langCode) {
+                            await browser.tabs.create({
+                                url: `https://scholar.google.co.kr/scholar?hl=${langCode}&as_sdt=0%2C5&q=${redirectQuery}&btnG=`,
+                            });
+                        }
+    
+                        const escapedRedirectQuery = redirectQuery.replace(/ /g, "_");
+                        if (config.openWikipedia && langCode) {
+                            await browser.tabs.create({
+                                url: `https://ko.wikipedia.org/wiki/${escapedRedirectQuery}`,
                             });
                         }
                     }
-                    if (config.openGoogleScholar && langCode) {
-                        await browser.tabs.create({
-                            url: `https://scholar.google.co.kr/scholar?hl=${langCode}&as_sdt=0%2C5&q=${redirectQuery}&btnG=`,
+
+                    if (config.namuwikiBlock && namuWikiBlockRule.indexOf(rule) !== -1) {
+                        await browser.tabs.update(tabId, {
+                            url: browser.extension.getURL(`interface/banned/index.html?banned_url=${url}`),
                         });
                     }
 
-                    const escapedRedirectQuery = redirectQuery.replace(/ /g, "_");
-                    if (config.openWikipedia && langCode) {
-                        await browser.tabs.create({
-                            url: `https://ko.wikipedia.org/wiki/${escapedRedirectQuery}`,
+                    if (config.namuMirrorBlock && mirrorLists.indexOf(rule) !== -1) {
+                        await browser.tabs.update(tabId, {
+                            url: browser.extension.getURL(`interface/banned/index.html?banned_url=${url}`),
                         });
                     }
+                      
                 }
+                
 
-                if (config.namuwikiBlock) {
+                if (config.namuLiveBlock && namuLiveAndNewsBlockRule.indexOf(rule) !== -1) {
                     await browser.tabs.update(tabId, {
-                        url: browser.extension.getURL(`interface/banned/index.html?banned_url=${url}`),
+                        url: browser.extension.getURL(`interface/banned/namu_live.html?banned_url=${url}`),
                     });
                 }
             }
@@ -173,11 +201,6 @@ const namuWikiBlockRule: PageBlockRule[] = [
         baseURL: 'namu.wiki',
         articleView: '/w/',
         searchView: '/go/',
-    },
-    {
-        baseURL: 'namu.news',
-        articleView: '/article/',
-        searchView: '#gsc.tab=0&gsc.q=',
     },
 ];
 
@@ -200,20 +223,29 @@ const mirrorLists: PageBlockRule[] = [
     },
 ];
 
-const namuLiveBlockRule: PageBlockRule[] = [
+const namuLiveAndNewsBlockRule: PageBlockRule[] = [
     {
         baseURL: 'namu.live',
-        articleView: /[A-z0-9]+/,
-        searchView: /[A-z0-9]+/
-    }
+        articleView: undefined,
+        searchView: undefined
+    },
+    {
+        baseURL: 'namu.news',
+        articleView: undefined,
+        searchView: undefined
+    },
 ]
 
 const urlRegex = '^http(s?):\\/\\/';
 
-function getRules(withMirror: boolean):PageBlockRule[] {
+function getRules(withMirror?: boolean, withNamuLiveNews?: boolean):PageBlockRule[] {
     let blockRules = namuWikiBlockRule;
     if (withMirror) {
         blockRules = blockRules.concat(mirrorLists);
+    }
+    if (withNamuLiveNews) {
+        blockRules = blockRules.concat(namuLiveAndNewsBlockRule);
+
     }
     return blockRules;
 }
@@ -335,8 +367,8 @@ browser.webRequest.onBeforeRequest.addListener(
  */
 browser.webRequest.onBeforeRequest.addListener(
     (details) => {
-        if (config.namuLiveBlock) {
-            console.log("canceled!", "bwah bwah bwah!");
+        if (configCache.namuLiveBlock) {
+            console.log("canceled!", "bwah bwah bwah!", details.url);
             return {
                 cancel: true
             };
@@ -345,8 +377,11 @@ browser.webRequest.onBeforeRequest.addListener(
     {
         urls: [
             "https://search.namu.wiki/api/ranking",
-            "https://namu.live/*"
+            "https://namu.live/*",
+            "https://namu.news/*",
+            "https://namu.news/api/articles/cached",
         ]
-    }
+    },
+    [ "blocking" ]
 );
 

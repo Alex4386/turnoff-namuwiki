@@ -1,6 +1,6 @@
 {
   "name": "Turn Off namuwiki",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "author": "Alex4386 and TurnOff NamuWiki Contributors",
   "description": "자료조사, 조별과제의 지뢰, 나무위키를 꺼드립니다.",
   "permissions": ["tabs", "storage", "*://*/*", "webRequest", "webRequestBlocking"],

@@ -3,14 +3,17 @@
       const config = await browser.storage.sync.get() as unknown as ConfigInterface;
       console.log(`로드 완료. ${JSON.stringify(config)}`);
 
+      const accessingTo = config.namuLiveBlock ? "나무위키 또는 나무라이브, 나무뉴스" : "나무위키";
+
       if (typeof config.bannedPageMessage !== "undefined") {
+
         if (config.bannedPageMessage !== "") {
           document.getElementById("message").innerHTML = escapeHtml(config.bannedPageMessage);
         } else {
-          document.getElementById("message").innerHTML = '<p id="message">나무위키 접속시도가 감지되어 <span class="important">강제 종료</span>합니다.</p>';
+          document.getElementById("message").innerHTML = `<p id="message">${accessingTo} 접속시도가 감지되어 <span class="important">강제 종료</span>합니다.</p>`;
         }
       } else {
-        document.getElementById("message").innerHTML = '<p id="message">나무위키 접속시도가 감지되어 <span class="important">강제 종료</span>합니다.</p>';
+        document.getElementById("message").innerHTML = `<p id="message">${accessingTo} 접속시도가 감지되어 <span class="important">강제 종료</span>합니다.</p>`;
       }
 
       if (typeof config.bannedPageRetry !== "undefined") {
