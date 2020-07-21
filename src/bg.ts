@@ -217,6 +217,16 @@ const mirrorLists: PageBlockRule[] = [
         searchView: /go/,
     },
     {
+        baseURL: "dump.thewiki.kr",
+        articleView: undefined,
+        searchView: undefined,
+    },
+    {
+        baseURL: "thewiki.kr",
+        articleView: /w/,
+        searchView: "/googlesearch/?q=",
+    },
+    {
         baseURL: 'namu.moe',
         articleView: /w/,
         searchView: /go/,
