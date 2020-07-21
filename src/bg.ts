@@ -208,7 +208,12 @@ const mirrorLists: PageBlockRule[] = [
     // namuwiki mirror rulesets
     {
         baseURL: 'namu.mirror.wiki',
-        articleView: /w/,
+        articleView: "/w/|/namu2/",
+        searchView: /go/,
+    },
+    {
+        baseURL: 'mirror.wiki',
+        articleView: "/w/|/namu2/",
         searchView: /go/,
     },
     {
