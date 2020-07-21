@@ -166,20 +166,19 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                             });
                         }
                     }
-
-                    if (config.namuwikiBlock && namuWikiBlockRule.indexOf(rule) !== -1) {
-                        await browser.tabs.update(tabId, {
-                            url: browser.extension.getURL(`interface/banned/index.html?banned_url=${url}`),
-                        });
-                    }
-
-                    if (config.namuMirrorBlock && mirrorLists.indexOf(rule) !== -1) {
-                        await browser.tabs.update(tabId, {
-                            url: browser.extension.getURL(`interface/banned/index.html?banned_url=${url}`),
-                        });
-                    }
-                      
                 }
+
+
+
+                if (config.namuwikiBlock && namuWikiBlockRule.indexOf(rule) !== -1 ||
+                    config.namuMirrorBlock && mirrorLists.indexOf(rule) !== -1) {
+
+                    console.log("BAN HAMMER HAS SPOKEN!");
+                    await browser.tabs.update(tabId, {
+                        url: browser.extension.getURL(`interface/banned/index.html?banned_url=${url}`),
+                    });
+                }
+                
                 
 
                 if (config.namuLiveBlock && namuLiveAndNewsBlockRule.indexOf(rule) !== -1) {
@@ -379,6 +378,8 @@ browser.webRequest.onBeforeRequest.addListener(
  *
  * requested by Firefox user 15228336:
  * 나무라이브도 꺼주셨으면 좋을 것 같아요.
+ * 
+ * + 나무뉴스 추가
  */
 browser.webRequest.onBeforeRequest.addListener(
     (details) => {
