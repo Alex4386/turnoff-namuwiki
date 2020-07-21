@@ -133,6 +133,8 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                 console.log("parsed", parsed);
                 console.log("parsed-decodeURIComponent-searchQuery", decodeURIComponent(parsed[3]));
             }
+            
+            let searchQuery;
 
             if (parsed) {
                 if (!info.url) {
@@ -151,7 +153,7 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                 if (namuRules.indexOf(rule) !== -1 && parsed !== true) {
                     const uriAnchorParser = /[^?#]*/
                     const searchParsed = uriAnchorParser.exec(decodeURIComponent(parsed[3]));                
-                    const searchQuery = searchParsed[0];
+                    searchQuery = searchParsed[0];
                     const searchURIExtra = searchParsed[0];
                     
                    
