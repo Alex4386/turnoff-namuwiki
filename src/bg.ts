@@ -30,6 +30,55 @@ async function loadConfig(): Promise<ConfigInterface> {
     );
 }
 
+/* = redirect to paper = */
+async function openPaper(config:ConfigInterface, searchQuery:string):Promise<void>{
+    if (searchQuery && !/^(나무위키|파일|분류|틀):.+/.test(searchQuery)) {
+        console.log('searchQuery:', searchQuery);
+        //const langCode = /^((\w){2})/.exec(navigator.language)[1];
+         const langCode = /(가-힣)+/.test(searchQuery) ? "ko" : /^[A-z0-9 ]$/.test(searchQuery) ? "en" : /^((\w){2})/.exec(navigator.language)[1];
+
+        const redirectQuery = searchQuery.split('/')[0];
+
+        // check for riss
+        if (config.openRiss) {
+            await browser.tabs.create({
+                url: `http://www.riss.kr/search/Search.do?detailSearch=false&searchGubun=true&oldQuery=&query=${redirectQuery}`,
+            });
+        }
+      
+        // check for dbpia
+        if (config.openDbpia) {
+            await browser.tabs.create({
+                url: `${config.proxyDbpia || 'http://www.dbpia.co.kr'}/search/topSearch?startCount=0&collection=ALL&startDate=&endDate=&filter=&prefix=&range=A&searchField=ALL&sort=RANK&reQuery=&realQuery=&exquery=&query=${redirectQuery}&collectionQuery=&srchOption=*`,
+            });
+        }
+        
+        // check for arxiv
+        if (config.openArxiv) {
+            if (langCode === "en") {
+                await browser.tabs.create({
+                    url: `https://arxiv.org/search/?query=${redirectQuery}&searchtype=all&source=header`,
+                });
+            }
+        }
+      
+        // check for google scholar
+        if (config.openGoogleScholar && langCode) {
+            await browser.tabs.create({
+              url: `https://scholar.google.co.kr/scholar?hl=${langCode}&as_sdt=0%2C5&q=${redirectQuery}&btnG=`,
+            });
+        }
+        
+        // check for wikipedia
+        if (config.openWikipedia && langCode) {
+            const escapedRedirectQuery = redirectQuery.replace(/ /g, "_");
+            await browser.tabs.create({
+                url: `https://ko.wikipedia.org/wiki/${escapedRedirectQuery}`,
+            });
+        }
+    }
+}
+
 /* = Tab Context Save = */
 const previousTabUrls: string[] = [];
 
@@ -84,6 +133,8 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                 console.log("parsed", parsed);
                 console.log("parsed-decodeURIComponent-searchQuery", decodeURIComponent(parsed[3]));
             }
+            
+            let searchQuery;
 
             if (parsed) {
                 if (!info.url) {
@@ -102,12 +153,10 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                 if (namuRules.indexOf(rule) !== -1 && parsed !== true) {
                     const uriAnchorParser = /[^?#]*/
                     const searchParsed = uriAnchorParser.exec(decodeURIComponent(parsed[3]));                
-                    const searchQuery = searchParsed[0];
+                    searchQuery = searchParsed[0];
                     const searchURIExtra = searchParsed[0];
                     
-                    //const langCode = /^((\w){2})/.exec(navigator.language)[1];
-                    const langCode = /(가-힣)+/.test(searchQuery) ? "ko" : /^[A-z0-9 ]$/.test(searchQuery) ? "en" : /^((\w){2})/.exec(navigator.language)[1];
-    
+                   
                     uriAnchorParser.lastIndex = 0;
     
                     if (previousTabUrl) {
@@ -131,41 +180,6 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                             }
                         }
                     }
-    
-                    if (searchQuery && !/^(나무위키|파일|분류|틀):.+/.test(searchQuery)) {
-                        console.log('searchQuery:', searchQuery);
-                        const redirectQuery = searchQuery.split('/')[0];
-    
-                        if (config.openRiss) {
-                            await browser.tabs.create({
-                                url: `http://www.riss.kr/search/Search.do?detailSearch=false&searchGubun=true&oldQuery=&query=${redirectQuery}`,
-                            });
-                        }
-                        if (config.openDbpia) {
-                            await browser.tabs.create({
-                                url: `${config.proxyDbpia || 'http://www.dbpia.co.kr'}/search/topSearch?startCount=0&collection=ALL&startDate=&endDate=&filter=&prefix=&range=A&searchField=ALL&sort=RANK&reQuery=&realQuery=&exquery=&query=${redirectQuery}&collectionQuery=&srchOption=*`,
-                            });
-                        }
-                        if (config.openArxiv) {
-                            if (langCode === "en") {
-                                await browser.tabs.create({
-                                    url: `https://arxiv.org/search/?query=${redirectQuery}&searchtype=all&source=header`,
-                                });
-                            }
-                        }
-                        if (config.openGoogleScholar && langCode) {
-                            await browser.tabs.create({
-                                url: `https://scholar.google.co.kr/scholar?hl=${langCode}&as_sdt=0%2C5&q=${redirectQuery}&btnG=`,
-                            });
-                        }
-    
-                        const escapedRedirectQuery = redirectQuery.replace(/ /g, "_");
-                        if (config.openWikipedia && langCode) {
-                            await browser.tabs.create({
-                                url: `https://ko.wikipedia.org/wiki/${escapedRedirectQuery}`,
-                            });
-                        }
-                    }
                 }
 
 
@@ -177,6 +191,8 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                     await browser.tabs.update(tabId, {
                         url: browser.extension.getURL(`interface/banned/index.html?banned_url=${url}`),
                     });
+                  
+                    await openPaper(config, searchQuery);
                 }
                 
                 
