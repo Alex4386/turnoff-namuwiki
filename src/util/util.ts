@@ -1,4 +1,4 @@
-function escapeHtml(unsafe: string) {
+export function escapeHtml(unsafe: string) {
   return unsafe
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
@@ -7,7 +7,7 @@ function escapeHtml(unsafe: string) {
       .replace(/'/g, "&#039;");
 }
 
-function parseUrl(url: string) {
+export function parseUrl(url: string) {
   const searchQueries = url.split('?',2)[1];
   const result: {name: string, value?: string}[] = [];
 
