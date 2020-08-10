@@ -11,32 +11,25 @@
             margin: 0; padding: 0;
         }
         body {
-            margin: 0 auto;
             font-family: "Nunito", "Noto Sans KR", sans-serif;
-            width: 370px;
+            margin: 0;
             padding: 0;
             background: #EEE;
-            font-size: 13px;
+            font-size: 1em;
             overflow-x: hidden;
+            word-break: keep-all
         }
         header {
-            width: 370px;
+            width: 100vw;
             display: inline-block;
             border-bottom: solid 1px #E7E7E7;
             background: #FFF;
             color: #FFF;
+            background: #596bb8;
         }
-        body.namuwiki header {
-            background: #47a69b;
-        }
-        body.blocked header{
-            background: #b85964;
-        }
-        body.blocked.mirror-blocked header {
-            background: #a52231;
-        }
-        body.redirect header{
-            background: #596bb8 !important;
+        .wrap {
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         header .wrap {
@@ -130,16 +123,51 @@
             margin: 0;
         }
 
-        input[type="url"] {
-            width: 100%;
+        .to-left {
+            float: right;
         }
 
         .to-right {
             float: right;
         }
+        .align-right {
+            text-align: right;
+        }
 
         div.redirect .content {
             text-align: center;
+        }
+        .card {
+            background: #FFF;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 5px rgba(0,0,0,.1);
+            margin: 2em 1em;
+        }
+        .card .explain {
+            float: right;
+            text-align: right;
+            width: 40%;
+            max-width: 18em;
+            padding-right: 15px;
+        }
+
+        .card .content {
+            margin: 1em 1em;
+            width: calc(100% - 30px);
+        }
+
+        input {
+            background: #FFF;
+            border: 1px black solid;
+            font-size: 1em;
+            border-radius: 15px;
+            padding: 15px;
+            outline: none;
+        }
+        
+        input[type=url] {
+            width: calc(100% - 30px);
         }
     </style>
     <link rel="stylesheet" href="../common/switch.css">
@@ -149,77 +177,32 @@
     <header>
         <div class="wrap">
             <span class="version" id="extension_version">JavaScript Error!!</span>
-            <h1>TurnOff-NamuWiki Console</h1>
+            <h1>TurnOff-NamuWiki Help</h1>
         </div>
     </header>
     <main>
-        <div class="control-panel">
-            <div class="namuwiki-block">
-                <label class="switch" for="block_namuwiki">
-                    <input type="checkbox" id="block_namuwiki" data-val="namuwikiBlock">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-            <div class="namuwiki-mirror-block">
-                <div class="mirror-indicator">
-                    <span>MIRROR</span>
-                </div>
-                <label class="switch" for="block_namumirror">
-                    <input type="checkbox" id="block_namumirror" data-val="namuMirrorBlock">
-                    <span class="slider round"></span>
-                </label>
+        <div class="wrap">
+            <h1>나무위키 광고차단</h1>
+            <p>혹여나 나무위키를 어쩔 수 없이 이용하게 된다면, 왜 나무위키를 광고 차단하여야 하나요?</p>
+            <div class="card">
+              <h2>라이선스 위반</h2>
+              <p>나무위키는 초기 신설 당시부터 Creative Commons 2.0 BY NC SA 라이선스로 "이용자의 저작물"을 배포 중으로, 해당 (부정확한/출처를 알 수 없는) 정보에 대한 저작권은 해당 부분을 작성한 작성자 각자가 가지고 있으며, 라이선스에 의거하여 상업적으로 이용 할 수 없습니다.</p>
+              <p>그러나, umanle S.R.L. 의 "인수" 이후, 해당 라이선스에 위반하고 사이트 내에 컨텐츠와 광고를 병행하여 표기하게 됩니다. 즉, 상업적으로 이용할 수 없다는 라이선스를 위반하고 있습니다.</p>
+              <p>&nbsp;</p>
+              <p>수익 모델 자체부터 저작권 및 라이선스 위반이므로, 저는 <strong>나무위키 광고 차단</strong>을 하는 것을 적극 권장합니다.</p>
             </div>
         </div>
-        <hr />
-        <div class="search-filter">
-            
-            <label class="switch-small to-right" for="filter_search">
-                <input type="checkbox" id="filter_search" data-val="filterSearch">
-                <span class="slider-small round"></span>
-            </label>
-            <h3>검색 엔진 필터링:</h3>
-        </div><br>
-        <div class="adblock-namuwiki">
-            
-            <label class="switch-small to-right" for="adblock_namuwiki">
-                <input type="checkbox" id="adblock_namuwiki" data-val="adBlockNamuWiki">
-                <span class="slider-small round"></span>
-            </label>
-            <h3>나무위키 광고차단 <a href="/interface/help/adblock.html" target="_blank">(?)</a>: </h3>
-        </div><br>
-        <div class="search-filter">
-            
-            <label class="switch-small to-right" for="namulive_block">
-                <input type="checkbox" id="namulive_block" data-val="namuLiveBlock">
-                <span class="slider-small round"></span>
-            </label>
-            <h3>나무라이브/나무뉴스 차단:</h3>
-        </div><br>
-        <div class="search-filter">
-            
-            <label class="switch-small to-right" for="intelliBan_enable">
-                <input type="checkbox" id="intelliBan_enable" data-val="intelliBanEnabled">
-                <span class="slider-small round"></span>
-            </label>
-            <h3>intelliBan 활성화:</h3>
-        </div>
-        <hr />
-        <div class="settings">
-            <h2>설정: </h2>
-            <p>자동접속 설정(나무위키 접속 시 새 탭으로 접속 할 사이트)은 이곳에서 할 수 있습니다.</p>
-            <a id="detail-settings" href="/interface/settings/index.html" target="_blank">상세 설정</a>
-        </div>
-            
     </main>
-    <span id="status"></span>
 
     <footer>
-        Copyright &copy; Alex4386 and TurnOff-NamuWiki Contributors.<br>
-        The Source Code of this extension is available at <a href="https://github.com/Alex4386/turnoff-namuwiki" target="_blank">GitHub</a>.
+        <div class="wrap">
+            Copyright &copy; Alex4386 and TurnOff-NamuWiki Contributors.<br>
+            The Source Code of this extension is available at <a href="https://github.com/Alex4386/turnoff-namuwiki" target="_blank">GitHub</a>.    
+        </div>
     </footer>
 </body>
 <script src="/polyfill/browser-polyfill.min.js"></script>
 <script src="/lib/util.js"></script>
 <script src="/lib/settings_util.js"></script>
-<script src="/lib/popup.js"></script>
+<script src="./showVersion.js"></script>
 </html>
