@@ -11,7 +11,7 @@ interface ConfigInterface extends StorageObject{
     adBlockNamuWiki: boolean;
     proxyDbpia: string;
     filterSearch: boolean;
-    namuLiveBlock: boolean;
+    arcaLiveBlock: boolean;
     intelliBanEnabled: boolean;
     intelliBanUrl: string;
     intelliBanRules: {

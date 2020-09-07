@@ -10,7 +10,7 @@ async function loadConfig(): Promise<ConfigInterface> {
                 if (Object.keys(thisConfig).length === 0) {
                     await browser.storage.sync.set({
                         namuwikiBlock: true,
-                        namuLiveBlock: true,
+                        arcaLiveBlock: true,
                         namuMirrorBlock: true,
                         openRiss: true,
                         openDbpia: true,
@@ -92,7 +92,7 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
     const previousTabUrl = previousTabUrls[tabId];
     let config: ConfigInterface = await loadConfig();
 
-    let blockRules = getRules(config.namuMirrorBlock, config.namuLiveBlock);
+    let blockRules = getRules(config.namuMirrorBlock, config.arcaLiveBlock);
     let namuRules = getRules(true, false);
 
     adBlockNamuWiki = config.adBlockNamuWiki;
@@ -197,7 +197,7 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                 
                 
 
-                if (config.namuLiveBlock && namuLiveAndNewsBlockRule.indexOf(rule) !== -1) {
+                if (config.arcaLiveBlock && arcaLiveAndNamuNewsBlockRule.indexOf(rule) !== -1) {
                     await browser.tabs.update(tabId, {
                         url: browser.extension.getURL(`interface/banned/namu_live.html?banned_url=${url}`),
                     });
@@ -253,9 +253,9 @@ const mirrorLists: PageBlockRule[] = [
     },
 ];
 
-const namuLiveAndNewsBlockRule: PageBlockRule[] = [
+const arcaLiveAndNamuNewsBlockRule: PageBlockRule[] = [
     {
-        baseURL: 'namu.live',
+        baseURL: 'arca.live',
         articleView: undefined,
         searchView: undefined
     },
@@ -274,7 +274,7 @@ function getRules(withMirror?: boolean, withNamuLiveNews?: boolean):PageBlockRul
         blockRules = blockRules.concat(mirrorLists);
     }
     if (withNamuLiveNews) {
-        blockRules = blockRules.concat(namuLiveAndNewsBlockRule);
+        blockRules = blockRules.concat(arcaLiveAndNamuNewsBlockRule);
 
     }
     return blockRules;
@@ -379,7 +379,7 @@ browser.webRequest.onBeforeRequest.addListener(
             "https://*.googlesyndication.com/*",
             "https://*.doubleclick.net/*",
             "https://adservice.google.com/*",
-            "https://namu.live/static/ad/*",
+            "https://arca.live/api/ads*",
             "https://searchad-phinf.pstatic.net/*",
             "https://ssl.pstatic.net/adimg3.search/*",
             "https://www.google.com/adsense/search/*",
@@ -399,7 +399,7 @@ browser.webRequest.onBeforeRequest.addListener(
  */
 browser.webRequest.onBeforeRequest.addListener(
     (details) => {
-        if (configCache.namuLiveBlock) {
+        if (configCache.arcaLiveBlock) {
             console.log("canceled!", "bwah bwah bwah!", details.url);
             return {
                 cancel: true
@@ -409,7 +409,7 @@ browser.webRequest.onBeforeRequest.addListener(
     {
         urls: [
             "https://search.namu.wiki/api/ranking",
-            "https://namu.live/*",
+            "https://arca.live/*",
             "https://namu.news/*",
             "https://namu.news/api/articles/cached",
         ]

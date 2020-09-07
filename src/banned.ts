@@ -3,7 +3,7 @@
       const config = await browser.storage.sync.get() as unknown as ConfigInterface;
       console.log(`로드 완료. ${JSON.stringify(config)}`);
 
-      const accessingTo = config.namuLiveBlock ? "나무위키 또는 나무라이브, 나무뉴스" : "나무위키";
+      const accessingTo = config.arcaLiveBlock ? "나무위키 또는 아카라이브, 나무뉴스" : "나무위키";
 
       if (typeof config.bannedPageMessage !== "undefined") {
 
