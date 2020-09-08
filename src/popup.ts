@@ -6,7 +6,7 @@ const popup_settings = [
     document.getElementById('block_namumirror'),
     document.getElementById('adblock_namuwiki'),
     document.getElementById('filter_search'),
-    document.getElementById('namulive_block'),
+    document.getElementById('arcalive_block'),
     document.getElementById('intelliBan_enable'),
 ];
 
