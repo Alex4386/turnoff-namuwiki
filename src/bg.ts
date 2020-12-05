@@ -334,8 +334,10 @@ async function runRedirect(config: ConfigInterface, searchQuery: string) {
                         }
                     }
                     const queryReplaceRegex = new RegExp("{{query}}", "g");
-                    const finalURL = target.redirectLocation.replace(queryReplaceRegex, query);
-    
+                    const langReplaceRegex = new RegExp("{{lang}}", "g");
+
+                    const langCode = /(가-힣)+/.test(searchQuery) ? "ko" : /^[A-z0-9 ]$/.test(searchQuery) ? "en" : /^((\w){2})/.exec(navigator.language)[1];
+                    const finalURL = target.redirectLocation.replace(queryReplaceRegex, query).replace(langReplaceRegex, langCode);
     
                     await browser.tabs.create({
                         url: finalURL,

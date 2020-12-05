@@ -34,9 +34,7 @@ function popup_updateHeader(config: ConfigInterface) {
     }
 }
 
-
 showVersion();
-
 
 (async () => {
     try {

@@ -36,6 +36,9 @@ function createCheckbox(id: string, datasetVal: string, name: string) {
   };
 }
 
+let prev_blocked_URL = "";
+let prev_intelliBan_URL = "";
+
 (async () => {
 //    try {
         config = await browser.storage.sync.get() as unknown as ConfigInterface;
@@ -75,8 +78,15 @@ function createCheckbox(id: string, datasetVal: string, name: string) {
         }
 
         setHook(full_settings as HTMLInputElement[], (config) => {
-          updateIntelliBan(config, (document.getElementById('intelliBan_url') as HTMLInputElement).value);
-          updateBlocked(config, (document.getElementById('blocked_url') as HTMLInputElement).value);
+          if (prev_intelliBan_URL === config.intelliBan.url) {
+            prev_intelliBan_URL = config.intelliBan.url;
+            updateIntelliBan(config, (document.getElementById('intelliBan_url') as HTMLInputElement).value);
+          }
+
+          if (prev_blocked_URL === config.blocked.url) {
+            prev_blocked_URL = config.blocked.url;
+            updateBlocked(config, (document.getElementById('blocked_url') as HTMLInputElement).value);
+          }
         });
         /*
     } catch (e) {
@@ -85,3 +95,15 @@ function createCheckbox(id: string, datasetVal: string, name: string) {
         console.error(`로드 실패. ${JSON.stringify(config)}`);
     }*/
 })();
+
+document.getElementById("trigger-update-blocked").addEventListener("click", async () => {
+  const config = await browser.storage.sync.get() as unknown as ConfigInterface;
+  updateBlocked(config, (document.getElementById('blocked_url') as HTMLInputElement).value);
+  alert("차단 데이터베이스의 업데이트가 완료되었습니다.");
+});
+
+document.getElementById("trigger-update-intelliBan").addEventListener("click", async () => {
+  const config = await browser.storage.sync.get() as unknown as ConfigInterface;
+  updateIntelliBan(config, (document.getElementById('intelliBan_url') as HTMLInputElement).value);
+  alert("intelliBan 데이터베이스의 업데이트가 완료되었습니다.");
+});
