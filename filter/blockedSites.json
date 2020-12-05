@@ -90,10 +90,34 @@
     "redirect": true
   },
   {
-    "id": "theWikiDump",
-    "group": [ "theWiki" ],
-    "name": "더위키 덤프",
-    "baseURL": "dump.thewiki.kr"
+    "id": "umanWiki",
+    "group": [ "umanWiki" ],
+    "name": "우만위키",
+    "baseURL": "tcatmon.com",
+    "articleView": {
+      "regex": "/w(?:iki)/",
+      "flag": ""
+    },
+    "searchView": {
+      "regex": "/w/index\\.php(?:.*)(?:\\?|&)search=",
+      "flag": ""
+    },
+    "redirect": true
+  },
+  {
+    "id": "libreWiki",
+    "group": [ "libreWiki" ],
+    "name": "리브레위키",
+    "baseURL": "librewiki.net",
+    "articleView": {
+      "regex": "/wiki/",
+      "flag": ""
+    },
+    "searchView": {
+      "regex": "/index\\.php(?:.*)(?:\\?|&)search=",
+      "flag": ""
+    },
+    "redirect": true
   },
   {
     "id": "rigvedawiki",
@@ -144,16 +168,16 @@
     "redirect": true
   },
   {
-    "id": "libreWiki",
-    "group": [ "libreWiki" ],
-    "name": "리브레위키",
-    "baseURL": "librewiki.net",
+    "id": "femiWiki",
+    "group": [ "femiWiki" ],
+    "name": "페미위키",
+    "baseURL": "femiwiki.com",
     "articleView": {
-      "regex": "/wiki/",
+      "regex": "/w/",
       "flag": ""
     },
     "searchView": {
-      "regex": "/index\\.php(.*)(\\?|&)search=",
+      "regex": "/index\\.php(?:.*)(?:\\?|&)search=",
       "flag": ""
     },
     "redirect": true
