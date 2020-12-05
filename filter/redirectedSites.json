@@ -27,6 +27,14 @@
     "id": "wikipedia",
     "group": [ "Community" ],
     "name": "Wikipedia",
-    "redirectLocation": "https://ko.wikipedia.org/wiki/{{query}}"
+    "redirectLocation": "https://ko.wikipedia.org/wiki/{{query}}",
+    "queryProcessing": {
+      "replace": [
+        {
+          "from": " ",
+          "to": "_"
+        }
+      ]
+    }
   }
 ]
