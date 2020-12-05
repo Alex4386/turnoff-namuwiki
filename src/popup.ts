@@ -6,8 +6,8 @@ const popup_settings = [
     document.getElementById('block_namumirror'),
     document.getElementById('adblock_namuwiki'),
     document.getElementById('filter_search'),
-    document.getElementById('arcalive_block'),
-    document.getElementById('intelliBan_enable'),
+    //document.getElementById('arcalive_block'),
+    document.getElementById('intelliBan_enabled'),
 ];
 
 function popup_updateHeader(config: ConfigInterface) {

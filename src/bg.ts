@@ -1,103 +1,174 @@
 let configCache: ConfigInterface;
-
-/* = Load Config Logic = */
-async function loadConfig(): Promise<ConfigInterface> {
-    return new Promise<ConfigInterface> (
-        async (resolve, reject) => {
-            let thisConfig: ConfigInterface;
-            do {
-                thisConfig = await browser.storage.sync.get<ConfigInterface>(null);
-                if (Object.keys(thisConfig).length === 0) {
-                    await browser.storage.sync.set({
-                        namuwikiBlock: true,
-                        arcaLiveBlock: true,
-                        namuMirrorBlock: true,
-                        openRiss: true,
-                        openDbpia: true,
-                        openArxiv: false,
-                        openGoogleScholar: false,
-                        adBlockNamuWiki: true,
-                        filterSearch: true,
-                        proxyDbpia: undefined,
-                        intelliBanUrl: "https://raw.githubusercontent.com/Alex4386/turnoff-namuwiki/master/intelliBan/rules.json",
-                        intelliBanRules: [],
-                    });
-                }
-                configCache = thisConfig;
-            } while (Object.keys(thisConfig).length === 0);
-            resolve(thisConfig);
-        }
-    );
-}
-
-/* = redirect to paper = */
-async function openPaper(config:ConfigInterface, searchQuery:string):Promise<void>{
-    if (searchQuery && !/^(나무위키|파일|분류|틀):.+/.test(searchQuery)) {
-        console.log('searchQuery:', searchQuery);
-        //const langCode = /^((\w){2})/.exec(navigator.language)[1];
-         const langCode = /(가-힣)+/.test(searchQuery) ? "ko" : /^[A-z0-9 ]$/.test(searchQuery) ? "en" : /^((\w){2})/.exec(navigator.language)[1];
-
-        const redirectQuery = searchQuery.split('/')[0];
-
-        // check for riss
-        if (config.openRiss) {
-            await browser.tabs.create({
-                url: `http://www.riss.kr/search/Search.do?detailSearch=false&searchGubun=true&oldQuery=&query=${redirectQuery}`,
-            });
-        }
-      
-        // check for dbpia
-        if (config.openDbpia) {
-            await browser.tabs.create({
-                url: `${config.proxyDbpia || 'http://www.dbpia.co.kr'}/search/topSearch?startCount=0&collection=ALL&startDate=&endDate=&filter=&prefix=&range=A&searchField=ALL&sort=RANK&reQuery=&realQuery=&exquery=&query=${redirectQuery}&collectionQuery=&srchOption=*`,
-            });
-        }
-        
-        // check for arxiv
-        if (config.openArxiv) {
-            if (langCode === "en") {
-                await browser.tabs.create({
-                    url: `https://arxiv.org/search/?query=${redirectQuery}&searchtype=all&source=header`,
-                });
-            }
-        }
-      
-        // check for google scholar
-        if (config.openGoogleScholar && langCode) {
-            await browser.tabs.create({
-              url: `https://scholar.google.co.kr/scholar?hl=${langCode}&as_sdt=0%2C5&q=${redirectQuery}&btnG=`,
-            });
-        }
-        
-        // check for wikipedia
-        if (config.openWikipedia && langCode) {
-            const escapedRedirectQuery = redirectQuery.replace(/ /g, "_");
-            await browser.tabs.create({
-                url: `https://ko.wikipedia.org/wiki/${escapedRedirectQuery}`,
-            });
-        }
-    }
-}
+let rulesCache: PageBlockRule[];
+let redirectionRulesCache: JSONRedirectedSites[];
 
 /* = Tab Context Save = */
 const previousTabUrls: string[] = [];
 
-
 /* = Adblock Namuwiki = */
 let adBlockNamuWiki = true;
 
+/* = URL Regex = */
+const urlRegex = '^http(s?):\\/\\/';
+
+/* = config update listener = */
+browser.storage.onChanged.addListener(async () => {
+    configCache = await loadConfig();
+    rulesCache = await loadRules();
+    redirectionRulesCache = await loadRedirectionRules();
+});
+
+/* = Load Config Logic = */
+async function loadConfig(): Promise<ConfigInterface> {
+    let thisConfig: ConfigInterface;
+    do {
+        thisConfig = await browser.storage.sync.get<ConfigInterface>(null);
+        if (Object.keys(thisConfig).length === 0) {
+            await browser.storage.sync.set({
+                blocked: {
+                    site: {},
+                    group: {},
+                },
+                redirected: {},
+                adblock: {
+                    namuwiki: false,
+                },
+                proxy: {
+                    dbpia: "",
+                },
+                searchFilter: false,
+                intelliBan: {
+                    enabled: false,
+                    url: "",
+                    rules: [],
+                },
+                bannedPage: {
+                    message: "",
+                    retry: false,
+                },
+            } as ConfigInterface);
+        }
+        configCache = thisConfig;
+    } while (Object.keys(thisConfig).length === 0);
+
+    return thisConfig;
+}
+
+/* = loading rules from file = */
+async function loadRules() {
+    if (rulesCache === undefined) {
+        const rules: PageBlockRule[] = [];
+
+        const tmpOnlineRules = (await loadConfig()).blocked.onlineRules;
+        const onlineRules = tmpOnlineRules === undefined ? [] : tmpOnlineRules;
+
+        const data = await fetch("/filter/blockedSites.json");
+        const offlineRules: JSONBlockedSites[] = await data.json();
+        for (const rule of offlineRules) {
+            const baseURL = rule.baseURL;
+            const id = rule.id;
+            
+            const duplicate = onlineRules.filter(a => a.id === id || a.baseURL === baseURL).length > 0;
+            
+            if (duplicate) {
+                offlineRules.splice(offlineRules.indexOf(rule), 1);
+            }
+        }
+
+        const tmpRules = onlineRules.concat(offlineRules);
+    
+        for (const dap of tmpRules) {
+            rules.push({
+                id: dap.id,
+                group: dap.group,
+                name: dap.name,
+                baseURL: dap.baseURL,
+                searchView: dap.searchView !== undefined ?
+                    new RegExp(
+                        dap.searchView.regex,
+                        dap.searchView.flag
+                    ) : undefined,
+                articleView: dap.articleView !== undefined ?
+                new RegExp(
+                    dap.articleView.regex,
+                    dap.articleView.flag
+                ) : undefined,
+                redirect: dap.redirect,
+            });
+        }
+
+        rulesCache = rules;
+    }
+
+    return rulesCache;
+}
+
+async function loadRedirectionRules() {
+    if (redirectionRulesCache === undefined) {
+        const data = await fetch("/filter/redirectedSites.json");
+        const rules: JSONRedirectedSites[] = await data.json();
+    
+        redirectionRulesCache = rules;
+    }
+
+    return redirectionRulesCache;
+}
+
+/* = Get Rules = */
+function getRules(config: ConfigInterface) {
+    const rules: PageBlockRule[] = [];
+
+    if (config.blocked === undefined) { return []; } 
+
+    if (config.blocked.group !== undefined) {
+        for (const blockedId in config.blocked.group) {
+            if (config.blocked.group[blockedId] !== undefined) {
+                if (config.blocked.group[blockedId]) {
+                    const daRules = rulesCache.filter(a => a.group.includes(blockedId));
+
+                    for (const daRule of daRules) {
+                        if (rules.filter(a => a.id === daRule.id).length === 0) {
+                            if (daRule !== undefined) {
+                                rules.push(daRule);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if (config.blocked.site !== undefined) {
+        for (const blockedId in config.blocked.site) {
+            if (config.blocked.site[blockedId] !== undefined) {
+                if (config.blocked.site[blockedId]) {
+                    const rule = rulesCache.filter(a => a.group.includes(blockedId))[0];
+    
+                    if (rules.filter(a => a.id === rule.id).length === 0) {
+                        if (rule !== undefined) {
+                            rules.push(rule);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return rules;
+}
+
 /* = NamuWiki Block Logic = */
 browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
+    if (configCache === undefined) configCache = await loadConfig();
+    if (rulesCache === undefined) rulesCache = await loadRules();
+
     const url = info.url || tab.url;
     const previousTabUrl = previousTabUrls[tabId];
-    let config: ConfigInterface = await loadConfig();
+    const config = configCache;
 
-    let blockRules = getRules(config.namuMirrorBlock, config.arcaLiveBlock);
-    let namuRules = getRules(true, false);
+    const blockRules = await getRules(config);
 
-    adBlockNamuWiki = config.adBlockNamuWiki;
-
-    if (config.filterSearch) {
+    if (config.searchFilter) {
         let result = triggerFilter(url);
         console.log(result);
         if (result) {
@@ -113,12 +184,14 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
     }
 
     for (const rule of blockRules) {
-        const baseBlockRegex = createPageRegexWithRule(rule);
-        if (baseBlockRegex.test(url)) {
+        const baseURLRegex = createBaseURLRegexWithRule(rule);
+        
+        if (baseURLRegex.test(url)) {
             console.log('NAMU WIKI DETECTED!!');
             console.log('config', config);
             console.log('tab', tab);
             console.log('rule', rule);
+            console.log('url', url);
 
             let parsed;
 
@@ -131,7 +204,9 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                 parsed = true;
             } else {
                 console.log("parsed", parsed);
-                console.log("parsed-decodeURIComponent-searchQuery", decodeURIComponent(parsed[3]));
+                if (parsed !== null) {
+                    console.log("parsed-decodeURIComponent-searchQuery", decodeURIComponent(parsed[3]));
+                }
             }
             
             let searchQuery;
@@ -145,17 +220,21 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                     }
                 }
 
+                let isArticle = false;
+
                 // const isThisSearch = (parsed[2].toLowerCase() === rule.searchView);
 
                 // The Code is no longer functioning correctly: Abandon this.
                 // const searchQuery = /((?!#\?)+)[#?]/.exec(decodeURIComponent(parsed[3]))[1];
 
-                if (namuRules.indexOf(rule) !== -1 && parsed !== true) {
+                if (rule.redirect && parsed !== true) {
+                    isArticle = unescapeRegexString(getRegexString(rule.articleView)) === parsed[2];
+                    console.log("isArticle", isArticle, unescapeRegexString(getRegexString(rule.articleView)), parsed[2]);
+
                     const uriAnchorParser = /[^?#]*/
                     const searchParsed = uriAnchorParser.exec(decodeURIComponent(parsed[3]));                
                     searchQuery = searchParsed[0];
                     const searchURIExtra = searchParsed[0];
-                    
                    
                     uriAnchorParser.lastIndex = 0;
     
@@ -173,34 +252,27 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                     }
     
                     // check for intelliBan
-                    if (config.intelliBanEnabled) {
-                        for (const rule of config.intelliBanRules) {
-                            if (new RegExp(rule.regex, rule.flag).test(searchQuery)) {
-                                return;
+                    if (config.intelliBan !== undefined) {
+                        if (config.intelliBan.enabled) {
+                            if (config.intelliBan.rules !== undefined) {
+                                for (const rule of config.intelliBan.rules) {
+                                    if (new RegExp(rule.regex, rule.flag).test(searchQuery)) {
+                                        return;
+                                    }
+                                }
                             }
                         }
                     }
+                    
                 }
 
-
-
-                if (config.namuwikiBlock && namuWikiBlockRule.indexOf(rule) !== -1 ||
-                    config.namuMirrorBlock && mirrorLists.indexOf(rule) !== -1) {
-
-                    console.log("BAN HAMMER HAS SPOKEN!");
-                    await browser.tabs.update(tabId, {
-                        url: browser.extension.getURL(`interface/banned/index.html?banned_url=${url}`),
-                    });
-                  
-                    await openPaper(config, searchQuery);
-                }
+                console.log("BAN HAMMER HAS SPOKEN!");
+                await browser.tabs.update(tabId, {
+                    url: browser.extension.getURL(`interface/banned/index.html?banned_url=${url}`),
+                });
                 
-                
-
-                if (config.arcaLiveBlock && arcaLiveAndNamuNewsBlockRule.indexOf(rule) !== -1) {
-                    await browser.tabs.update(tabId, {
-                        url: browser.extension.getURL(`interface/banned/namu_live.html?banned_url=${url}`),
-                    });
+                if (isArticle) {
+                    await runRedirect(config, searchQuery);
                 }
             }
             console.log('End of Session\n');
@@ -210,82 +282,68 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
     previousTabUrls[tabId] = url;
 });
 
-/* = RULES = */
-const namuWikiBlockRule: PageBlockRule[] = [
-    {
-        baseURL: 'namu.wiki',
-        articleView: '/w/',
-        searchView: '/go/',
-    },
-];
+function getRegexString(regex: RegExp|string) {
+    let string = "";
 
-const mirrorLists: PageBlockRule[] = [
-    // namuwiki mirror rulesets
-    {
-        baseURL: 'namu.mirror.wiki',
-        articleView: "/w/|/namu2/",
-        searchView: /go/,
-    },
-    {
-        baseURL: 'mirror.wiki',
-        articleView: "/w/|/namu2/",
-        searchView: /go/,
-    },
-    {
-        baseURL: "dump.thewiki.kr",
-        articleView: undefined,
-        searchView: undefined,
-    },
-    {
-        baseURL: "thewiki.kr",
-        articleView: /w/,
-        searchView: "/googlesearch/?q=",
-    },
-    {
-        baseURL: 'namu.moe',
-        articleView: /w/,
-        searchView: /go/,
-    },
-    {
-        baseURL: 'mir.pe',
-        articleView: /wiki/,
-        searchView: /search/,
-    },
-];
+    if (regex instanceof RegExp) {
+        const tempString = regex.toString();
+        const flagLength = regex.flags.length;
 
-const arcaLiveAndNamuNewsBlockRule: PageBlockRule[] = [
-    {
-        baseURL: 'arca.live',
-        articleView: undefined,
-        searchView: undefined
-    },
-    {
-        baseURL: 'namu.news',
-        articleView: undefined,
-        searchView: undefined
-    },
-]
-
-const urlRegex = '^http(s?):\\/\\/';
-
-function getRules(withMirror?: boolean, withNamuLiveNews?: boolean):PageBlockRule[] {
-    let blockRules = namuWikiBlockRule;
-    if (withMirror) {
-        blockRules = blockRules.concat(mirrorLists);
+        string = tempString.slice(1, tempString.length - 1 - flagLength);
+    } else if (typeof regex === "string") {
+        string = regex;
     }
-    if (withNamuLiveNews) {
-        blockRules = blockRules.concat(arcaLiveAndNamuNewsBlockRule);
 
-    }
-    return blockRules;
+    return string;
 }
 
-function createPageRegexWithRule(rule: PageBlockRule): RegExp {
-    return new RegExp(urlRegex + rule.baseURL, "ig");
+function unescapeRegexString(string: string) {
+    return string.replace(/\\([\/\.\*\+\?\|\(\)\[\]\{\}\\\$\^\-])/g, '$1');
+}
+
+function createBaseURLRegexWithRule(rule: PageBlockRule): RegExp {
+    return new RegExp(urlRegex + rule.baseURL, 'ig')
 }
 
 function createDocumentRegexWithRule(rule: PageBlockRule): RegExp {
-    return new RegExp(urlRegex + rule.baseURL + '(' + rule.articleView + '|' + rule.searchView + ')' + '(.+)$', 'ig')
+    const articleView = getRegexString(rule.articleView);
+    const searchView = getRegexString(rule.searchView);
+
+    const pattern = urlRegex + rule.baseURL + '(' + articleView + '|' + searchView + ')' + '(.+)$';
+    console.log("Generated Pattern:", pattern);
+
+    return new RegExp(pattern, 'ig')
+}
+
+async function runRedirect(config: ConfigInterface, searchQuery: string) {
+    const redirectionConfig = config.redirected;
+    const redirectionRules = await loadRedirectionRules();
+
+    if (redirectionConfig !== undefined) {
+        for (const id in redirectionConfig) {
+            if (redirectionConfig[id]) {
+                const result = redirectionRules.filter(a => a.id === id);
+                if (result.length > 0) {
+                    const target = result[0];
+                    let query = searchQuery;
+                    if (target.queryProcessing !== undefined) {
+                        for (const replaceReq of target.queryProcessing.replace) {
+                            const fromRegex = new RegExp(replaceReq.from, "g");
+                            const to = replaceReq.to;
+                            query.replace(fromRegex, to);
+                        }
+                    }
+                    const queryReplaceRegex = new RegExp("{{query}}", "g");
+                    const finalURL = target.redirectLocation.replace(queryReplaceRegex, query);
+    
+    
+                    await browser.tabs.create({
+                        url: finalURL,
+                    });
+                }
+            }
+        }
+    }
 }
 
 /* = SearchEngine = */
@@ -346,9 +404,38 @@ function triggerFilter(url: string) {
 
 browser.webRequest.onBeforeRequest.addListener(
     (details) => {
-        if (adBlockNamuWiki) {
+        if (configCache.adblock.namuwiki) {
             // I don't care the mirrors, they are copyright infringers, too.
-            const rules = getRules(true);
+            const rules = getRules({
+                blocked: {
+                    group: {
+                        namuwiki: true,
+                        namuwikiMirror: true,
+                        namulive: true,
+                        namunews: true,
+                    },
+                    site: {},
+                    url: "https://raw.githubusercontent.com/Alex4386/turnoff-namuwiki/master/filter/blockedSites.json",
+                    onlineRules: [],
+                },
+                redirected: {},
+                adblock: {
+                    namuwiki: false,
+                },
+                proxy: {
+                    dbpia: "",
+                },
+                searchFilter: false,
+                intelliBan: {
+                    enabled: false,
+                    url: "",
+                    rules: [],
+                },
+                bannedPage: {
+                    message: "",
+                    retry: false,
+                },
+            });
 
             // Bug in polyfill :(
             let whereareyoufrom = (details as any).initiator || details.originUrl;
@@ -362,7 +449,7 @@ browser.webRequest.onBeforeRequest.addListener(
             }
 
             for (const rule of rules) {
-                if (createPageRegexWithRule(rule).test(whereareyoufrom)) {
+                if (createBaseURLRegexWithRule(rule).test(whereareyoufrom)) {
                     console.log("canceled!", "bwahbwahbwah!");
                     return {
                         cancel: true
@@ -399,7 +486,7 @@ browser.webRequest.onBeforeRequest.addListener(
  */
 browser.webRequest.onBeforeRequest.addListener(
     (details) => {
-        if (configCache.arcaLiveBlock) {
+        if (configCache.blocked.group['namulive'] || configCache.blocked.site['namulive']) {
             console.log("canceled!", "bwah bwah bwah!", details.url);
             return {
                 cancel: true

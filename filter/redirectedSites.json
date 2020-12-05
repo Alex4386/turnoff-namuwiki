@@ -1,0 +1,32 @@
+[
+  {
+    "id": "riss",
+    "group": [ "Journals" ],
+    "name": "RISS",
+    "redirectLocation": "http://www.riss.kr/search/Search.do?detailSearch=false&searchGubun=true&oldQuery=&query={{query}}"
+  },
+  {
+    "id": "dbpia",
+    "group": [ "Journals" ],
+    "name": "DBPia",
+    "redirectLocation": "http://www.dbpia.co.kr/search/topSearch?startCount=0&collection=ALL&startDate=&endDate=&filter=&prefix=&range=A&searchField=ALL&sort=RANK&reQuery=&realQuery=&exquery=&query={{query}}&collectionQuery=&srchOption=*"
+  },
+  {
+    "id": "arxiv",
+    "group": [ "Journals" ],
+    "name": "arXiv",
+    "redirectLocation": "https://arxiv.org/search/?query={{query}}&searchtype=all&source=header"
+  },
+  {
+    "id": "googleScholar",
+    "group": [ "Journals" ],
+    "name": "Google Scholar",
+    "redirectLocation": "https://scholar.google.co.kr/scholar?hl={{lang}}&as_sdt=0%2C5&q={{query}}&btnG="
+  },
+  {
+    "id": "wikipedia",
+    "group": [ "Community" ],
+    "name": "Wikipedia",
+    "redirectLocation": "https://ko.wikipedia.org/wiki/{{query}}"
+  }
+]
