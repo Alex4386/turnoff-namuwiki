@@ -1,5 +1,4 @@
 let config: ConfigInterface;
-const bgconsole = browser.extension.getBackgroundPage().console;
 
 function showVersion() {
   const manifestData = browser.runtime.getManifest();
@@ -189,9 +188,9 @@ async function updateBlocked(config: ConfigInterface, url?: string) {
 async function saveData(thisConfig: ConfigInterface) {
     try {
         await browser.storage.sync.set(thisConfig);
-        bgconsole.log(`저장 완료. ${JSON.stringify(config)}`);
+        console.log(`저장 완료. ${JSON.stringify(config)}`);
     } catch (e) {
-        bgconsole.error(`저장 실패. ${JSON.stringify(config)}`);
+        console.error(`저장 실패. ${JSON.stringify(config)}`);
     }
 }
 

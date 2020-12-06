@@ -39,7 +39,7 @@ showVersion();
 (async () => {
     try {
         config = await browser.storage.sync.get() as unknown as ConfigInterface;
-        bgconsole.log(`로드 완료. ${JSON.stringify(config)}`);
+        console.log(`로드 완료. ${JSON.stringify(config)}`);
         setHook(popup_settings as HTMLInputElement[], (config) => {
             popup_updateHeader(config);
             updateIntelliBan(config);
@@ -47,6 +47,6 @@ showVersion();
         popup_updateHeader(config);
     } catch (e) {
         alert(e);
-        bgconsole.error(`로드 실패. ${JSON.stringify(config)}`);
+        console.error(`로드 실패. ${JSON.stringify(config)}`);
     }
 })();
