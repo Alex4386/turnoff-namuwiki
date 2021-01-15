@@ -60,7 +60,7 @@ Firefox does their examination within 10 minutes, instead Chrome takes at least 
 
 #### Mozilla Firefox
 파이어폭스 애드온 스토어에 올렸습니다! [파이어폭스 스토어](https://addons.mozilla.org/en-US/firefox/addon/turnoff-namuwiki/)  
-**최대한 빠른 업데이트를 위해 Mozilla Firefox 버전을 권장합니다** 파이어폭스 애드온 팀 사랑합니다. <3  
+**최대한 빠른 업데이트를 위해 Mozilla Firefox 버전을 권장합니다** 
 
 신기능을 누구보다 빠르게 테스트 해보고 싶으시다고요? 아래 방법을 사용하세요!  
 1. 이 레포지토리를 클론합니다.
@@ -128,9 +128,8 @@ It redirects you to journal webpages (ex. DBpia, RISS, arXiv, Google Scholar) by
 ### How to Install
 
 #### Mozilla Firefox
-It's now available at Firefox Add-ons! [Turnoff-NamuWiki](https://addons.mozilla.org/en-US/firefox/addon/turnoff-namuwiki/)
+It's now available at Firefox Add-ons! [Turnoff-NamuWiki](https://addons.mozilla.org/en-US/firefox/addon/turnoff-namuwiki/)  
 **This is the recommended browser for using this add-on/extension**  
-~~I really love you Firefox Add-on Team! Your publish examination only takes 10 minutes! AWESOME!~~  
 
 Do you want to test some latest feature? follow this directions!  
 1. Clone this repository.
