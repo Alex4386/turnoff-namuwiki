@@ -20,8 +20,7 @@ turnoff-namuwiki 기여에 관심 가져 주셔서 감사합니다.
 turnoff-namuwiki는 Agile Development Cycle을 이용하고 있습니다. 따라서 이슈 트래커에 **이슈는 기능 추가 및 버그 신고 마다 하나씩** 생성해 주시면 감사하겠습니다.  
 
 ## Technical Supports
-개발 중 궁금한 게 있다면 [이슈에서 묻는게 아닌](https://github.com/Alex4386/turnoff-namuwiki/issues/29#issuecomment-630011653), 제 개인 메일로 질문해 주세요.  
-또한 저는 [기여자 여러분들의 개인 튜터가 아니므로](https://github.com/Alex4386/turnoff-namuwiki/issues/29#issuecomment-630025470), 직접 검색을 통해 해결 할 수 있는 경우, 검색을 통해 해결해 주세요. 이슈 트래커는 [StackOverflow](https://stackoverflow.com)가 아닙니다.  
+개발 중 궁금한 게 있다면 이슈가 아니라, 이번 GitHub 2020 Universe 에 추가 발표된. **[GitHub Discussions](https://github.com/Alex4386/turnoff-namuwiki/discussions) 를 사용**해 주세요!   
 
 ## Code Structure
 * src/ : 타입스크립트 코드의 위치입니다.
