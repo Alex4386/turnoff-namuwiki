@@ -357,7 +357,7 @@ const searchEngineRules: SearchEngineFilterRules[] = [
     },
     {
         name: 'DuckDuckGo',
-        regex: /^http(s|):\/\/(www.|search.|)duckduckgo.com\/\?q/ig,
+        regex: /^http(s|):\/\/(www.|search.|)duckduckgo.com\/\?/ig,
         scriptLocation: '/lib/filter/duckduckgo.js',
     },
     {
