@@ -11,11 +11,24 @@ let adBlockNamuWiki = true;
 /* = URL Regex = */
 const urlRegex = '^http(s?):\\/\\/';
 
-/* = config update listener = */
-browser.storage.onChanged.addListener(async () => {
-    configCache = await loadConfig();
+(async () => {
     rulesCache = await loadRules();
     redirectionRulesCache = await loadRedirectionRules();
+})();
+
+async function configUpdater() {
+    try {
+        configCache = await loadConfig();
+        rulesCache = await loadRules();
+        redirectionRulesCache = await loadRedirectionRules();
+    } catch(e) {
+        
+    }
+}
+
+/* = config update listener = */
+browser.storage.onChanged.addListener(async () => {
+    await configUpdater();
 });
 
 /* = Load Config Logic = */
