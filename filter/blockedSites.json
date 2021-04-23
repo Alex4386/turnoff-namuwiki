@@ -9,7 +9,7 @@
       "flag": ""
     },
     "searchView": {
-      "regex": "/go/",
+      "regex": "/Search/\\?q=",
       "flag": ""
     },
     "redirect": true
