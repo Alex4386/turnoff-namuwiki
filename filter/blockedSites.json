@@ -1,0 +1,185 @@
+[
+  {
+    "id": "namuwiki",
+    "group": [ "namuwiki" ],
+    "name": "나무위키",
+    "baseURL": "namu.wiki",
+    "articleView": {
+      "regex": "/w/",
+      "flag": ""
+    },
+    "searchView": {
+      "regex": "/Search\\?q=",
+      "flag": ""
+    },
+    "redirect": true
+  },
+  {
+    "id": "namuMirror",
+    "group": [ "namuwikiMirror" ],
+    "name": "나무미러위키",
+    "baseURL": "namu.mirror.wiki",
+    "articleView":{
+      "regex": "/w/",
+      "flag": ""
+    },
+    "searchView": {
+      "regex": "/go/",
+      "flag": ""
+    },
+    "redirect": true
+  },
+  {
+    "id": "mirrorWiki",
+    "group": [ "namuwikiMirror" ],
+    "name": "미러위키",
+    "baseURL": "mirror.wiki",
+    "articleView": {
+      "regex": "/w/|/namu2/",
+      "flag": ""
+    },
+    "searchView": {
+      "regex": "/go/",
+      "flag": ""
+    },
+    "redirect": true
+  },
+  {
+    "id": "namuMoe",
+    "group": [ "namuwikiMirror" ],
+    "name": "나무모에",
+    "baseURL": "namu.moe",
+    "articleView": {
+      "regex": "/w/",
+      "flag": ""
+    },
+    "searchView": {
+      "regex": "/go/",
+      "flag": ""
+    },
+    "redirect": true
+  },
+  {
+    "id": "mirPe",
+    "group": [ "namuwikiMirror" ],
+    "name": "미러",
+    "baseURL": "mir.pe",
+    "articleView": {
+      "regex": "/wiki/",
+      "flag": ""
+    },
+    "searchView": {
+      "regex": "/search/",
+      "flag": ""
+    },
+    "redirect": true
+  },
+  {
+    "id": "theWiki",
+    "group": [ "theWiki" ],
+    "name": "더위키",
+    "baseURL": "thewiki.kr",
+    "articleView": {
+      "regex": "/w/",
+      "flag": ""
+    },
+    "searchView": {
+      "regex": "/googlesearch/",
+      "flag": ""
+    },
+    "redirect": true
+  },
+  {
+    "id": "umanWiki",
+    "group": [ "umanWiki" ],
+    "name": "우만위키",
+    "baseURL": "tcatmon.com",
+    "articleView": {
+      "regex": "/w(?:iki)/",
+      "flag": ""
+    },
+    "searchView": {
+      "regex": "/w/index\\.php(?:.*)(?:\\?|&)search=",
+      "flag": ""
+    },
+    "redirect": true
+  },
+  {
+    "id": "libreWiki",
+    "group": [ "libreWiki" ],
+    "name": "리브레위키",
+    "baseURL": "librewiki.net",
+    "articleView": {
+      "regex": "/wiki/",
+      "flag": ""
+    },
+    "searchView": {
+      "regex": "/index\\.php(?:.*)(?:\\?|&)search=",
+      "flag": ""
+    },
+    "redirect": true
+  },
+  {
+    "id": "rigvedawiki",
+    "group": [ "rigvedawiki" ],
+    "name": "리그베다위키",
+    "baseURL": "rigvedawiki.net",
+    "articleView": {
+      "regex": "/w/",
+      "flag": ""
+    },
+    "searchView": {
+      "regex": "/w/",
+      "flag": ""
+    },
+    "redirect": true
+  },
+  {
+    "id": "namulive",
+    "group": [ "namulive" ],
+    "name": "나무라이브",
+    "baseURL": "namu.live"
+  },
+  {
+    "id": "arcalive",
+    "group": [ "namulive" ],
+    "name": "아카라이브",
+    "baseURL": "arca.live"
+  },
+  {
+    "id": "namunews",
+    "group": [ "namunews" ],
+    "name": "나무뉴스",
+    "baseURL": "namu.news"
+  },
+  {
+    "id": "dcWiki",
+    "group": [ "dcWiki" ],
+    "name": "DC위키",
+    "baseURL": "wiki.dcinside.com",
+    "articleView": {
+      "regex": "/wiki/",
+      "flag": ""
+    },
+    "searchView": {
+      "regex": "/index\\.php(?:.*)(?:\\?|&)search=",
+      "flag": ""
+    },
+    "redirect": true
+  },
+  {
+    "id": "femiWiki",
+    "group": [ "femiWiki" ],
+    "name": "페미위키",
+    "baseURL": "femiwiki.com",
+    "articleView": {
+      "regex": "/w/",
+      "flag": ""
+    },
+    "searchView": {
+      "regex": "/index\\.php(?:.*)(?:\\?|&)search=",
+      "flag": ""
+    },
+    "redirect": true
+  }
+]

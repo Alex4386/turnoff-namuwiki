@@ -6,8 +6,8 @@ const popup_settings = [
     document.getElementById('block_namumirror'),
     document.getElementById('adblock_namuwiki'),
     document.getElementById('filter_search'),
-    document.getElementById('namulive_block'),
-    document.getElementById('intelliBan_enable'),
+    //document.getElementById('arcalive_block'),
+    document.getElementById('intelliBan_enabled'),
 ];
 
 function popup_updateHeader(config: ConfigInterface) {
@@ -34,14 +34,12 @@ function popup_updateHeader(config: ConfigInterface) {
     }
 }
 
-
 showVersion();
-
 
 (async () => {
     try {
         config = await browser.storage.sync.get() as unknown as ConfigInterface;
-        bgconsole.log(`로드 완료. ${JSON.stringify(config)}`);
+        console.log(`로드 완료. ${JSON.stringify(config)}`);
         setHook(popup_settings as HTMLInputElement[], (config) => {
             popup_updateHeader(config);
             updateIntelliBan(config);
@@ -49,6 +47,6 @@ showVersion();
         popup_updateHeader(config);
     } catch (e) {
         alert(e);
-        bgconsole.error(`로드 실패. ${JSON.stringify(config)}`);
+        console.error(`로드 실패. ${JSON.stringify(config)}`);
     }
 })();

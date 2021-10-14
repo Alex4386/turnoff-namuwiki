@@ -4,39 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>꺼무위키 시스템</title>
+    <title>TurnOff-NamuWiki 상세 설정</title>
     <style>
         @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR|Nunito&display=swap');
         html {
             margin: 0; padding: 0;
         }
         body {
-            margin: 0 auto;
             font-family: "Nunito", "Noto Sans KR", sans-serif;
-            width: 370px;
+            margin: 0;
             padding: 0;
             background: #EEE;
-            font-size: 13px;
+            font-size: 1em;
             overflow-x: hidden;
+            word-break: keep-all
         }
         header {
-            width: 370px;
+            width: 100vw;
             display: inline-block;
             border-bottom: solid 1px #E7E7E7;
             background: #FFF;
             color: #FFF;
+            background: #596bb8;
         }
-        body.namuwiki header {
-            background: #47a69b;
-        }
-        body.blocked header{
-            background: #b85964;
-        }
-        body.blocked.mirror-blocked header {
-            background: #a52231;
-        }
-        body.redirect header{
-            background: #596bb8 !important;
+        .wrap {
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         header .wrap {
@@ -130,16 +123,83 @@
             margin: 0;
         }
 
-        input[type="url"] {
-            width: 100%;
+        .to-left {
+            float: right;
         }
 
         .to-right {
             float: right;
         }
+        .align-right {
+            text-align: right;
+        }
 
         div.redirect .content {
             text-align: center;
+        }
+        .card {
+            background: #FFF;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 5px rgba(0,0,0,.1);
+            margin: 2em 1em;
+            transition: .25s;
+        }
+        .card:hover, .card:active, .card:focus-within, .card:focus {
+            box-shadow: 0px 10px 10px rgba(0,0,0,.1);
+        }
+        .card .explain {
+            float: right;
+            text-align: right;
+            width: 40%;
+            max-width: 18em;
+            padding-right: 15px;
+        }
+
+        .card .content {
+            margin: 1em 1em;
+            width: calc(100% - 30px);
+        }
+
+        input {
+            background: #FFF;
+            border: 1px black solid;
+            font-size: 1em;
+            border-radius: 15px;
+            padding: 15px;
+            outline: none;
+        }
+        
+        input[type=url] {
+            width: calc(100% - 30px);
+        }
+
+        .mobile {
+            display: none;
+        }
+
+        @media screen and (max-width: 600px) {
+            .mobile {
+                display: block;
+            }
+        }
+
+        span.detail {
+            font-size: 0.7em;
+            color: #555;
+        }
+
+        .reset {
+            padding: .5em 1.25em;
+            font-size: 1.25em;
+            background: rgba(255, 0, 0, .1);
+            border: 1px solid #F00;
+            border-radius: .5em;
+            transition: .25s;
+        }
+        .reset:hover, .reset:active, .reset:focus {
+            background: #900;
+            color: #FFF;
         }
     </style>
     <link rel="stylesheet" href="../common/switch.css">
@@ -149,68 +209,42 @@
     <header>
         <div class="wrap">
             <span class="version" id="extension_version">JavaScript Error!!</span>
-            <h1>TurnOff-NamuWiki Console</h1>
+            <h1>TurnOff-NamuWiki Settings</h1>
         </div>
     </header>
     <main>
-        <div class="control-panel">
-            <div class="namuwiki-block">
-                <label class="switch" for="block_namuwiki">
-                    <input type="checkbox" id="block_namuwiki" data-val="blocked.group.namuwiki">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-            <div class="namuwiki-mirror-block">
-                <div class="mirror-indicator">
-                    <span>MIRROR</span>
+        <div class="wrap">
+            <h1>설정 초기화</h1>
+            <p>확장기능 작동에 이상이 있을 때 사용할 수 있는 초기화 기능입니다.</p>
+
+            <div class="card">
+                <div class="explain">
+                    <h2>초기화</h2>
+                    <p>TurnOff-NamuWiki가 정상적으로 작동하지 않을때 이 기능을 사용하세요.</p>
                 </div>
-                <label class="switch" for="block_namumirror">
-                    <input type="checkbox" id="block_namumirror" data-val="blocked.group.namuwikiMirror">
-                    <span class="slider round"></span>
-                </label>
+                <div class="content">
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <button id="reset-button" class="reset">초기화</button>
+                </div>
             </div>
         </div>
-        <p>추가 차단 대상은 <a id="detail-settings" href="/interface/settings/index.html" target="_blank">상세 설정</a>에서 설정 가능합니다.</p>
-        <hr />
-        <div class="search-filter">
-            
-            <label class="switch-small to-right" for="filter_search">
-                <input type="checkbox" id="filter_search" data-val="searchFilter">
-                <span class="slider-small round"></span>
-            </label>
-            <h3>검색 엔진 필터링:</h3>
-        </div><br>
-        <div class="adblock-namuwiki">
-            
-            <label class="switch-small to-right" for="adblock_namuwiki">
-                <input type="checkbox" id="adblock_namuwiki" data-val="adblock.namuwiki">
-                <span class="slider-small round"></span>
-            </label>
-            <h3>나무위키 광고차단 <a href="/interface/help/adblock.html" target="_blank">(?)</a>: </h3>
-        </div><br>
-        <div class="search-filter">
-            
-            <label class="switch-small to-right" for="intelliBan_enabled">
-                <input type="checkbox" id="intelliBan_enabled" data-val="intelliBan.enabled">
-                <span class="slider-small round"></span>
-            </label>
-            <h3>intelliBan 활성화:</h3>
-        </div>
-        <hr />
-        <div class="settings">
-            <h2><a id="detail-settings" href="/interface/settings/index.html" target="_blank">상세 설정</a></h2>
-        </div>
-            
+        
     </main>
     <span id="status"></span>
 
     <footer>
-        Copyright &copy; Alex4386 and TurnOff-NamuWiki Contributors.<br>
-        The Source Code of this extension is available at <a href="https://github.com/Alex4386/turnoff-namuwiki" target="_blank">GitHub</a>.
+        <div class="wrap">
+            Copyright &copy; Alex4386 and TurnOff-NamuWiki Contributors.<br>
+            The Source Code of this extension is available at <a href="https://github.com/Alex4386/turnoff-namuwiki" target="_blank">GitHub</a>.    
+        </div>
     </footer>
 </body>
 <script src="/polyfill/browser-polyfill.min.js"></script>
 <script src="/lib/util.js"></script>
 <script src="/lib/settings_util.js"></script>
-<script src="/lib/popup.js"></script>
+<script src="/lib/reset.js"></script>
 </html>

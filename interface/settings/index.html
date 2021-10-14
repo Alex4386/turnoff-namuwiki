@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>꺼무위키 시스템</title>
+    <title>TurnOff-NamuWiki 상세 설정</title>
     <style>
         @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR|Nunito&display=swap');
         html {
@@ -143,6 +143,10 @@
             border-radius: 15px;
             box-shadow: 0px 5px 5px rgba(0,0,0,.1);
             margin: 2em 1em;
+            transition: .25s;
+        }
+        .card:hover, .card:active, .card:focus-within, .card:focus {
+            box-shadow: 0px 10px 10px rgba(0,0,0,.1);
         }
         .card .explain {
             float: right;
@@ -169,6 +173,21 @@
         input[type=url] {
             width: calc(100% - 30px);
         }
+
+        .mobile {
+            display: none;
+        }
+
+        @media screen and (max-width: 600px) {
+            .mobile {
+                display: block;
+            }
+        }
+
+        span.detail {
+            font-size: 0.7em;
+            color: #555;
+        }
     </style>
     <link rel="stylesheet" href="../common/switch.css">
     <link rel="stylesheet" href="../common/checkbox.css">
@@ -184,49 +203,46 @@
         <div class="wrap">
             <h1>설정</h1>
             <p>이 곳에서 상세한 설정을 진행 할 수 있습니다.</p>
+
+
             <div class="card">
                 <div class="explain">
-                    <h2>자동접속 설정</h2>
-                    <p>나무위키 접속시 해당 접속쿼리로 검색 할 논문 페이지를 선택해 주시기 바랍니다.</p>
-                    <p>&nbsp;</p>
-                    <p><b>주의!</b> 0.7.6 부터 자동 접속은 나무위키가 차단되었을 때에만 작동합니다. 이 점 유의 바랍니다.</p>
+                    <h2>차단 사이트 그룹 설정</h2>
+                    <p>TurnOff-NamuWiki에서 추가로 차단할 웹페이지 그룹을 선택해 주십시오.</p>
                 </div>
-                <div class="content">
-                    <p><label class="container" for="riss_auto">RISS
-                        <input type="checkbox" id="riss_auto" data-val="openRiss">
-                        <span class="checkmark"></span>
-                    </label></p>
-                    <p><label class="container" for="dbpia_auto">DBPia
-                        <input type="checkbox" id="dbpia_auto" data-val="openDbpia">
-                        <span class="checkmark"></span>
-                    </label></p>
-                    <p><label class="container" for="arxiv_auto">arXiv
-                        <input type="checkbox" id="arxiv_auto" data-val="openArxiv">
-                        <span class="checkmark"></span>
-                    </label></p>
-                    <p><label class="container" for="googlescholar_auto">Google 학술검색
-                        <input type="checkbox" id="googlescholar_auto" data-val="openGoogleScholar">
-                        <span class="checkmark"></span>
-                    </label></p>
-                    <p>&nbsp;</p><p>&nbsp;</p>
+                <div class="content" id="blocked_groups">
+                    <p>정보를 가져오는 중 입니다.</p>
+                </div>
+            </div>
+
+
+            <div class="card">
+                <div class="explain">
+                    <h2>차단 사이트 설정</h2>
+                    <p>TurnOff-NamuWiki에서 추가로 차단할 웹페이지를 개별적으로 선택해 주십시오.</p>
+                </div>
+                <div class="content" id="blocked_sites">
+                    <p>정보를 가져오는 중 입니다.</p>
                 </div>
             </div>
 
             <div class="card">
                 <div class="explain">
-                    <h2>커뮤니티 자동접속 설정</h2>
-                    <p>turnoff-namuwiki 개발진은 해당 플랫폼에 있는 컨텐츠에 대해 품질을 보장하지 않습니다.</p>
+                    <h2>자동접속 설정</h2>
+                    <p>나무위키 차단시 해당 접속쿼리로 검색 할 논문 페이지를 선택해 주시기 바랍니다.</p>
+                </div>
+                <div class="content" id="redirected_sites">
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="explain">
+                    <h2>나무위키 차단정보 설정</h2>
+                    <p>차단 웹페이지의 자료 파일을 어디에서 가져올지를 지정합니다.</p>
                 </div>
                 <div class="content">
-                    <p><label class="container" for="wikipedia_auto">위키백과
-                        <input type="checkbox" id="wikipedia_auto" data-val="openWikipedia">
-                        <span class="checkmark"></span>
-                    </label></p>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
+                    <input type="url" id="blocked_url" data-val="blocked.url" placeholder="https://raw.githubusercontent.com/Alex4386/turnoff-namuwiki/master/filter/blockedSites.json"><br>
+                    <button id="trigger-update-blocked">차단 데이터베이스 업데이트</button>               
                 </div>
             </div>
 
@@ -236,7 +252,8 @@
                     <p>IntelliBan의 자료 파일을 어디에서 가져올지를 지정합니다.</p>
                 </div>
                 <div class="content">
-                    <input type="url" id="intelliBan_url" data-val="intelliBanUrl" placeholder="https://raw.githubusercontent.com/Alex4386/turnoff-namuwiki/master/intelliBan/rules.json">
+                    <input type="url" id="intelliBan_url" data-val="intelliBan.url" placeholder="https://raw.githubusercontent.com/Alex4386/turnoff-namuwiki/master/intelliBan/rules.json"><br>
+                    <button id="trigger-update-intelliBan">intelliBan 데이터베이스 업데이트</button>
                 </div>
             </div>
 
@@ -248,7 +265,7 @@
                 <div class="content">
                     <br><br><br><br><br><br>
                     <label for="dbpia_proxy">학교에서 제공하는 DBPia 프록시 주소</label><br><br>
-                    <input type="url" id="dbpia_proxy" data-val="proxyDbpia" placeholder="학교 DBPia 프록시 주소">
+                    <input type="url" id="dbpia_proxy" data-val="proxy.dbpia" placeholder="학교 DBPia 프록시 주소">
                 </div>
             </div>
 
@@ -259,12 +276,38 @@
                 </div>
                 <div class="content">
                     <label class="container" for="banned_page_retry">재시도 링크 추가
-                        <input type="checkbox" id="banned_page_retry" data-val="bannedPageRetry">
+                        <input type="checkbox" id="banned_page_retry" data-val="bannedPage.retry">
                         <span class="checkmark"></span>
                     </label>
                     <br><br><br><br>
                     <label for="banned_page_message">차단 메세지</label><br><br>
-                    <input type="url" id="banned_page_message" data-val="bannedPageMessage" placeholder="나무위키 접속 시도가 감지되어 강제 종료합니다">
+                    <input type="url" id="banned_page_message" data-val="bannedPage.message" placeholder="나무위키 접속 시도가 감지되어 강제 종료합니다">
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="explain">
+                    <h2>설정 디버깅</h2>
+                    <p>TurnOff-NamuWiki의 설정을 디버깅하기 위한 페이지로 이동합니다.</p>
+                </div>
+                <div class="content">
+                    <br>
+                    <br>
+                    <br>
+                    <h3><a href="debug.html">디버깅 페이지로 이동</a></h3>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="explain">
+                    <h2>설정 초기화</h2>
+                    <p>TurnOff-NamuWiki의 설정을 초기화 합니다.</p>
+                </div>
+                <div class="content">
+                    <br>
+                    <br>
+                    <br>
+                    <h3><a href="reset.html">초기화 페이지로 이동</a></h3>
                 </div>
             </div>
         </div>
