@@ -8,5 +8,9 @@
   }, {
     "regex": "^나무위키:대문$",
     "flag": "g"
+  },
+  {
+    "regex": "Snow halation",
+    "flag": "g"
   }
 ]
