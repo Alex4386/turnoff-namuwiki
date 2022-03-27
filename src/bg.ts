@@ -155,12 +155,12 @@ function getRules(config: ConfigInterface) {
         for (const blockedId in config.blocked.site) {
             if (config.blocked.site[blockedId] !== undefined) {
                 if (config.blocked.site[blockedId]) {
-                    const rule = rulesCache.filter(a => a.group.includes(blockedId))[0];
-    
-                    if (rules.filter(a => a.id === rule.id).length === 0) {
-                        if (rule !== undefined) {
-                            rules.push(rule);
-                        }
+                    let rule = rulesCache.filter(a => a.group.includes(blockedId))[0];
+                    if (rule == undefined) {
+                        rule = rulesCache.filter((a)=>a.id ===blockedId)[0];
+                    }
+                    if (rules.filter((a) => a.id === rule.id).length === 0) {
+                        rules.push(rule);
                     }
                 }
             }
