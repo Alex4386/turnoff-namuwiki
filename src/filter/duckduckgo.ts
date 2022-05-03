@@ -5,7 +5,7 @@
     const urlRegex = "^http(s?):\\/\\/";
     const blockRules = [ "namu.wiki", "namu.mirror.wiki", "namu.moe", "mir.pe", "namu.news" ];
 
-    const searchResultClasses = [ 'nrn-react-div' ];
+    const searchResultClasses = [ 'nrn-react-div', 'tile' ];
 
     let searchResults: HTMLDivElement[] = [];
 
