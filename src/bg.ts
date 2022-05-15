@@ -22,7 +22,7 @@ async function configUpdater() {
         rulesCache = await loadRules();
         redirectionRulesCache = await loadRedirectionRules();
     } catch(e) {
-        
+
     }
 }
 
@@ -80,16 +80,16 @@ async function loadRules() {
         for (const rule of offlineRules) {
             const baseURL = rule.baseURL;
             const id = rule.id;
-            
+
             const duplicate = onlineRules.filter(a => a.id === id || a.baseURL === baseURL).length > 0;
-            
+
             if (duplicate) {
                 offlineRules.splice(offlineRules.indexOf(rule), 1);
             }
         }
 
         const tmpRules = onlineRules.concat(offlineRules);
-    
+
         for (const dap of tmpRules) {
             rules.push({
                 id: dap.id,
@@ -120,7 +120,7 @@ async function loadRedirectionRules() {
     if (redirectionRulesCache === undefined) {
         const data = await fetch("/filter/redirectedSites.json");
         const rules: JSONRedirectedSites[] = await data.json();
-    
+
         redirectionRulesCache = rules;
     }
 
@@ -131,7 +131,7 @@ async function loadRedirectionRules() {
 function getRules(config: ConfigInterface) {
     const rules: PageBlockRule[] = [];
 
-    if (config.blocked === undefined) { return []; } 
+    if (config.blocked === undefined) { return []; }
 
     if (config.blocked.group !== undefined) {
         for (const blockedId in config.blocked.group) {
@@ -198,7 +198,7 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
 
     for (const rule of blockRules) {
         const baseURLRegex = createBaseURLRegexWithRule(rule);
-        
+
         if (baseURLRegex.test(url)) {
             console.log('NAMU WIKI DETECTED!!');
             console.log('config', config);
@@ -221,7 +221,7 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                     console.log("parsed-decodeURIComponent-searchQuery", decodeURIComponent(parsed[3]));
                 }
             }
-            
+
             let searchQuery;
 
             if (parsed) {
@@ -245,12 +245,12 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                     console.log("isArticle", isArticle, unescapeRegexString(getRegexString(rule.articleView)), parsed[2]);
 
                     const uriAnchorParser = /[^?#]*/
-                    const searchParsed = uriAnchorParser.exec(decodeURIComponent(parsed[3]));                
+                    const searchParsed = uriAnchorParser.exec(decodeURIComponent(parsed[3]));
                     searchQuery = searchParsed[0];
                     const searchURIExtra = searchParsed[0];
-                   
+
                     uriAnchorParser.lastIndex = 0;
-    
+
                     if (previousTabUrl) {
                         const prevSearchURIParsed = parser.exec(previousTabUrl);
                         if (prevSearchURIParsed) {
@@ -263,7 +263,7 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                             }
                         }
                     }
-    
+
                     // check for intelliBan
                     if (config.intelliBan !== undefined) {
                         if (config.intelliBan.enabled) {
@@ -276,14 +276,14 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                             }
                         }
                     }
-                    
+
                 }
 
                 console.log("BAN HAMMER HAS SPOKEN!");
                 await browser.tabs.update(tabId, {
                     url: browser.extension.getURL(`interface/banned/index.html?banned_url=${url}`),
                 });
-                
+
                 if (isArticle) {
                     await runRedirect(config, searchQuery);
                 }
@@ -351,7 +351,7 @@ async function runRedirect(config: ConfigInterface, searchQuery: string) {
 
                     const langCode = /(가-힣)+/.test(searchQuery) ? "ko" : /^[A-z0-9 ]$/.test(searchQuery) ? "en" : /^((\w){2})/.exec(navigator.language)[1];
                     const finalURL = target.redirectLocation.replace(queryReplaceRegex, query).replace(langReplaceRegex, langCode);
-    
+
                     await browser.tabs.create({
                         url: finalURL,
                     });
@@ -501,7 +501,7 @@ browser.webRequest.onBeforeRequest.addListener(
  *
  * requested by Firefox user 15228336:
  * 나무라이브도 꺼주셨으면 좋을 것 같아요.
- * 
+ *
  * + 나무뉴스 추가
  */
 browser.webRequest.onBeforeRequest.addListener(
