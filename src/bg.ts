@@ -383,6 +383,11 @@ const searchEngineRules: SearchEngineFilterRules[] = [
         regex: /^http(s|):\/\/(www.|search.|)daum.net\/search\?/ig,
         scriptLocation: '/lib/filter/daum.js',
     },
+    {
+        name: 'Ecosia',
+        regex: /^https:\/\/www\.ecosia\.org\/(search|images)\?/ig,
+        scriptLocation: '/lib/filter/ecosia.js',
+    },
 ];
 
 function triggerFilter(url: string) {
