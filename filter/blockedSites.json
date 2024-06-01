@@ -5,11 +5,11 @@
     "name": "나무위키",
     "baseURL": "namu.wiki",
     "articleView": {
-      "regex": "/w/",
+      "regex": "/w/(?<query>.+)$",
       "flag": ""
     },
     "searchView": {
-      "regex": "/Search\\?q=",
+      "regex": "/Search\\?q=(?<query>.+)$",
       "flag": ""
     },
     "redirect": true
@@ -20,11 +20,11 @@
     "name": "나무미러위키",
     "baseURL": "namu.mirror.wiki",
     "articleView":{
-      "regex": "/w/",
+      "regex": "/w/(?<query>.+)$",
       "flag": ""
     },
     "searchView": {
-      "regex": "/go/",
+      "regex": "/go/(?<query>.+)$",
       "flag": ""
     },
     "redirect": true
@@ -35,11 +35,11 @@
     "name": "미러위키",
     "baseURL": "mirror.wiki",
     "articleView": {
-      "regex": "/w/|/namu2/",
+      "regex": "(/w/|/namu2/)(?<query>.+)$",
       "flag": ""
     },
     "searchView": {
-      "regex": "/go/",
+      "regex": "/go/(?<query>.+)$",
       "flag": ""
     },
     "redirect": true
@@ -50,11 +50,11 @@
     "name": "나무모에",
     "baseURL": "namu.moe",
     "articleView": {
-      "regex": "/w/",
+      "regex": "/w/(?<query>.+)$",
       "flag": ""
     },
     "searchView": {
-      "regex": "/go/",
+      "regex": "/go/(?<query>.+)$",
       "flag": ""
     },
     "redirect": true
@@ -65,11 +65,11 @@
     "name": "미러",
     "baseURL": "mir.pe",
     "articleView": {
-      "regex": "/wiki/",
+      "regex": "/wiki/(?<query>.+)$",
       "flag": ""
     },
     "searchView": {
-      "regex": "/search/",
+      "regex": "/search/(?<query>.+)$",
       "flag": ""
     },
     "redirect": true
@@ -80,11 +80,11 @@
     "name": "더위키",
     "baseURL": "thewiki.kr",
     "articleView": {
-      "regex": "/w/",
+      "regex": "/w/(?<query>.+)$",
       "flag": ""
     },
     "searchView": {
-      "regex": "/googlesearch/",
+      "regex": "/googlesearch/(?<query>.+)$",
       "flag": ""
     },
     "redirect": true
@@ -95,11 +95,11 @@
     "name": "우만위키",
     "baseURL": "tcatmon.com",
     "articleView": {
-      "regex": "/w(?:iki)/",
+      "regex": "/w(?:iki)/(?<query>.+)$",
       "flag": ""
     },
     "searchView": {
-      "regex": "/w/index\\.php(?:.*)(?:\\?|&)search=",
+      "regex": "/w/index\\.php(?:.*)(?:\\?|&)search=(?<query>.+)$",
       "flag": ""
     },
     "redirect": true
@@ -110,11 +110,11 @@
     "name": "리브레위키",
     "baseURL": "librewiki.net",
     "articleView": {
-      "regex": "/wiki/",
+      "regex": "/wiki/(?<query>.+)$",
       "flag": ""
     },
     "searchView": {
-      "regex": "/index\\.php(?:.*)(?:\\?|&)search=",
+      "regex": "/index\\.php(?:.*)(?:\\?|&)search=(?<query>.+)$",
       "flag": ""
     },
     "redirect": true
@@ -125,11 +125,11 @@
     "name": "리그베다위키",
     "baseURL": "rigvedawiki.net",
     "articleView": {
-      "regex": "/w/",
+      "regex": "/w/(?<query>.+)$",
       "flag": ""
     },
     "searchView": {
-      "regex": "/w/",
+      "regex": "/w/(?<query>.+)$",
       "flag": ""
     },
     "redirect": true
@@ -158,11 +158,11 @@
     "name": "DC위키",
     "baseURL": "wiki.dcinside.com",
     "articleView": {
-      "regex": "/wiki/",
+      "regex": "/wiki/(?<query>.+)$",
       "flag": ""
     },
     "searchView": {
-      "regex": "/index\\.php(?:.*)(?:\\?|&)search=",
+      "regex": "/index\\.php(?:.*)(?:\\?|&)search=(?<query>.+)$",
       "flag": ""
     },
     "redirect": true
@@ -173,11 +173,11 @@
     "name": "페미위키",
     "baseURL": "femiwiki.com",
     "articleView": {
-      "regex": "/w/",
+      "regex": "/w/(?<query>.+)$",
       "flag": ""
     },
     "searchView": {
-      "regex": "/index\\.php(?:.*)(?:\\?|&)search=",
+      "regex": "/index\\.php(?:.*)(?:\\?|&)search=(?<query>.+)$",
       "flag": ""
     },
     "redirect": true
