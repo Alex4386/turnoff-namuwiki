@@ -153,6 +153,12 @@
     "baseURL": "namu.news"
   },
   {
+    "id": "newliweb",
+    "group": ["namulive"],
+    "name": "뉴리웹",
+    "baseURL": "newliweb.com"
+  },
+  {
     "id": "dcWiki",
     "group": [ "dcWiki" ],
     "name": "DC위키",

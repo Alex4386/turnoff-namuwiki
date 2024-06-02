@@ -39,9 +39,12 @@ export function runSearchFilterRoutine(rules: SerializedBlockedSite[] = []) {
               for (const searchResult of searchResults as unknown as TargetElement[]) {
                   const searchResultAnchors = searchResult.getElementsByTagName('a') as unknown as HTMLAnchorElement[];
                   for (const searchResultAnchor of searchResultAnchors) {
-                      if (rules.find(n => n.baseURL === new URL(searchResultAnchor.href).hostname)) {
-                          killList.push(searchResult);
+                    try {
+                      const url = new URL(searchResultAnchor.href);
+                      if (rules.find(n => n.baseURL === url.hostname)) {
+                        killList.push(searchResult);
                       }
+                    } catch(e) {}
                   }
               }
   
@@ -66,10 +69,12 @@ export function runSearchFilterRoutine(rules: SerializedBlockedSite[] = []) {
               for (const searchResult of searchResults as unknown as TargetElement[]) {
                   const searchResultAnchors = searchResult.getElementsByTagName('a') as unknown as HTMLAnchorElement[];
                   for (const searchResultAnchor of searchResultAnchors) {
-                    if (rules.find(n => n.baseURL === new URL(searchResultAnchor.href).hostname)) {
-                      killList.push(searchResult);
-                  }
-
+                    try {
+                      const url = new URL(searchResultAnchor.href);
+                      if (rules.find(n => n.baseURL === url.hostname)) {
+                        killList.push(searchResult);
+                      }
+                    } catch(e) {}
                   }
               }
   
@@ -94,10 +99,12 @@ export function runSearchFilterRoutine(rules: SerializedBlockedSite[] = []) {
             for (const searchResult of searchResults as unknown as TargetElement[]) {
                 const searchResultAnchors = searchResult.getElementsByTagName('a') as unknown as HTMLAnchorElement[];
                 for (const searchResultAnchor of searchResultAnchors) {
-                  if (rules.find(n => n.baseURL === new URL(searchResultAnchor.href).hostname)) {
-                    killList.push(searchResult);
-                }
-
+                  try {
+                    const url = new URL(searchResultAnchor.href);
+                    if (rules.find(n => n.baseURL === url.hostname)) {
+                      killList.push(searchResult);
+                    }
+                  } catch(e) {}
                 }
             }
 
@@ -114,7 +121,7 @@ new SearchEngineFilter(
   "Google",
   /^http(s|):\/\/(www.|cse.|)google.com\/search\?/ig,
   async (rules) => {
-      const searchResultClasses = [ 'xpd', 'ez02md', 'g', 'ifM9O' ];
+      const searchResultClasses = [ 'xpd', 'ez02md', 'g', 'ifM9O', 'ivg-i' ];
       searchResultClasses.forEach(async (currentClass) => {
           const searchResults = document.getElementsByClassName(currentClass) as unknown
           const killList: TargetElement[] = [];
@@ -122,10 +129,12 @@ new SearchEngineFilter(
           for (const searchResult of searchResults as unknown as TargetElement[]) {
               const searchResultAnchors = searchResult.getElementsByTagName('a') as unknown as HTMLAnchorElement[];
               for (const searchResultAnchor of searchResultAnchors) {
-                if (rules.find(n => n.baseURL === new URL(searchResultAnchor.href).hostname)) {
-                  killList.push(searchResult);
-              }
-
+                try {
+                  const url = new URL(searchResultAnchor.href);
+                  if (rules.find(n => n.baseURL === url.hostname)) {
+                    killList.push(searchResult);
+                  }
+                } catch(e) {}
               }
           }
 
@@ -150,10 +159,12 @@ new SearchEngineFilter(
           for (const searchResult of searchResults as unknown as TargetElement[]) {
               const searchResultAnchors = searchResult.getElementsByTagName('a') as unknown as HTMLAnchorElement[];
               for (const searchResultAnchor of searchResultAnchors) {
-                if (rules.find(n => n.baseURL === new URL(searchResultAnchor.href).hostname)) {
-                  killList.push(searchResult);
-              }
-
+                try {
+                  const url = new URL(searchResultAnchor.href);
+                  if (rules.find(n => n.baseURL === url.hostname)) {
+                    killList.push(searchResult);
+                  }
+                } catch(e) {}
               }
           }
 
