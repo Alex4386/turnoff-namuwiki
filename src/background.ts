@@ -1,7 +1,7 @@
 import browser from 'webextension-polyfill';
 import { getConfig, loadConfig } from './common/config/index';
 import { loadAll } from './common/initializer';
-import { getAdBlockers, getArcaLiveBlockers, getNamuNewsBlockers, reregisterDynamicRules, unregisterDynamicRules } from './common/adblocks/namuwiki';
+import { getAdBlockers, reregisterDynamicRules, unregisterDynamicRules } from './common/adblocks/namuwiki';
 import { checkIfIntelliBanPass } from './common/intelliBan/index';
 import { isArcaLiveBlocked, isNamuNewsBlocked } from './common/utils';
 import { getRedirectTargets, handleRedirects, loadRedirectionRules } from './common/rules/redirect';
@@ -22,27 +22,23 @@ const syncData = async () => {
 }
 
 const updateDynamicRules = async (config: ConfigInterface) => {
+    console.log(await browser.declarativeNetRequest.getDynamicRules());
+
     const adBlockers = getAdBlockers();
     if (config?.adblock?.namuwiki) {
         await reregisterDynamicRules(adBlockers);
     } else {
+        console.log('unregistering dynamic rules for adblocking');
         await unregisterDynamicRules(adBlockers);
     }
-
-    const liveBlockers = getArcaLiveBlockers();
-    if (isArcaLiveBlocked(config)) {
-        await reregisterDynamicRules(liveBlockers);
-    } else {
-        await unregisterDynamicRules(liveBlockers);
-    }
-
-    const newsBlockers = getNamuNewsBlockers();
-    if (isNamuNewsBlocked(config)) {
-        await reregisterDynamicRules(newsBlockers);
-    } else {
-        await unregisterDynamicRules(newsBlockers);
-    }
 };
+
+/* = Initial Load = */
+(async () => {
+    const config = await loadConfig();
+    await loadAll();
+    await updateDynamicRules(config);
+})();
 
 /* = On Install = */
 browser.runtime.onInstalled.addListener(syncData);
@@ -72,7 +68,19 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
     if (url) {
         if (!(url.startsWith('http://') || url.startsWith('https://'))) return;
         // run search filter
-        if (config.searchFilter) {
+        if (url.startsWith('https://namu.wiki')) {
+            if (isNamuNewsBlocked(config)) {
+                await browser.scripting.executeScript({
+                    target: {tabId: tabId},
+                    func: () => {
+                        const namuNews = document.getElementsByClassName('DYASHJcy _3+FtCMzz')[1];
+                        if (namuNews) {
+                            namuNews.remove();
+                        }
+                    }
+                })
+            }
+        } else if (config.searchFilter) {
             try {
                 if (tab.id) {
                     await browser.scripting.executeScript({

@@ -57,49 +57,6 @@ export function getAdBlockers(): Parameters<typeof browser.declarativeNetRequest
   }));
 }
 
-export function getArcaLiveBlockers(): Parameters<typeof browser.declarativeNetRequest.updateDynamicRules>[0]['addRules'] {
-  // they actually decided to give a fuck.
-  // /i/ for everything lol
-
-  return [
-    "https://arca.live/*",
-
-    // Well, no real-time ranking for ya.
-    "https://namu.wiki/i/*",
-  ].map((n, i) => ({
-    id: 11000+i,
-    priority: 1,
-    action: {
-      type: "block"
-    },
-    condition: {
-      urlFilter: n,
-    },
-  }));
-}
-
-export function getNamuNewsBlockers(): Parameters<typeof browser.declarativeNetRequest.updateDynamicRules>[0]['addRules'] {
-  // they actually decided to give a fuck.
-  // /i/ for everything lol
-
-  return [    
-    "https://namu.news/*",
-    "https://namu.news/api/articles/cached",
-
-    // Well, no real-time ranking for ya.
-    "https://namu.wiki/i/*",
-  ].map((n, i) => ({
-    id: 12000+i,
-    priority: 1,
-    action: {
-      type: "block"
-    },
-    condition: {
-      urlFilter: n,
-    },
-  }));
-}
-
 export async function unregisterDynamicRules(rules: Parameters<typeof browser.declarativeNetRequest.updateDynamicRules>[0]['addRules']) {
   await browser.declarativeNetRequest.updateDynamicRules({
     removeRuleIds: [...(rules ?? []).map(n => n.id)],
