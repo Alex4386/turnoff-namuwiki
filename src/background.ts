@@ -58,7 +58,6 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
     const url = info.url || tab.url;
 
     // Save previous URL
-    const previousTabUrl = previousTabUrls[tabId];
     if (info.status === 'complete') {
         if (url) previousTabUrls[tabId] = url;
         else delete previousTabUrls[tabId];
