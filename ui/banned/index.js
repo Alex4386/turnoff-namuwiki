@@ -14,6 +14,8 @@
           blocked_url = (typeof query.value !== "undefined") ? query.value : "#";
         } else if (query.name === "site_name") {
           accessingTo = (typeof query.value !== "undefined") ? query.value : "나무위키(?)";
+          // if it is urlencoded
+          accessingTo = decodeURIComponent(accessingTo);
         }
       }
       
@@ -33,6 +35,6 @@
         document.getElementById("message").innerHTML = `<p id="message">${accessingTo} 접속시도가 감지되어 <span class="important">강제 종료</span>합니다.</p>`;
       }
   } catch (e) {
-      console.error(`로드 실패.`);
+      console.error(`로드 실패.`, e);
   }
 })();

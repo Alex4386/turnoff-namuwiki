@@ -95,6 +95,37 @@ async function updateBlocked(config, url) {
   await saveData(config);
 }
 
+const intelliBanLocation = "https://raw.githubusercontent.com/Alex4386/turnoff-namuwiki/master/intelliBan/rules.json";
+const blockedLocation = "https://raw.githubusercontent.com/Alex4386/turnoff-namuwiki/master/filter/blockedSites.json";
+
+async function updateIntelliBan(config, url) {
+  if (typeof url === "undefined") {
+    if (config.intelliBan === undefined) {config.intelliBan = {};}
+    if (!config.intelliBan.url) {
+        config.intelliBan.url = intelliBanLocation;
+        url = config.intelliBan.url;
+    } else {
+        url = config.intelliBan.url
+    }
+  } else {
+    if (url === "") {
+      config.intelliBan.url = intelliBanLocation;
+      url = config.intelliBan.url;
+    }
+  }
+
+  const data = await fetch(config.intelliBan.url);
+  if (data.status === 200) {
+    config.intelliBan.rules = await data.json();
+    console.log("Got intelliBan: ", config.intelliBan.rules);
+  }
+
+  if (config.intelliBan.rules === undefined) {
+    config.intelliBan.rules = [];
+  }
+
+  await saveData(config);
+}
 
 function setHook(chkbox, callback) {
   for (const chk of chkbox) {

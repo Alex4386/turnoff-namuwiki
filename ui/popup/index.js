@@ -12,8 +12,11 @@ const popup_settings = [
 
 function popup_updateHeader(config) {
     const body = document.body;
+    const groupBlock = config?.blocked?.group ?? {};
 
-    if (config.namuwikiBlock) {
+    const hasBlocked = groupBlock.namuwiki && groupBlock.namuwikiMirror;
+
+    if (groupBlock.namuwiki) {
         body.classList.remove("namuwiki");
         body.classList.add("blocked");
     } else {
@@ -21,16 +24,19 @@ function popup_updateHeader(config) {
         body.classList.remove("blocked");
     }
 
-    if (config.namuMirrorBlock) {
+    if (groupBlock.namuwikiMirror) {
         body.classList.add("mirror-blocked");
     } else {
         body.classList.remove("mirror-blocked");
     }
 
-    if (config.openArxiv || config.openDbpia || config.openGoogleScholar || config.openRiss) {
-        body.classList.add("redirect");
-    } else {
-        body.classList.remove("redirect");
+    if (hasBlocked) {
+        const hasRedirectTargets = Object.keys(config?.redirected || {}).find(n => (config?.redirected ?? {})[n]);
+        if (hasRedirectTargets) {
+            body.classList.add("redirect");
+        } else {
+            body.classList.remove("redirect");
+        }
     }
 }
 

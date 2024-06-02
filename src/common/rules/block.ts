@@ -48,6 +48,7 @@ export async function getOnlineBlockRules(): Promise<BlockedSite[]> {
   let config = await getConfig();
   if (config?.blocked?.onlineRules === undefined) {
     try {
+      console.log('fetching online block rules');
       await fetchOnlineBlockRules();
       config = getConfig();
     } catch(e) {

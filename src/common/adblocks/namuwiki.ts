@@ -23,56 +23,82 @@ import { getActiveRules } from "../rules/enabled";
  * FUCK YOU, umanle corporation.
  */
 
-export const adBlockers: Parameters<typeof browser.declarativeNetRequest.updateDynamicRules>[0]['addRules'] = [
-  {
-      id: 10001,
-      priority: 1,
-      action: {
-          type: "block"
-      },
-      condition: {
-          /*    
-            {
-                urls: [
-                    "https://*.googlesyndication.com/*",
-                    "https://*.doubleclick.net/*",
-                    "https://adservice.google.com/*",
-                    "https://arca.live/api/ads*",
-                    "https://searchad-phinf.pstatic.net/*",
-                    "https://ssl.pstatic.net/adimg3.search/*",
-                    "https://www.google.com/adsense/search/*",
-                    "https://www.google.com/afs/ads*"
-                ]
-            }, 
-          */
-          regexFilter: "^https:\/\/(\*\.googlesyndication\.com\/|\*\.doubleclick\.net\/|adservice\.google\.com\/|arca\.live\/api\/ads|searchad-phinf\.pstatic\.net\/|\*\.ssl\.pstatic\.net\/adimg3\.search\/|www\.google\.com\/adsense\/search\/|www\.google\.com\/afs\/ads).*",
-          initiatorDomains: ["*://*.namu.wiki/*", "*://*.namu.mirror.wiki/*", "*://*.namu.news/*"],
-      },
-  }
-];
+function getNamuwikiInitDomains() {
+  const namuwikiInitDomains = getActiveRules([
+    'namuwiki',
+    'namuwikiMirror',
+    'namulive',
+    'namunews',
+  ])?.map(n => 'https://'+n.baseURL).map(n => new URL(n).hostname);
 
-export const namuLiveBlockers: Parameters<typeof browser.declarativeNetRequest.updateDynamicRules>[0]['addRules'] = [
-  {
-      id: 20001,
-      priority: 1,
-      action: {
-          type: "block"
-      },
-      condition: {
-          /*    
-            {
-                urls: [
-                    "https://search.namu.wiki/api/ranking",
-                    "https://arca.live/*",
-                    "https://namu.news/*",
-                    "https://namu.news/api/articles/cached",
-                ]
-            }, 
-          */
-          regexFilter: "^https:\/\/(search\.namu\.wiki\/api\/ranking|arca\.live\/.*|namu\.news\/.*|namu\.news\/api\/articles\/cached).*",
-      },
-  }
-];
+  return namuwikiInitDomains;  
+}
+
+export function getAdBlockers(): Parameters<typeof browser.declarativeNetRequest.updateDynamicRules>[0]['addRules'] {
+  return [
+    "https://*.googlesyndication.com/*",
+    "https://*.doubleclick.net/*",
+    "https://adservice.google.com/*",
+    "https://arca.live/api/ads*",
+    "https://searchad-phinf.pstatic.net/*",
+    "https://ssl.pstatic.net/adimg3.search/*",
+    "https://www.google.com/adsense/search/*",
+    "https://www.google.com/afs/ads*",
+  ].map((n, i) => ({
+    id: 10000+i,
+    priority: 1,
+    action: {
+      type: 'block',
+    },
+    condition: {
+      urlFilter: n,
+      initiatorDomains: getNamuwikiInitDomains(),
+    },
+  }));
+}
+
+export function getArcaLiveBlockers(): Parameters<typeof browser.declarativeNetRequest.updateDynamicRules>[0]['addRules'] {
+  // they actually decided to give a fuck.
+  // /i/ for everything lol
+
+  return [
+    "https://arca.live/*",
+
+    // Well, no real-time ranking for ya.
+    "https://namu.wiki/i/*",
+  ].map((n, i) => ({
+    id: 11000+i,
+    priority: 1,
+    action: {
+      type: "block"
+    },
+    condition: {
+      urlFilter: n,
+    },
+  }));
+}
+
+export function getNamuNewsBlockers(): Parameters<typeof browser.declarativeNetRequest.updateDynamicRules>[0]['addRules'] {
+  // they actually decided to give a fuck.
+  // /i/ for everything lol
+
+  return [    
+    "https://namu.news/*",
+    "https://namu.news/api/articles/cached",
+
+    // Well, no real-time ranking for ya.
+    "https://namu.wiki/i/*",
+  ].map((n, i) => ({
+    id: 12000+i,
+    priority: 1,
+    action: {
+      type: "block"
+    },
+    condition: {
+      urlFilter: n,
+    },
+  }));
+}
 
 export async function unregisterDynamicRules(rules: Parameters<typeof browser.declarativeNetRequest.updateDynamicRules>[0]['addRules']) {
   await browser.declarativeNetRequest.updateDynamicRules({

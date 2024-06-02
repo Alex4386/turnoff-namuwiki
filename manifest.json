@@ -7,7 +7,7 @@
   "background": {
     "service_worker": "dist/background.js"
   },
-  "host_permissions": ["https://*/*"],
+  "host_permissions": ["*://*/*"],
   "action": {
     "default_icon": "res/logos/logo-192x192.png",
     "default_title": "TurnOff NamuWiki",

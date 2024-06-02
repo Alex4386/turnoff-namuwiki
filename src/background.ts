@@ -1,10 +1,10 @@
 import browser from 'webextension-polyfill';
 import { getConfig, loadConfig } from './common/config/index';
 import { loadAll } from './common/initializer';
-import { adBlockers, namuLiveBlockers, reregisterDynamicRules, unregisterDynamicRules } from './common/adblocks/namuwiki';
+import { getAdBlockers, getArcaLiveBlockers, getNamuNewsBlockers, reregisterDynamicRules, unregisterDynamicRules } from './common/adblocks/namuwiki';
 import { checkIfIntelliBanPass } from './common/intelliBan/index';
-import { isNamuLiveBlocked } from './common/utils';
-import { getRedirectTargets, handleRedirects } from './common/rules/redirect';
+import { isArcaLiveBlocked, isNamuNewsBlocked } from './common/utils';
+import { getRedirectTargets, handleRedirects, loadRedirectionRules } from './common/rules/redirect';
 import { getActiveRulesFromConfig } from './common/rules/enabled';
 import { runSearchFilterRoutine } from './searchFilters/runner';
 import { ConfigInterface } from './common/config/interface';
@@ -14,22 +14,33 @@ import { loadBlockRules } from './common/rules/block';
 const previousTabUrls: string[] = [];
 
 const syncData = async () => {
+    console.log('Syncing Data');
+    const config = await loadConfig();
     await loadAll();
-    const config = getConfig();
+    console.log('Synced config', config);
     await updateDynamicRules(config);
 }
 
 const updateDynamicRules = async (config: ConfigInterface) => {
-    if (isNamuLiveBlocked(config)) {
-        await reregisterDynamicRules(namuLiveBlockers);
-    } else {
-        await unregisterDynamicRules(namuLiveBlockers);
-    }
-
+    const adBlockers = getAdBlockers();
     if (config?.adblock?.namuwiki) {
         await reregisterDynamicRules(adBlockers);
     } else {
         await unregisterDynamicRules(adBlockers);
+    }
+
+    const liveBlockers = getArcaLiveBlockers();
+    if (isArcaLiveBlocked(config)) {
+        await reregisterDynamicRules(liveBlockers);
+    } else {
+        await unregisterDynamicRules(liveBlockers);
+    }
+
+    const newsBlockers = getNamuNewsBlockers();
+    if (isNamuNewsBlocked(config)) {
+        await reregisterDynamicRules(newsBlockers);
+    } else {
+        await unregisterDynamicRules(newsBlockers);
     }
 };
 
@@ -52,10 +63,14 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
 
     // Save previous URL
     const previousTabUrl = previousTabUrls[tabId];
-    if (url && info.status === 'complete') previousTabUrls[tabId] = url;
+    if (info.status === 'complete') {
+        if (url) previousTabUrls[tabId] = url;
+        else delete previousTabUrls[tabId];
+    }
 
 
     if (url) {
+        if (!(url.startsWith('http://') || url.startsWith('https://'))) return;
         // run search filter
         if (config.searchFilter) {
             try {
@@ -67,7 +82,7 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                     })    
                 }
             } catch (e) {
-                console.error('Oops. The Big Famous Constant E: ', e);
+                console.error('Script chainloading failed: ', e);
             }
         }
 
@@ -88,28 +103,20 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                 }
             }
 
+            // Skip ban if query is intelliBan
+            if (checkIfIntelliBanPass(query)) {
+                return;
+            }
+            
+            await browser.tabs.update(tabId, {
+                url: browser.runtime.getURL(`ui/banned/index.html?banned_url=${url}&site_name=${matchingRule.name}`),
+            });
+
             if (query) {
-                // debounce: if the previous url is same,
-                // do not trigger the ban.
-                if (previousTabUrl) {
-                    const prevQuery = matchingRule.getQuery(previousTabUrl);
-                    if (prevQuery === query) {
-                        console.log('Debounced');
-                        return;
-                    }
-                }
-
-                // Skip ban if query is intelliBan
-                if (checkIfIntelliBanPass(query)) {
-                    return;
-                }
-
-                await browser.tabs.update(tabId, {
-                    url: browser.runtime.getURL(`ui/banned/index.html?banned_url=${url}&site_name=${matchingRule.name}`),
-                });
-
                 if (matchingRule.isArticleView(url)) {
-                    const targetUrls = handleRedirects(url);
+                    const targetUrls = await handleRedirects(query);
+                    console.log('redirectionTargetUrls', targetUrls);
+
                     if (targetUrls.length > 0) {
                         const targetUrl = targetUrls[0];
                         await browser.tabs.create({
@@ -117,11 +124,8 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                         });
                     }
                 }
-            } 
+            }
 
         }
-
-        
-        previousTabUrls[tabId] = url;
     }
 });

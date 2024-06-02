@@ -8,7 +8,9 @@ import { BlockedSite } from "./model";
  * @returns blocked site rules
  */
 export function getActiveRulesFromConfig(config: ConfigInterface): BlockedSite[] | undefined {
-  return getActiveRules(Object.keys(config.blocked.group ?? {}), Object.keys(config.blocked.site ?? {}));
+  const groups = Object.keys(config.blocked.group ?? {}).filter(group => config.blocked.group[group]);
+  const sites = Object.keys(config.blocked.site ?? {}).filter(site => config.blocked.site[site]);
+  return getActiveRules(groups, sites);
 }
 
 export function getActiveRules(groups: string[] = [], sites: string[] = []): BlockedSite[] | undefined {
