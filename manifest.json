@@ -1,31 +1,28 @@
 {
   "name": "Turn Off namuwiki",
-  "version": "0.8.3",
+  "version": "1.0.0",
   "author": "Alex4386 and TurnOff NamuWiki Contributors",
   "description": "자료조사, 조별과제의 지뢰, 나무위키를 꺼드립니다.",
-  "permissions": ["tabs", "storage", "*://*/*", "webRequest", "webRequestBlocking"],
+  "permissions": ["tabs", "storage", "declarativeNetRequest", "declarativeNetRequestWithHostAccess", "activeTab", "scripting"],
   "background": {
-    "scripts": [
-      "polyfill/browser-polyfill.min.js",
-      "lib/bg.js"
-    ],
-    "persistent": true
+    "service_worker": "dist/background.js"
   },
-  "browser_action": {
-    "default_icon": "showcase/logo-192x192.png",
+  "host_permissions": ["*://*/*"],
+  "action": {
+    "default_icon": "res/logos/logo-192x192.png",
     "default_title": "TurnOff NamuWiki",
-    "default_popup": "interface/popup/index.html"
+    "default_popup": "ui/popup/index.html"
   },
   "icons": {
-    "256":"showcase/logo-256x256.png",
-    "192":"showcase/logo-192x192.png",
-    "128":"showcase/logo-128x128.png"
+    "256":"res/logos/logo-256x256.png",
+    "192":"res/logos/logo-192x192.png",
+    "128":"res/logos/logo-128x128.png"
   },
   "browser_specific_settings": {
     "gecko": {
       "id": "turnoff-namuwiki@alex4386.us",
-      "strict_min_version": "63.0"
+      "strict_min_version": "91.0"
     }
   },
-  "manifest_version": 2
+  "manifest_version": 3
 }

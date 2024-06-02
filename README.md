@@ -1,11 +1,8 @@
-![splash](showcase/marketplace/marquee-tile.png)  
-
-## New maintainers wanted
-2021년 8월 부터 병역수행을 위해, 한동안 유지보수가 불가능합니다.  
-유지보수를 담당하고 싶으시다면, me@alex4386.me 로 메일 보내주시면 감사하겠습니다.  
+![splash](res/marketplace/marquee-tile.png)  
 
 # turnoff-namuwiki
 **자료조사, 조별과제의 지뢰, 나무위키를 꺼드립니다.**  
+NOW POWERED BY **MANIFEST V3**  
   
 ![turnoff-namuwiki CI](https://github.com/Alex4386/turnoff-namuwiki/workflows/turnoff-namuwiki%20CI/badge.svg)  
   

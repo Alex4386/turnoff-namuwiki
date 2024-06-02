@@ -180,8 +180,8 @@ fabric.properties
 # .nfs files are created when an open file is removed but is still being accessed
 .nfs*
 
-# TypeScript Compile Results
-lib/
+# TypeScript + Webpack Compile Results
+dist/
 
 # Visual Studio Code
 .vscode/

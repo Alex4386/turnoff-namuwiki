@@ -28,7 +28,7 @@ Step 3. revert to version that I included on the add-on archive. (could be check
 Step 4. run yarn install to install dependencies.  
 Step 5. run yarn build to get transpiled results.  
 Step 6. write your short version of your version hash into production_ver.txt on your root directory of the cloned repository.  
-Step 7. package the entire directory **EXCLUDING .git, node_modules, showcase/marketplace/ and .sh files**  
+Step 7. package the entire directory **EXCLUDING .git, node_modules, res/marketplace/ and .sh files**  
   
 **this code is transpiled with typescript.**  
   

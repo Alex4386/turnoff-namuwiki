@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>꺼무위키 시스템</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR|Nunito&display=swap');
+        html {
+            margin: 0; padding: 0;
+        }
+        body {
+            font-family: "Nunito", "Noto Sans KR", sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #EEE;
+            font-size: 1em;
+            overflow-x: hidden;
+            word-break: keep-all
+        }
+        header {
+            width: 100vw;
+            display: inline-block;
+            border-bottom: solid 1px #E7E7E7;
+            background: #FFF;
+            color: #FFF;
+            background: #596bb8;
+        }
+        .wrap {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header .wrap {
+            padding: 1em;
+            line-height: 1.7em;
+        }
+        header h1 {
+            width: fit-content;
+            display: inline-block;
+            font-size: 1.3em;
+            margin: 0;
+            background: url('/res/logos/logo-256x256.png') no-repeat;
+            background-size: 1.3em;
+            padding-left: 1.7em;
+            background-position: left center;
+        }
+        main {
+            padding: .7em;
+        }
+        header .version {
+            float: right;
+            text-align: right;
+        }
+
+        .control-panel {
+            display: flex;
+            white-space: nowrap;
+        }
+
+        .namuwiki-block {
+            content: ' ';
+            background: url(/res/logos/logo-256x256.png) no-repeat;
+            background-size: 10em;
+            background-position: top center;
+            flex: 0 0 50%;
+            padding-top: 10em;
+            text-align: center;
+        }
+
+        body.namuwiki .namuwiki-block {
+            background: url(/res/logos/logo-nostrike.png) no-repeat;
+            background-size: 10em;
+            background-position: top center;
+        }
+
+        .namuwiki-mirror-block {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .namuwiki-mirror-block .mirror-indicator {
+            padding-top: 6em;
+            height: 2em;
+            padding-bottom: 2em;
+        }
+        .namuwiki-mirror-block .mirror-indicator span {
+            font-size: 2em;
+        }
+
+        body.mirror-blocked .namuwiki-mirror-block .mirror-indicator span {
+            text-decoration: line-through;
+        }
+
+        hr {
+            border-top: solid 1px #3F3F3F;
+            margin: 1em 0;
+        }
+
+        footer {
+            background: #2F2F2F;
+            color: #FFF;
+            padding: .4em;
+        }
+
+        a {
+            text-decoration: none;
+            color: #0074e9;
+        }
+        
+        main div h2 {
+            margin: .3em 0;
+        } 
+        
+        main div h3 {
+            margin: 0;
+        }
+
+        h2.inline {
+            display: inline-block;
+            width: fit-content;
+            margin: 0;
+        }
+
+        .to-left {
+            float: right;
+        }
+
+        .to-right {
+            float: right;
+        }
+        .align-right {
+            text-align: right;
+        }
+
+        div.redirect .content {
+            text-align: center;
+        }
+        .card {
+            background: #FFF;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 5px rgba(0,0,0,.1);
+            margin: 2em 1em;
+        }
+        .card .explain {
+            float: right;
+            text-align: right;
+            width: 40%;
+            max-width: 18em;
+            padding-right: 15px;
+        }
+
+        .card .content {
+            margin: 1em 1em;
+            width: calc(100% - 30px);
+        }
+
+        input {
+            background: #FFF;
+            border: 1px black solid;
+            font-size: 1em;
+            border-radius: 15px;
+            padding: 15px;
+            outline: none;
+        }
+        
+        input[type=url] {
+            width: calc(100% - 30px);
+        }
+    </style>
+    <link rel="stylesheet" href="../_common/switch.css">
+    <link rel="stylesheet" href="../_common/checkbox.css">
+</head>
+<body>
+    <header>
+        <div class="wrap">
+            <span class="version" id="extension_version">JavaScript Error!!</span>
+            <h1>TurnOff-NamuWiki Help</h1>
+        </div>
+    </header>
+    <main>
+        <div class="wrap">
+            <h1>나무위키 광고차단</h1>
+            <p>혹여나 나무위키를 어쩔 수 없이 이용하게 된다면, 왜 나무위키를 광고 차단하여야 하나요?</p>
+            <div class="card">
+              <h2>라이선스 위반</h2>
+              <p>나무위키는 초기 신설 당시부터 Creative Commons 2.0 BY NC SA 라이선스로 "이용자의 저작물"을 배포 중으로, 해당 (부정확한/출처를 알 수 없는) 정보에 대한 저작권은 해당 부분을 작성한 작성자 각자가 가지고 있으며, 라이선스에 의거하여 상업적으로 이용 할 수 없습니다.</p>
+              <p>그러나, umanle S.R.L. 의 "인수" 이후, 해당 라이선스에 위반하고 사이트 내에 컨텐츠와 광고를 병행하여 표기하게 됩니다. 즉, 상업적으로 이용할 수 없다는 라이선스를 위반하고 있습니다.</p>
+              <p>&nbsp;</p>
+              <p>수익 모델 자체부터 저작권 및 라이선스 위반이므로, 저는 <strong>나무위키 광고 차단</strong>을 하는 것을 적극 권장합니다.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="wrap">
+            Copyright &copy; Alex4386 and TurnOff-NamuWiki Contributors.<br>
+            The Source Code of this extension is available at <a href="https://github.com/Alex4386/turnoff-namuwiki" target="_blank">GitHub</a>.    
+        </div>
+    </footer>
+</body>
+<script src="/polyfill/browser-polyfill.min.js"></script>
+<script src="../_common/utils.js"></script>
+<script src="../_common/version.js"></script>
+</html>
