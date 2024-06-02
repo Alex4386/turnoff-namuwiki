@@ -1,4 +1,4 @@
-const targetBranch = 'feature/manifestv3';
+const targetBranch = 'main';
 const basePath = 'https://raw.githubusercontent.com/Alex4386/turnoff-namuwiki/'+(targetBranch ?? 'main')+'/';
 
 type FetchParams = Parameters<typeof fetch>;
