@@ -187,5 +187,11 @@
       "flag": ""
     },
     "redirect": true
+  },
+  {
+    "id": "noonootv",
+    "group": ["namuwiki"],
+    "name": "누누TV",
+    "baseURL": "noonoo46.tv",
   }
 ]
