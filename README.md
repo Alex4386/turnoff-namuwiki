@@ -12,13 +12,6 @@ NOW POWERED BY **MANIFEST V3**
 > 해당 지원팀에서 심사가 늦는 건으로 인한 사항으로 지금 당장 즉시 적용을 원하는 경우 [`Release`](https://github.com/Alex4386/turnoff-namuwiki/releases) 에서 다운받아 Sideload 하세요.  
 > <sub>* Firefox의 경우 현재 `background.Service_worker` 미 지원으로 인해 ManifestV3 지원을 위한 소스코드 추가 작업이 필요합니다. 작업 완료시일까지 Firefox 버전은 업데이트가 지연되오니 참고 바랍니다. [mozilla/web-ext#2532](https://github.com/mozilla/web-ext/issues/2532)</sub>
 
-## Notification - 알림
-업데이트를 빠르게 확인하고 싶다면, Chrome 버전보다는 Firefox 버전을 권장합니다.  
-Firefox 애드온 팀의 심사가 10분 이내로 끝나는 것에 비해 Chrome 팀은 대략 하루에서 3일, Whale 팀은 최대 일주일 소요됩니다.  
-  
-If you want faster updates, Please use Firefox version instead of chrome version.  
-Firefox does their examination within 10 minutes, instead Chrome takes at least a day to 3 days.
-
 ## Table Of Contents
 * [한국어](#한국어)
   * [이런 분들께 추천드립니다!](#이런-분들께-추천드립니다)  
