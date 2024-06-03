@@ -2,11 +2,15 @@
 
 # turnoff-namuwiki
 **자료조사, 조별과제의 지뢰, 나무위키를 꺼드립니다.**  
-NOW POWERED BY **MANIFEST V3**  
-  
+NOW POWERED BY **MANIFEST V3**    
 ![turnoff-namuwiki CI](https://github.com/Alex4386/turnoff-namuwiki/workflows/turnoff-namuwiki%20CI/badge.svg)  
-  
-Official Discord Community: [https://discord.gg/GcXFubz](https://discord.gg/GcXFubz)
+
+> [!NOTE]  
+> **확장 프로그램 심사** 상의 지연시간으로 인해 배포는 다음 순서대로 진행됩니다.  
+> Firefox<sup>*</sup> -> Chrome -> Whale  
+>   
+> 해당 지원팀에서 심사가 늦는 건으로 인한 사항으로 지금 당장 즉시 적용을 원하는 경우 [`Release`](https://github.com/Alex4386/turnoff-namuwiki/releases) 에서 다운받아 Sideload 하세요.  
+> <sub>* Firefox의 경우 현재 `background.Service_worker` 미 지원으로 인해 ManifestV3 지원을 위한 소스코드 추가 작업이 필요합니다. 작업 완료시일까지 Firefox 버전은 업데이트가 지연되오니 참고 바랍니다. [mozilla/web-ext#2532](https://github.com/mozilla/web-ext/issues/2532)</sub>
 
 ## Notification - 알림
 업데이트를 빠르게 확인하고 싶다면, Chrome 버전보다는 Firefox 버전을 권장합니다.  
@@ -60,6 +64,10 @@ Firefox does their examination within 10 minutes, instead Chrome takes at least 
 ### 설치 방법
 
 #### Mozilla Firefox
+> [!WARNING]  
+> **ManifestV3 대응 코드가 `background.Service_Worker` 를 사용하는 관계로 Firefox 대응을 위해 추가 리팩토링이 필요합니다.**  
+> `v1.x` 의 Firefox 포팅의 경우 **추가 시간이 소요 되므로 양해 바랍니다.**  
+
 파이어폭스 애드온 스토어에 올렸습니다! [파이어폭스 스토어](https://addons.mozilla.org/en-US/firefox/addon/turnoff-namuwiki/)  
 **최대한 빠른 업데이트를 위해 Mozilla Firefox 버전을 권장합니다** 
 
@@ -87,18 +95,21 @@ Firefox 에 비해선 릴리즈가 늦습니다. Google 에서는 Firefox 처럼
 7. 앞에서 클론한 폴더를 선택합니다. (레포 전체, manifest.json 이 위치한 곳)
 8. 확장프로그램 섹션의 아이콘을 클릭해 익스텐션의 상세 설정을 할 수 있습니다.
 
-#### New Microsoft Edge
-새 버전의 Microsoft Edge 의 경우, Chromium 기반으로 제작 되어,  
+#### Microsoft Edge
+Chromium 기반의 Microsoft Edge (EdgeHTML2) 의 경우,   
 [Google Chrome (or Chromium)](#google-chrome-or-chromium) 문서를 따라 작업해 주시면 됩니다.  
 
 설치 시, 상단 바에서 [다른 스토어 확장 허용] 을 눌러 주시면, 크롬 스토어에서 설치 할 수 있습니다.
 
 #### Naver Whale
-웨일 스토어도 지원하지만, 제일 릴리즈가 늦습니다. 그 뜻은 버그 수정도 늦어진다는 뜻입니다.  
-Naver의 검수팀이 늦은 것이니 제가 아니라 Naver Whale 팀에게 뭐라고 해주세요.  
-  
-물론, Naver Whale 도 Chromium 기반이기에 위에 있는 Google Chrome 스토어에서 다운로드 받아 사용 할 수 있습니다. (역시나 검수가 최대 3일 정도 걸립니다)  
-Google Chrome 스토어에서 다운로드 하려면, [Google Chrome (or Chromium)](#google-chrome-or-chromium) 을 참고하세요.
+> [!WARNING]  
+> 네이버 Whale 사용자의 편의를 위해 추가적으로 업로드한 확장으로,  
+> Whale 스토어의 경우 검수가 늦으므로 특이사항이 없는 경우 Google Chrome Web Store 버전을 권장합니다.  
+> 
+> Chrome Web Store 버전을 설치하려면 
+[Google Chrome (or Chromium)](#google-chrome-or-chromium) 문서를 따라 작업해 주시면 됩니다.  
+
+[Whale Store](https://store.whale.naver.com/detail/podgdjmlohilnlnailadkpjegigpflaj)
 
 ### 기여자를 위한 개발 문서
 [CONTRIBUTORS.md](CONTRIBUTORS.md) 문서를 참고해 주세요!
