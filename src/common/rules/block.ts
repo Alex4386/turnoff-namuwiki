@@ -1,9 +1,9 @@
 import browser from 'webextension-polyfill';
-import { getConfig, loadConfig } from '../config/index';
+import { getConfig, loadConfig } from '../config';
 import { fetchRepo } from '../global';
 import { BlockedSite } from './model';
 import { SerializedBlockedSite } from './interface';
-import { serializeRegex } from '../regex/index';
+import { serializeRegex } from '../regex';
 
 let blockRulesCache: BlockedSite[];
 
@@ -46,6 +46,7 @@ async function fetchOnlineBlockRules(): Promise<BlockedSite[]> {
  */
 export async function getOnlineBlockRules(): Promise<BlockedSite[]> {
   let config = await getConfig();
+
   if (config?.blocked?.onlineRules === undefined) {
     try {
       console.log('fetching online block rules');
@@ -53,9 +54,8 @@ export async function getOnlineBlockRules(): Promise<BlockedSite[]> {
       config = getConfig();
     } catch(e) {
       console.error("Failed to fetch online block rules", e);
+      return [];
     }
-
-    return [];
   }
 
   return config.blocked.onlineRules.map(BlockedSite.fromSerialized);

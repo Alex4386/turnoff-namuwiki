@@ -1,5 +1,5 @@
-const targetBranch = 'main';
-const basePath = 'https://raw.githubusercontent.com/Alex4386/turnoff-namuwiki/'+(targetBranch ?? 'main')+'/';
+const targetBranch = 'master';
+const basePath = `https://raw.githubusercontent.com/Alex4386/turnoff-namuwiki/${targetBranch}/`;
 
 type FetchParams = Parameters<typeof fetch>;
 
@@ -39,5 +39,5 @@ export function fetchRepo(input: FetchParams[0], init?: FetchParams[1] & { repo:
     }
   }
 
-  return fetch(newInput, init);
+  return fetch(newInput, init as RequestInit);
 }
