@@ -1,28 +1,42 @@
 import browser from 'webextension-polyfill';
-import { getConfig, loadConfig } from './common/config/index';
-import { loadAll } from './common/initializer';
-import { getAdBlockers, reregisterDynamicRules, unregisterDynamicRules } from './common/adblocks/namuwiki';
-import { checkIfIntelliBanPass } from './common/intelliBan/index';
-import { isArcaLiveBlocked, isNamuNewsBlocked } from './common/utils';
-import { getRedirectTargets, handleRedirects, loadRedirectionRules } from './common/rules/redirect';
-import { getActiveRulesFromConfig } from './common/rules/enabled';
-import { runSearchFilterRoutine } from './searchFilters/runner';
-import { ConfigInterface } from './common/config/interface';
-import { loadBlockRules } from './common/rules/block';
+import {getConfig, loadConfig} from './common/config';
+import {loadAll} from './common/initializer';
+import {getAdBlockers, reregisterDynamicRules, unregisterDynamicRules} from './common/adblocks/namuwiki';
+import {checkIfIntelliBanPass} from './common/intelliBan';
+import {isNamuNewsBlocked} from './common/utils';
+import {handleRedirects} from './common/rules/redirect';
+import {getActiveRulesFromConfig} from './common/rules/enabled';
+import {runSearchFilterRoutine} from './searchFilters/runner';
+import {ConfigInterface} from './common/config/interface';
+import {loadBlockRules} from './common/rules/block';
 
 /* = Tab Context Save = */
 const previousTabUrls: string[] = [];
 
 const syncData = async () => {
+    let config: ConfigInterface | undefined = undefined;
     console.log('Syncing Data');
-    const config = await loadConfig();
-    await loadAll();
+
+    try {
+        config = await loadConfig();
+        await loadAll();
+    } catch (e) {
+        console.error('Failed to load config', e);
+        return;
+    }
+
     console.log('Synced config', config);
-    await updateDynamicRules(config);
+
+    try {
+        await updateDynamicRules(config!);
+    } catch (e) {
+        console.error('Failed to sync dynamic rules', e);
+    }
 }
 
 const updateDynamicRules = async (config: ConfigInterface) => {
-    console.log(await browser.declarativeNetRequest.getDynamicRules());
+    const dynamicRules=await browser.declarativeNetRequest.getDynamicRules();
+    console.log(dynamicRules);
 
     const adBlockers = getAdBlockers();
     if (config?.adblock?.namuwiki) {
@@ -35,9 +49,10 @@ const updateDynamicRules = async (config: ConfigInterface) => {
 
 /* = Initial Load = */
 (async () => {
-    const config = await loadConfig();
+    // const config = await loadConfig();
+    await loadConfig();
     await loadAll();
-    await updateDynamicRules(config);
+    // await updateDynamicRules(config);
 })();
 
 /* = On Install = */
@@ -86,7 +101,7 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                         target: {tabId: tab.id},
                         func: runSearchFilterRoutine,
                         args: [rules],
-                    })    
+                    })
                 }
             } catch (e) {
                 console.error('Script chainloading failed: ', e);
@@ -114,7 +129,7 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
             if (checkIfIntelliBanPass(query)) {
                 return;
             }
-            
+
             await browser.tabs.update(tabId, {
                 url: browser.runtime.getURL(`ui/banned/index.html?banned_url=${url}&site_name=${matchingRule.name}`),
             });
