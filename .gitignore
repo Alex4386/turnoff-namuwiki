@@ -196,3 +196,12 @@ turnoff-namuwiki@alex4386.us.xpi
 
 # production info
 production_ver.txt
+
+# Yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

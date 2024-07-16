@@ -21,5 +21,6 @@
   "scripts": {
     "build": "webpack",
     "build-package": "webpack && ./build.sh"
-  }
+  },
+  "packageManager": "yarn@4.3.1"
 }
