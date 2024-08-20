@@ -15,6 +15,21 @@
     "redirect": true
   },
   {
+    "id": "namuwikiEn",
+    "group": [ "namuwiki" ],
+    "name": "나무위키 (영문)",
+    "baseURL": "en.namu.wiki",
+    "articleView": {
+      "regex": "/w/(?<query>.+)$",
+      "flag": ""
+    },
+    "searchView": {
+      "regex": "/Search\\?q=(?<query>.+)$",
+      "flag": ""
+    },
+    "redirect": true
+  },
+  {
     "id": "namuMirror",
     "group": [ "namuwikiMirror" ],
     "name": "나무미러위키",
