@@ -78,7 +78,7 @@ turnoff-namuwiki는 문서 "배포/수정 라이선스 위반" 및 "사생활 �
 8. 확장프로그램 섹션의 아이콘을 클릭해 익스텐션의 상세 설정을 할 수 있습니다.
   
 #### Google Chrome (or Chromium)
-크롬 익스텐션 스토어에 올렸습니다! [Turnoff-NamuWiki](https://chrome.google.com/webstore/detail/turn-off-namuwiki/dgdifdnmamleoebgfbfeckefhhhplmdn/related?hl=en)  
+크롬 익스텐션 스토어에 올렸습니다! [Turnoff-NamuWiki](https://chromewebstore.google.com/detail/turn-off-namuwiki/dgdifdnmamleoebgfbfeckefhhhplmdn)  
 Firefox 에 비해선 릴리즈가 늦습니다. Google 에서는 Firefox 처럼 소스코드 업로드를 할 수 있는 부분이 없어 검수가 오래 걸려 늦는 것 같습니다.
 
 신기능을 누구보다 빠르게 테스트 해보고 싶으시다고요? 아래 방법을 사용하세요!  
@@ -150,7 +150,7 @@ Do you want to test some latest feature? follow this directions!
 8. You can use the Turnoff-NamuWiki icon for configuration.
 
 #### Google Chrome (or Chromium)
-It is now available at Chrome Web Store! [Turnoff-NamuWiki](https://chrome.google.com/webstore/detail/turn-off-namuwiki/dgdifdnmamleoebgfbfeckefhhhplmdn/related?hl=en)  
+It is now available at Chrome Web Store! [Turnoff-NamuWiki](https://chromewebstore.google.com/detail/turn-off-namuwiki/dgdifdnmamleoebgfbfeckefhhhplmdn)  
 Due to Google Chrome's slow extension examination, It might delayed up to 3 days for every updates.
 
 Do you want to test some latest feature? follow this directions!  
