@@ -109,10 +109,11 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                             const powerLinkTitle = Array.from(document.getElementsByTagName('img'))
                                 .find(n => n.src.includes("//i.namu.wiki/i/RPxl6WtDzEA4uNPvRkEjMCSx1K_0vqTWKMEuziAPm5A.png"))
 
-                            let powerLink = powerLinkTitle;
-                            if (powerLinkTitle) {
+                            let powerLink = powerLinkTitle as HTMLElement;
+                            if (powerLink) {
                                 for (let i = 0; i < 4; i++) {
-                                    powerLink = powerLink.parentElement;
+                                    if (!powerLink) break;
+                                    powerLink = powerLink?.parentElement as HTMLElement;
                                 }
                                 if (powerLink) {
                                     powerLink.remove();
