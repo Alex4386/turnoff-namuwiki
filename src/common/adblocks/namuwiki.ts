@@ -42,6 +42,10 @@ export function getAdBlockers(): Parameters<typeof browser.declarativeNetRequest
     "https://ssl.pstatic.net/adimg3.search/*",
     "https://www.google.com/adsense/search/*",
     "https://www.google.com/afs/ads*",
+    "https://hb-api.omnitagjs.com/*",
+    "https://client-side-metrics.as.cirteo.net/*",
+    "https://go-sync.adxpremium.services/*",
+
   ].map((n, i) => ({
     id: 10000+i,
     priority: 1,

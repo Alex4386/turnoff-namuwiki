@@ -3,7 +3,7 @@ import {getConfig, loadConfig} from './common/config';
 import {loadAll} from './common/initializer';
 import {getAdBlockers, reregisterDynamicRules, unregisterDynamicRules} from './common/adblocks/namuwiki';
 import {checkIfIntelliBanPass} from './common/intelliBan';
-import {isNamuNewsBlocked} from './common/utils';
+import {isNamuNewsBlocked, isNamuWikiAdblock} from './common/utils';
 import {handleRedirects} from './common/rules/redirect';
 import {getActiveRulesFromConfig} from './common/rules/enabled';
 import {runSearchFilterRoutine} from './searchFilters/runner';
@@ -26,6 +26,8 @@ const syncData = async () => {
     }
 
     console.log('Synced config', config);
+
+    try { await loadBlockRules(); } finally {}
 
     try {
         await updateDynamicRules(config!);
@@ -87,10 +89,26 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                 await browser.scripting.executeScript({
                     target: {tabId: tabId},
                     func: () => {
-                        const namuNews = document.getElementsByClassName('DYASHJcy _3+FtCMzz')[1];
+                        const args = 'RD8N-1K+ TNz43EL3';
+
+                        // TODO: Add dynamic classname update logic
+                        const namuNews = document.getElementsByClassName(args)[1];
                         if (namuNews) {
                             namuNews.remove();
                         }
+                    },
+                })
+            }
+
+            if (isNamuWikiAdblock(config)) {
+                await browser.scripting.executeScript({
+                    target: {tabId: tabId},
+                    func: () => {
+                        try {
+                            // kill powerlink
+                            Array.from(document.getElementsByTagName('img'))
+                                .find(n => n.src.includes("//i.namu.wiki/i/RPxl6WtDzEA4uNPvRkEjMCSx1K_0vqTWKMEuziAPm5A.png")).parentElement.parentElement.parentElement.parentElement.remove()
+                        } finally {}
                     }
                 })
             }

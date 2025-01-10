@@ -11,3 +11,7 @@ export function isArcaLiveBlocked(config: ConfigInterface) {
 export function isNamuNewsBlocked(config: ConfigInterface) {
   return config && config.blocked && (config.blocked.group["namunews"] || config.blocked.site["namunews"]);
 }
+
+export function isNamuWikiAdblock(config: ConfigInterface) {
+  return config && config.adblock && config.adblock.namuwiki;
+}
