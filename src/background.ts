@@ -106,8 +106,18 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                     func: () => {
                         try {
                             // kill powerlink
-                            Array.from(document.getElementsByTagName('img'))
-                                .find(n => n.src.includes("//i.namu.wiki/i/RPxl6WtDzEA4uNPvRkEjMCSx1K_0vqTWKMEuziAPm5A.png")).parentElement.parentElement.parentElement.parentElement.remove()
+                            const powerLinkTitle = Array.from(document.getElementsByTagName('img'))
+                                .find(n => n.src.includes("//i.namu.wiki/i/RPxl6WtDzEA4uNPvRkEjMCSx1K_0vqTWKMEuziAPm5A.png"))
+
+                            let powerLink = powerLinkTitle;
+                            if (powerLinkTitle) {
+                                for (let i = 0; i < 4; i++) {
+                                    powerLink = powerLink.parentElement;
+                                }
+                                if (powerLink) {
+                                    powerLink.remove();
+                                }
+                            }
                         } finally {}
                     }
                 })
