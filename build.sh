@@ -39,7 +39,7 @@ zip -r turnoff-namuwiki.zip * --exclude=*.git* --exclude=*node_modules* --exclud
 echo Building Archive for Firefox Add-on Team...
 cp manifest.json manifest.json.bak
 node ./firefox_workaround.js
-zip -r turnoff-namuwiki.firefox.zip * --exclude=*res/marketplace/* --exclude=*.DS_store --exclude=*intelliBan/*  --exclude=*res/marketplace* --exclude=*res/logos/logo.psd
+zip -r turnoff-namuwiki.firefox.zip * --exclude=*node_modules* --exclude=*res/marketplace/* --exclude=*.DS_store --exclude=*intelliBan/*  --exclude=*res/marketplace* --exclude=*res/logos/logo.psd
 mv turnoff-namuwiki.firefox.zip turnoff-namuwiki@alex4386.us.xpi
 
 echo Removing Production Build Information
