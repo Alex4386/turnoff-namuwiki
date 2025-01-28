@@ -30,7 +30,7 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "turnoff-namuwiki@alex4386.us",
-      "strict_min_version": "91.0"
+      "strict_min_version": "109.0"
     }
   },
   "manifest_version": 3
