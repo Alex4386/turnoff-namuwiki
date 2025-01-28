@@ -12,53 +12,13 @@ let blockRulesCache: BlockedSite[];
  * @returns {Promise<BlockedSite[]>} Rules
  */
 async function fetchLocalBlockRules(): Promise<BlockedSite[]> {
-  const data = await fetchRepo("/filter/blockedSites.json", {repo: false});
+  const data = await fetch("/filter/blockedSites.json");
   const res = await data.json();
   if (Array.isArray(res)) {
     return res.map(BlockedSite.fromSerialized);
   }
 
   return [];
-}
-
-/**
- * Fetches Latest Rule data from GitHub Repository
- * @returns {Promise<BlockedSite[]>} Rules
- */
-async function fetchOnlineBlockRules(): Promise<BlockedSite[]> {
-  const data = await fetchRepo("/filter/blockedSites.json", {repo: true});
-  const res = await data.json();
-  const config = getConfig() ?? await loadConfig();
-  if (Array.isArray(res)) {
-    config.blocked.onlineRules = res;
-    await browser.storage.sync.set(config);
-
-    return res.map(BlockedSite.fromSerialized);
-  }
-
-  return [];
-}
-
-/**
- * Use the cache if available,
- * Else fetch the latest rules from GitHub Repository
- * (Can be used for sync)
- */
-export async function getOnlineBlockRules(): Promise<BlockedSite[]> {
-  let config = await getConfig();
-
-  if (config?.blocked?.onlineRules === undefined) {
-    try {
-      console.log('fetching online block rules');
-      await fetchOnlineBlockRules();
-      config = getConfig();
-    } catch(e) {
-      console.error("Failed to fetch online block rules", e);
-      return [];
-    }
-  }
-
-  return config.blocked.onlineRules.map(BlockedSite.fromSerialized);
 }
 
 /**
@@ -76,15 +36,49 @@ export function getBlockRules(): BlockedSite[] | undefined {
   return blockRulesCache;
 }
 
-export async function loadBlockRules(): Promise<BlockedSite[]> {
-  const localRules = await fetchLocalBlockRules();
-  const onlineRules = await getOnlineBlockRules();
-  
-  // merge two rules. but if there is duplicate on online,
-  // remove the local one.
-  const deduppedLocalRules = localRules.filter((l) => !onlineRules.find(n => n.id === l.id));
-  blockRulesCache = [...onlineRules, ...deduppedLocalRules];
+const BLOCK_RULE_EXPIRATION = 1000 * 60 * 60 * 24; // 1 day
 
+export async function loadBlockRules(): Promise<BlockedSite[]> {
+  // use local cache if available
+  try {
+    console.log('Fetching block rules from remote');
+    const config = getConfig() ?? await loadConfig();
+
+    // check if remoteData cache is available
+    if (config.blocked.lastUpdated && config.blocked.onlineRules && config.blocked.onlineRules.length > 0) {
+      if (config.blocked.lastUpdated + BLOCK_RULE_EXPIRATION > Date.now()) {
+        blockRulesCache = config.blocked.onlineRules.map(BlockedSite.fromSerialized);
+        return blockRulesCache;
+      }
+    }
+
+    const remoteData = await fetch(config.blocked.url);
+    const remoteRules = await remoteData.json();
+    
+    if (Array.isArray(remoteRules)) {
+      config.blocked.onlineRules = remoteRules;
+      config.blocked.lastUpdated = Date.now();
+      await browser.storage.sync.set(config);
+      blockRulesCache = remoteRules.map(BlockedSite.fromSerialized);
+      return blockRulesCache;
+    }
+  } catch (e) {
+    console.error('Remote fetch failed, using local cached rules, first.', e);
+
+    try {
+      const config = getConfig() ?? await loadConfig();
+      if (config.blocked && config.blocked.onlineRules && config.blocked.onlineRules.length > 0) {
+        blockRulesCache = config.blocked.onlineRules.map(BlockedSite.fromSerialized);
+        return blockRulesCache;
+      }
+    } finally {
+
+    }
+  }
+
+  // Fallback to local if remote fails
+  const localRules = await fetchLocalBlockRules();
+  blockRulesCache = localRules;
   return blockRulesCache;
 }
 

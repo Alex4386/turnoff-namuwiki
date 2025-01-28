@@ -31,7 +31,14 @@ function setData(config, text, value) {
 }
 
 async function loadBlocked() {
-  return (await fetch("/filter/blockedSites.json")).json()
+  // Get rules from storage first
+  const config = await browser.storage.sync.get();
+  if (config?.blocked?.onlineRules) {
+    return config.blocked.onlineRules;
+  }
+  
+  // If not in storage, load from local
+  return (await fetch("/filter/blockedSites.json")).json();
 }
 
 async function loadRedirected() {
@@ -80,19 +87,25 @@ async function updateBlocked(config, url) {
     }
   }
 
-  const data = await fetch(config.blocked.url);
-  if (data.status === 200) {
-    config.blocked.onlineRules = await data.json();
-    console.log("Got Blocked: ", config.blocked.onlineRules);
-
-    alert("새로운 차단 정보가 입력되어 페이지 새로고침이 필요합니다.");
+  try {
+    const data = await fetch(url);
+    if (data.status === 200) {
+      config.blocked.onlineRules = await data.json();
+      config.blocked.lastUpdated = Date.now();
+      console.log("Got Blocked: ", config.blocked.onlineRules);
+      await saveData(config);
+      alert("새로운 차단 정보가 업데이트되었습니다. 페이지를 새로고침합니다.");
+      window.location.reload();
+    }
+  } catch (e) {
+    console.error("Failed to update from remote", e);
+    alert("원격 서버에서 차단 정보를 가져오는데 실패했습니다.");
   }
 
   if (config.blocked.onlineRules === undefined) {
     config.blocked.onlineRules = [];
+    await saveData(config);
   }
-
-  await saveData(config);
 }
 
 const intelliBanLocation = "https://raw.githubusercontent.com/Alex4386/turnoff-namuwiki/master/intelliBan/rules.json";

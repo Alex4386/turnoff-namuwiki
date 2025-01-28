@@ -5,6 +5,7 @@ const full_settings = [
   document.getElementById('intelliBan_url'),
   document.getElementById('banned_page_message'),
   document.getElementById('banned_page_retry'),
+  document.getElementById('force_real_license'),
 ];
 
 
@@ -94,6 +95,9 @@ let prev_intelliBan_URL = "";
         console.error(e)
         console.error(`로드 실패. ${JSON.stringify(config)}`);
     }*/
+
+    // load all checkmarks to reflect real value
+
 })();
 
 document.getElementById("trigger-update-blocked").addEventListener("click", async () => {

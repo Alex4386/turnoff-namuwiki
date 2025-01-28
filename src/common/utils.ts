@@ -15,3 +15,7 @@ export function isNamuNewsBlocked(config: ConfigInterface) {
 export function isNamuWikiAdblock(config: ConfigInterface) {
   return config && config.adblock && config.adblock.namuwiki;
 }
+
+export function isNamuWikiRealLicense(config: ConfigInterface) {
+  return config && config.adblock && config.adblock.forceRealLicense;
+}

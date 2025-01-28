@@ -2,7 +2,7 @@ import { RegexInterface } from "../regex/interface";
 import { SerializedBlockedSite } from "../rules/interface";
 
 export interface ConfigInterface {
-  blocked: {   
+  blocked: {
       group: {
           [siteId: string]: boolean;
       },
@@ -11,12 +11,14 @@ export interface ConfigInterface {
       },
       url: string;
       onlineRules: SerializedBlockedSite[];
+      lastUpdated?: number;
   };
   redirected: {
       [siteId: string]: boolean;
   };
   adblock: {
       namuwiki: boolean;
+      forceRealLicense: boolean;
   };
   proxy: {
       dbpia: string;
