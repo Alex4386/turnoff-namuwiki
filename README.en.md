@@ -56,5 +56,5 @@ Please instanll dependency `zip` before you follow the instruction.
 4. Check the file `turnoff-namuwiki.zip`, `turnoff-namuwiki@alex4386.us.xpi` in the repository.
 
 ### Contribution Guide
-See [CONTRIBUTORS.md](CONTRIBUTORS.md) for more information. (Koeran)
+See [CONTRIBUTORS.md](CONTRIBUTORS.md) for more information. (Korean)
 
