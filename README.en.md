@@ -4,9 +4,8 @@
   * [This extension/add-on is for...](#This-extensionadd-on-is-for)
   * [What's this?](#whats-this)
   * [How to Install](#how-to-install)
-    * [Mozilla Firefox](#mozilla-firefox-1)
-    * [Google Chrome (or Chromium)](#google-chrome-or-chromium-1)
-    * [New Microsoft Edge (= Chromium)](#new-microsoft-edge-1)
+    * [Mozilla Firefox](#mozilla-firefox)
+    * [Google Chrome (or Chromium)](#google-chrome-or-chromium)
   * [How to Package](#how-to-package)
 
 

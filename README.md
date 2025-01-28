@@ -20,8 +20,6 @@ Firefox does their examination within 10 minutes, instead Chrome takes at least 
   * [설치 방법](#설치-방법)
     * [Mozilla Firefox](#mozilla-firefox)
     * [Google Chrome (or Chromium)](#google-chrome-or-chromium)
-    * [New Microsoft Edge (= Chromium)](#new-microsoft-edge)
-    * [Naver Whale (also, Chromium)](#naver-whale)
   * [기여자를 위한 개발 문서](#기여자를-위한-개발-문서)
   * [패키징 방법](#패키징-방법)
 * [English](README.en.md)
