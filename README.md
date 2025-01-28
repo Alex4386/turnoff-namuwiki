@@ -1,4 +1,4 @@
-![splash](showcase/marketplace/marquee-tile.png)  
+![splash](res/marketplace/marquee-tile.png)  
 
 # turnoff-namuwiki
 **자료조사, 조별과제의 지뢰, 나무위키를 꺼드립니다.**  
