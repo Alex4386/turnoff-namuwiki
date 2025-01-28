@@ -34,12 +34,18 @@ echo Adding Production Build Information
 git rev-parse --short HEAD > production_ver.txt
 
 echo Building TurnOff-NamuWiki Archive....
-zip -r turnoff-namuwiki.zip * --exclude=*.git* --exclude=*node_modules* --exclude=*res/marketplace/* --exclude=*.DS_store --exclude=*.sh --exclude=*intelliBan/* --exclude=*res/marketplace* --exclude=*res/logo.psd
+zip -r turnoff-namuwiki.zip * --exclude=*.git* --exclude=*node_modules* --exclude=*res/marketplace/* --exclude=*.DS_store --exclude=*.sh --exclude=*intelliBan/* --exclude=*res/marketplace* --exclude=*res/logos/logo.psd
 
 echo Building Archive for Firefox Add-on Team...
-zip -r turnoff-namuwiki.dev.zip * --exclude=*res/marketplace/* --exclude=*.DS_store --exclude=*intelliBan/*  --exclude=*res/marketplace* --exclude=*res/logo.psd
-cp turnoff-namuwiki.zip turnoff-namuwiki@alex4386.us.xpi
+cp manifest.json manifest.json.bak
+node ./firefox_workaround.js
+zip -r turnoff-namuwiki.firefox.zip * --exclude=*res/marketplace/* --exclude=*.DS_store --exclude=*intelliBan/*  --exclude=*res/marketplace* --exclude=*res/logos/logo.psd
+mv turnoff-namuwiki.firefox.zip turnoff-namuwiki@alex4386.us.xpi
 
 echo Removing Production Build Information
 rm production_ver.txt
+
+echo rollback firefox manifest
+mv manifest.json.bak manifest.json
+
 echo

@@ -151,11 +151,11 @@ const blockAction = async (tabId: number, info: Tabs.OnUpdatedChangeInfoType, ta
                             // get the form
                             const form = document.getElementsByTagName('form')[1];
                             if (form) {
-                                const licenseCheck = form.getElementsByTagName('label')[0];
+                                const licenseCheck = Array.from(form.getElementsByTagName('label')).find(n => n.innerText.includes('CC-BY-NC-SA'));
                                 if (licenseCheck) {
                                     const span = licenseCheck.getElementsByTagName('span')[0];
                                     if (span.innerText.includes('CC-BY-NC-SA')) {
-                                        span.innerText = `문서 편집을 <strong>저장</strong>하면 당신은 기여한 내용을 <strong>CC-BY-NC-SA 2.0</strong>으로 배포하며, 동시에 <strong>umanle S.R.L.에 수정사항에 대한 독점적 권리 및 승인없는 2차 창작 및 임의 수익창출을 허용</strong>하는 것에 동의함을 의미합니다. <strong>이 동의는 철회할 수 없습니다.</strong>`;
+                                        span.innerHTML = `문서 편집을 <strong>저장</strong>하면 당신은 기여한 내용을 <strong>CC-BY-NC-SA 2.0</strong>으로 배포하며, 동시에 <strong>umanle S.R.L.에 수정사항에 대한 독점적 권리 및 승인없는 2차 창작 및 임의 수익창출을 허용</strong>하는 것에 동의함을 의미합니다. <strong>이 동의는 철회할 수 없습니다.</strong>`;
                                     }
                                 }
                             }
