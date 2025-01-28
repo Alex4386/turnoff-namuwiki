@@ -27,6 +27,7 @@ echo
 
 echo Removing existing TurnOff-NamuWiki Archive.
 rm turnoff-namuwiki.zip
+rm turnoff-namuwiki.xpi
 echo Done.
 echo
 
@@ -34,8 +35,16 @@ echo Adding CI Build Information
 git rev-parse --short HEAD > ci_build_ver.txt
 
 echo Building TurnOff-NamuWiki Archive....
-zip -r turnoff-namuwiki.zip * --exclude=*.git* --exclude=*node_modules* --exclude=*showcase/marketplace/* --exclude=*.DS_store --exclude=*.sh --exclude=*intelliBan/* --exclude=*showcase/marketplace* --exclude=*showcase/logo.psd
+zip -r turnoff-namuwiki.zip * --exclude=*.git* --exclude=*node_modules* --exclude=*res/marketplace/* --exclude=*.DS_store --exclude=*.sh --exclude=*intelliBan/* --exclude=*res/marketplace* --exclude=*res/logos/logo.psd
 
-echo Removing CI Build Information
+echo Patching for Firefox
+node ./firefox_workaround.js
+
+echo Build Firefox XPI
+zip -r turnoff-namuwiki.xpi * --exclude=*.git* --exclude=*node_modules* --exclude=*res/marketplace/* --exclude=*.DS_store --exclude=*.sh --exclude=*intelliBan/* --exclude=*res/marketplace* --exclude=*res/logos/logo.psd
+
+echo Remove CI Build Information
 rm ci_build_ver.txt
+
+echo Done.
 echo
