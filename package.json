@@ -1,6 +1,6 @@
 {
   "name": "turnoff-namuwiki",
-  "version": "1.1.0-firefox",
+  "version": "1.1.1",
   "description": "Disconnects connection to Namuwiki, Uncredible source of information",
   "main": "src/",
   "repository": "https://github.com/Alex4386/turnoff-namuwiki.git",
