@@ -2,13 +2,23 @@ import browser from 'webextension-polyfill';
 import { ConfigInterface } from './interface';
 
 let configCache: ConfigInterface;
+let lastConfigSync: number = 0;
+const configExpiration = 500; // 1 second
 
 /* = config update listener = */
 browser.storage.onChanged.addListener(async () => {
   await loadConfig();
 });
 
-export function getConfig(): ConfigInterface {
+export function getConfig(dontCareExpired?: boolean): ConfigInterface | undefined {
+  if (configCache === undefined) {
+    console.warn("Config not fetched yet. Please call loadConfig() first.");
+    return undefined;
+  } else if (lastConfigSync + configExpiration < Date.now() && !dontCareExpired) {
+    console.warn("Config expired. Please call loadConfig() first.");
+    return undefined;
+  }
+
   return configCache;
 }
 
@@ -28,6 +38,7 @@ export async function loadConfig(): Promise<ConfigInterface> {
       } as unknown as ConfigInterface);
     }
     configCache = thisConfig;
+    lastConfigSync = Date.now();
   } while (Object.keys(thisConfig).length === 0);
 
   return thisConfig;

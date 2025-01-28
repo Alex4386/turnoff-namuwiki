@@ -3,20 +3,31 @@
   "version": "1.0.0",
   "author": "Alex4386 and TurnOff NamuWiki Contributors",
   "description": "자료조사, 조별과제의 지뢰, 나무위키를 꺼드립니다.",
-  "permissions": ["tabs", "storage", "declarativeNetRequest", "declarativeNetRequestWithHostAccess", "activeTab", "scripting"],
+  "permissions": [
+    "tabs",
+    "storage",
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess",
+    "activeTab",
+    "scripting"
+  ],
   "background": {
-    "service_worker": "dist/background.js"
+    "scripts": [
+      "dist/background.js"
+    ]
   },
-  "host_permissions": ["*://*/*"],
+  "host_permissions": [
+    "*://*/*"
+  ],
   "action": {
     "default_icon": "res/logos/logo-192x192.png",
     "default_title": "TurnOff NamuWiki",
     "default_popup": "ui/popup/index.html"
   },
   "icons": {
-    "256":"res/logos/logo-256x256.png",
-    "192":"res/logos/logo-192x192.png",
-    "128":"res/logos/logo-128x128.png"
+    "128": "res/logos/logo-128x128.png",
+    "192": "res/logos/logo-192x192.png",
+    "256": "res/logos/logo-256x256.png"
   },
   "browser_specific_settings": {
     "gecko": {

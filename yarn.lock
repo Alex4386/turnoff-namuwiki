@@ -782,6 +782,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"browser-polyfill@npm:^3.20.2":
+  version: 3.20.2
+  resolution: "browser-polyfill@npm:3.20.2"
+  checksum: 10c0/b09cc835147ba6f3c1973eb3957e75b8009713be23e316bb3436cb38e161588219c9f8dbfb7a9604d1459d075f44f81566d615f255e2cf63d0d7905b56dd75c4
+  languageName: node
+  linkType: hard
+
 "browserslist@npm:^4.21.10":
   version: 4.23.0
   resolution: "browserslist@npm:4.23.0"
@@ -3430,6 +3437,7 @@ __metadata:
   resolution: "turnoff-namuwiki@workspace:."
   dependencies:
     "@types/webextension-polyfill": "npm:^0.10.7"
+    browser-polyfill: "npm:^3.20.2"
     ts-loader: "npm:^9.5.1"
     typescript: "npm:^5.5.3"
     web-ext-types: "npm:^3.2.1"

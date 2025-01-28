@@ -1,4 +1,4 @@
-import browser from 'webextension-polyfill';
+import browser, { Tabs } from 'webextension-polyfill';
 import {getConfig, loadConfig} from './common/config';
 import {loadAll} from './common/initializer';
 import {getAdBlockers, reregisterDynamicRules, unregisterDynamicRules} from './common/adblocks/namuwiki';
@@ -63,16 +63,19 @@ browser.runtime.onInstalled.addListener(syncData);
 /* = config update listener = */
 browser.storage.onChanged.addListener(syncData);
 
-/* = NamuWiki Block Logic = */
-browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
+const blockAction = async (tabId: number, info: Tabs.OnUpdatedChangeInfoType, tab: Tabs.Tab) => {
+    console.log('blockAction Triggered!!');
+
     const config = getConfig() ?? await loadConfig();
     let rules = getActiveRulesFromConfig(config);
     if (!rules) {
+        console.log('No rules found, loading from block rules');
         await loadBlockRules();
         rules = getActiveRulesFromConfig(config) ?? [];
     }
 
     const url = info.url || tab.url;
+    console.log('config', config);
 
     // Save previous URL
     if (info.status === 'complete') {
@@ -80,12 +83,12 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
         else delete previousTabUrls[tabId];
     }
 
-
     if (url) {
         if (!(url.startsWith('http://') || url.startsWith('https://'))) return;
         // run search filter
         if (url.startsWith('https://namu.wiki')) {
             if (isNamuNewsBlocked(config)) {
+                console.log('try blocking namunews');
                 await browser.scripting.executeScript({
                     target: {tabId: tabId},
                     func: () => {
@@ -101,6 +104,7 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
             }
 
             if (isNamuWikiAdblock(config)) {
+                console.log('try blocking namuwiki ad');
                 await browser.scripting.executeScript({
                     target: {tabId: tabId},
                     func: () => {
@@ -124,13 +128,14 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                 })
             }
 
+            console.log('tlqkf')
             if (isNamuWikiRealLicense(config)) {
                 await browser.scripting.executeScript({
                     target: {tabId: tabId},
                     func: () => {
                         try {
                             // update the license as "REAL" License
-                            const license = document.getElementsByClassName('_2t4p775C')[0];
+                            const license = Array.from(document.getElementsByTagName('img')).find(n => n.src.endsWith('/img/cc-by-nc-sa-2.0-88x31.png'))?.parentElement
                             if (license) {
                                 license.innerHTML = `<p data-v-c73e55e2="">
                                     <img alt="크리에이티브 커먼즈 라이선스" style="border-width: 0;" src="/img/cc-by-nc-sa-2.0-88x31.png" width="88" height="31"><br>
@@ -175,6 +180,7 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
         const matchingRule = rules.find(
             rule => rule.isInSite(url)
         );
+        console.log(matchingRule);
 
         if (matchingRule) {
             console.log('rule matched:', matchingRule);
@@ -183,10 +189,10 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
 
             if (!info.url) {
                 console.log('info', info);
-                if (info.status !== 'complete') {
-                    console.log('Prevent Triggered Twice');
-                    return;
-                }
+                // if (info.status !== 'complete') {
+                //     console.log('Prevent Triggered Twice');
+                //     return;
+                // }
             }
 
             // Skip ban if query is intelliBan
@@ -214,4 +220,10 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
 
         }
     }
+}
+
+/* = NamuWiki Block Logic = */
+browser.tabs.onUpdated.addListener(blockAction);
+browser.tabs.onCreated.addListener(async (tab) => {
+    blockAction(tab.id!, {status: 'complete'}, tab);
 });

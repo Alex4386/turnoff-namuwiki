@@ -1,4 +1,4 @@
-import { getConfig } from "../config/index";
+import { getConfig, loadConfig } from "../config/index";
 import { fetchRepo } from "../global";
 import { RedirectTargetSite } from "./interface";
 
@@ -57,7 +57,7 @@ export async function loadRedirectionRules(): Promise<RedirectTargetSite[]> {
 }
 
 export async function handleRedirects(query: string): Promise<string[]> {
-  const config = getConfig();
+  const config = getConfig() ?? await loadConfig();
   const rules = getRedirectTargets() ?? await loadRedirectionRules();
 
   const urls = [];

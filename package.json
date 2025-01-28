@@ -1,12 +1,13 @@
 {
   "name": "turnoff-namuwiki",
-  "version": "0.8.3",
+  "version": "1.1.0",
   "description": "Disconnects connection to Namuwiki, Uncredible source of information",
   "main": "src/",
   "repository": "https://github.com/Alex4386/turnoff-namuwiki.git",
   "author": "Alex4386 <psh010209@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "browser-polyfill": "^3.20.2",
     "typescript": "^5.5.3",
     "webextension-polyfill": "^0.12.0"
   },

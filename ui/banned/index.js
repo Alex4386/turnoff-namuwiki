@@ -18,6 +18,8 @@
           accessingTo = decodeURIComponent(accessingTo);
         }
       }
+
+      document.title = accessingTo + " 접근 차단 안내 - turnoff-namuwiki";
       
       if (config.bannedPage !== undefined) {
         if (config.bannedPage.message !== "" && config.bannedPage.message !== undefined) {
@@ -28,7 +30,11 @@
 
         if (config.bannedPage.retry) {
           (document.getElementById('wanna_access')).innerHTML = `
-            ${accessingTo} 접속을 원하는 경우 차단을 비활성화 한 이후 <a href="${blocked_url}">여기</a> 를 클릭하세요. 
+            ${accessingTo} 접속을 원하는 경우 설정에서 차단을 비활성화 한 이후 <a href="${blocked_url}">여기</a> 를 클릭하세요. 
+          `;
+        } else {
+          (document.getElementById('wanna_access')).innerHTML = `
+            Tip: ${accessingTo} 에 접속이 필요한 경우, 상세 설정에서 "재시도 링크 추가" 를 사용하면 필요할 때 차단해제 후 재접속을 쉽게 할 수 있습니다.
           `;
         }
       } else {
